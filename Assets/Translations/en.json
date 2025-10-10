@@ -454,6 +454,10 @@
           "label": "Wallpaper settings",
           "description": "Control how wallpapers are managed and displayed."
         },
+        "engine":{
+          "label": "Wallpaper engine",
+          "description": "Select which engine will handle how wallpapers are changed."
+        },
         "enable-management": {
           "label": "Enable wallpaper management",
           "description": "Manage wallpapers with Noctalia. Uncheck if you prefer using another application."
@@ -1117,6 +1121,11 @@
         "description": "Apply selected wallpaper to all monitors at once."
       },
       "search": "Search:"
+    },
+    "engines": {
+      "noctalia": "Noctalia",
+      "hyprpaper": "Hyprpaper",
+      "swww": "swww"
     },
     "transitions": {
       "none": "None",

@@ -32,6 +32,15 @@ ColumnLayout {
     spacing: Style.marginL * scaling
     Layout.fillWidth: true
 
+    // Engine
+    NComboBox {
+      label: I18n.tr("settings.wallpaper.settings.engine.label")
+      description: I18n.tr("settings.wallpaper.settings.engine.description")
+      model: WallpaperService.wallpaperEnginesModel
+      currentKey: Settings.data.wallpaper.engine
+      onSelected: key => Settings.data.wallpaper.engine = key
+    }
+
     NTextInputButton {
       id: wallpaperPathInput
       label: I18n.tr("settings.wallpaper.settings.folder.label")

@@ -84,6 +84,7 @@
   },
   "wallpaper": {
     "enabled": true,
+    "engine": "noctalia",
     "directory": "",
     "enableMultiMonitorDirectories": false,
     "setWallpaperOnAllMonitors": true,

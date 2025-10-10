@@ -454,6 +454,10 @@
           "label": "Hintergrundbild-Einstellungen",
           "description": "Steuern Sie, wie Hintergrundbilder verwaltet und angezeigt werden."
         },
+        "engine":{
+          "label": "Hintergrund-Engine",
+          "description": "Wählen Sie die Engine aus, die steuert, wie Hintergründe geändert werden."
+        },
         "enable-management": {
           "label": "Hintergrundbild-Verwaltung aktivieren",
           "description": "Hintergrundbilder mit Noctalia verwalten. Deaktivieren, wenn Sie eine andere Anwendung bevorzugen."
@@ -1134,6 +1138,11 @@
         "description": "Ausgewähltes Hintergrundbild auf alle Monitore gleichzeitig anwenden."
       },
       "search": "Suchen:"
+    },
+    "engines": {
+      "noctalia": "Noctalia",
+      "hyprpaper": "Hyprpaper",
+      "swww": "swww"
     },
     "transitions": {
       "none": "Keine",

@@ -454,6 +454,10 @@
           "label": "Paramètres du fond d'écran",
           "description": "Contrôlez comment les fonds d'écran sont gérés et affichés."
         },
+        "engine":{
+          "label": "Moteur de fond d’écran",
+          "description": "Sélectionnez le moteur qui gérera la manière dont les fonds d’écran sont changés."
+        },
         "enable-management": {
           "label": "Activer la gestion des fonds d'écran",
           "description": "Gérez les fonds d'écran avec Noctalia. Décochez si vous préférez utiliser une autre application."
@@ -1117,6 +1121,11 @@
         "description": "Appliquer le fond d'écran sélectionné à tous les moniteurs en même temps."
       },
       "search": "Rechercher :"
+    },
+    "engines": {
+      "noctalia": "Noctalia",
+      "hyprpaper": "Hyprpaper",
+      "swww": "swww"
     },
     "transitions": {
       "none": "Aucune",

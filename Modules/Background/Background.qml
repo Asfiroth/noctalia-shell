@@ -13,7 +13,7 @@ Variants {
 
     required property ShellScreen modelData
 
-    active: modelData && Settings.data.wallpaper.enabled
+    active: modelData && Settings.data.wallpaper.enabled && Settings.data.wallpaper.engine === "noctalia"
 
     sourceComponent: PanelWindow {
       id: root

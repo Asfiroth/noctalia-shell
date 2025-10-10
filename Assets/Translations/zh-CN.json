@@ -454,6 +454,10 @@
           "label": "壁纸设置",
           "description": "控制壁纸的管理和显示方式。"
         },
+        "engine":{
+          "label": "壁纸引擎",
+          "description": "选择用于更改壁纸方式的引擎。"
+        },
         "enable-management": {
           "label": "启用壁纸管理",
           "description": "使用 Noctalia 管理壁纸。如果您更喜欢使用其他应用程序，请取消选中。"
@@ -1125,6 +1129,11 @@
       "disc": "圆盘",
       "stripes": "条纹",
       "wipe": "擦除"
+    },
+    "engines": {
+      "noctalia": "Noctalia",
+      "hyprpaper": "Hyprpaper",
+      "swww": "swww"
     },
     "fill-modes": {
       "center": "居中",

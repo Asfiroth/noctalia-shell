@@ -454,6 +454,10 @@
           "label": "Configuración del fondo de pantalla",
           "description": "Controla cómo se gestionan y muestran los fondos de pantalla."
         },
+        "engine":{
+          "label": "Motor de fondo de pantalla",
+          "description": "Selecciona que motor gestionará el cambio de los fondos de pantalla."
+        },
         "enable-management": {
           "label": "Activar gestión de fondos de pantalla",
           "description": "Gestiona fondos de pantalla con Noctalia. Desmarca si prefieres usar otra aplicación."
@@ -1117,6 +1121,11 @@
         "description": "Aplica el fondo de pantalla seleccionado a todos los monitores a la vez."
       },
       "search": "Buscar:"
+    },
+    "engines": {
+      "noctalia": "Noctalia",
+      "hyprpaper": "Hyprpaper",
+      "swww": "swww"
     },
     "transitions": {
       "none": "Ninguna",

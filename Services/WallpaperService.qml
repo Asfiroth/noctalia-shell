@@ -11,6 +11,9 @@ Singleton {
 
   readonly property ListModel fillModeModel: ListModel {}
 
+  // Available engines
+  readonly property ListModel wallpaperEnginesModel: ListModel {}
+
   // All available wallpaper transitions
   readonly property ListModel transitionsModel: ListModel {}
 
@@ -98,6 +101,22 @@ Singleton {
       Qt.callLater(translateModels)
       return
     }
+
+    // Populate wallpaper engines
+    wallpaperEnginesModel.append({
+      "key": "noctalia",
+      "name": I18n.tr("wallpaper.engines.noctalia")
+    })
+
+    wallpaperEnginesModel.append({
+      "key": "hyprpaper",
+      "name": I18n.tr("wallpaper.engines.hyprpaper")
+    })
+
+    wallpaperEnginesModel.append({
+      "key": "swww",
+      "name": I18n.tr("wallpaper.engines.swww")
+    })
 
     // Populate fillModeModel with translated names
     fillModeModel.append({

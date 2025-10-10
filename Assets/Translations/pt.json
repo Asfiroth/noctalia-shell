@@ -420,6 +420,10 @@
           "label": "Configurações de papel de parede",
           "description": "Controle como os papéis de parede são gerenciados e exibidos."
         },
+        "engine":{
+          "label": "Motor de papel de parede",
+          "description": "Selecione qual motor será responsável por alterar os papéis de parede."
+        },
         "enable-management": {
           "label": "Ativar gerenciamento de papel de parede",
           "description": "Gerencie papéis de parede com o Noctalia. Desmarque se preferir usar outro aplicativo."
@@ -1117,6 +1121,11 @@
         "description": "Aplica o papel de parede selecionado a todos os monitores de uma só vez."
       },
       "search": "Pesquisar:"
+    },
+    "engines": {
+      "noctalia": "Noctalia",
+      "hyprpaper": "Hyprpaper",
+      "swww": "swww"
     },
     "transitions": {
       "none": "Nenhuma",
