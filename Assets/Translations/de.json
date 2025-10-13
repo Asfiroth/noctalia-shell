@@ -26,6 +26,10 @@
           "label": "Desktop abdunkeln",
           "description": "Desktop abdunkeln, wenn Panels oder Menüs geöffnet sind."
         },
+        "compact-lockscreen": {
+          "label": "Kompakter Sperrbildschirm",
+          "description": "Zeigt nur die Anmeldeeingabe und Systemsteuerungen an, versteckt Wetter- und Medien-Widgets."
+        },
         "border-radius": {
           "label": "Eckenradius",
           "description": "Steuert die Rundung der Ecken von Fenstern, Buttons und anderen Elementen."
@@ -314,6 +318,10 @@
         "floating-distance": {
           "label": "Dock-Schwebeabstand",
           "description": "Schwebeabstand vom Bildschirmrand anpassen."
+        },
+        "colorize-icons": {
+          "label": "Symbole einfärben",
+          "description": "Theme-Farben auf Dock-App-Symbole anwenden (nur nicht fokussierte Apps)."
         }
       },
       "monitors": {
@@ -929,6 +937,10 @@
         "width": {
           "description": "Steuert die horizontale Größe des Widgets.",
           "label": "Widget-Breite"
+        },
+        "colorize-icons": {
+          "label": "Symbole einfärben",
+          "description": "Theme-Farben auf das aktive Fenster-Symbol anwenden."
         }
       },
       "system-monitor": {
@@ -1122,6 +1134,16 @@
         "only-same-output": {
           "label": "Nur vom gleichen Bildschirm",
           "description": "Zeige nur Apps vom dem Bildschirm an, wo sich die Taskbar befindet."
+        },
+        "colorize-icons": {
+          "label": "Symbole einfärben",
+          "description": "Theme-Farben auf Taskbar-Symbole anwenden."
+        }
+      },
+      "tray": {
+        "colorize-icons": {
+          "label": "Symbole einfärben",
+          "description": "Theme-Farben auf Tray-Symbole anwenden."
         }
       }
     }

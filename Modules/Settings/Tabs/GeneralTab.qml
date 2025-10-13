@@ -23,7 +23,7 @@ ColumnLayout {
     NImageCircled {
       width: 108 * scaling
       height: 108 * scaling
-      imagePath: Settings.data.general.avatarImage
+      imagePath: Settings.preprocessPath(Settings.data.general.avatarImage)
       fallbackIcon: "person"
       borderColor: Color.mPrimary
       borderWidth: Math.max(1, Style.borderM * scaling)
@@ -50,7 +50,7 @@ ColumnLayout {
     id: avatarPicker
     title: I18n.tr("settings.general.profile.select-avatar")
     selectionMode: "files"
-    initialPath: Settings.data.general.avatarImage.substr(0, Settings.data.general.avatarImage.lastIndexOf("/")) || Quickshell.env("HOME")
+    initialPath: Settings.preprocessPath(Settings.data.general.avatarImage).substr(0, Settings.preprocessPath(Settings.data.general.avatarImage).lastIndexOf("/")) || Quickshell.env("HOME")
     nameFilters: ["*.jpg", "*.jpeg", "*.png", "*.gif", "*.pnm", "*.bmp"]
     onAccepted: paths => {
                   if (paths.length > 0) {
@@ -87,6 +87,13 @@ ColumnLayout {
       description: I18n.tr("settings.general.ui.tooltips.description")
       checked: Settings.data.ui.tooltipsEnabled
       onToggled: checked => Settings.data.ui.tooltipsEnabled = checked
+    }
+
+    NToggle {
+      label: I18n.tr("settings.general.ui.compact-lockscreen.label")
+      description: I18n.tr("settings.general.ui.compact-lockscreen.description")
+      checked: Settings.data.general.compactLockScreen
+      onToggled: checked => Settings.data.general.compactLockScreen = checked
     }
 
     ColumnLayout {

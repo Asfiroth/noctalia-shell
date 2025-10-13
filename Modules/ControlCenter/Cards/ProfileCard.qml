@@ -14,6 +14,7 @@ import qs.Widgets
 NBox {
   id: root
 
+  property real scaling: 1.0
   property string uptimeText: "--"
 
   RowLayout {
@@ -27,7 +28,7 @@ NBox {
     NImageCircled {
       width: Style.baseWidgetSize * 1.25 * scaling
       height: Style.baseWidgetSize * 1.25 * scaling
-      imagePath: Settings.data.general.avatarImage
+      imagePath: Settings.preprocessPath(Settings.data.general.avatarImage)
       fallbackIcon: "person"
       borderColor: Color.mPrimary
       borderWidth: Math.max(1, Style.borderM * scaling)
