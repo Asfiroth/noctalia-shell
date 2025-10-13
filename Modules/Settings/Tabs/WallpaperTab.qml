@@ -108,14 +108,14 @@ ColumnLayout {
   }
 
   NDivider {
-    visible: Settings.data.wallpaper.enabled
+    visible: Settings.data.wallpaper.enabled && Settings.data.wallpaper.engine !== "hyprpaper"
     Layout.fillWidth: true
     Layout.topMargin: Style.marginXL * scaling
     Layout.bottomMargin: Style.marginXL * scaling
   }
 
   ColumnLayout {
-    visible: Settings.data.wallpaper.enabled
+    visible: Settings.data.wallpaper.enabled && Settings.data.wallpaper.engine !== "hyprpaper"
     spacing: Style.marginL * scaling
     Layout.fillWidth: true
 

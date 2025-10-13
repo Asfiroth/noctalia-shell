@@ -11,6 +11,7 @@ Singleton {
 
   readonly property ListModel fillModeModel: ListModel {}
   readonly property string defaultDirectory: Settings.preprocessPath(Settings.data.wallpaper.directory)
+  readonly property string wallpaperApplyScript: Quickshell.shellDir + "/Bin/wallpapers-apply.sh"
 
   // Available engines
   readonly property ListModel wallpaperEnginesModel: ListModel {}
@@ -311,6 +312,14 @@ Singleton {
 
     Settings.data.wallpaper.monitors = newMonitors.slice()
 
+
+    if (Settings.data.wallpaper.engine !== "noctalia") {
+      const command = `${wallpaperApplyScript} ${screenName} ${path}`     
+      wallpaperApplyProcess.command = ["bash", "-lc", command]
+      wallpaperApplyProcess.running = true
+    }
+
+
     // Emit signal for this specific wallpaper change
     root.wallpaperChanged(screenName, path)
 
@@ -451,6 +460,24 @@ Singleton {
           Logger.log("Wallpaper", "List refreshed for", screenName, "count:", files.length)
           root.wallpaperListChanged(screenName, files.length)
         }
+      }
+    }
+  }
+
+  Process {
+    id: wallpaperApplyProcess
+    running: false
+    workingDirectory: Quickshell.shellDir
+    stderr: StdioCollector {
+      onStreamFinished: {
+        if (this.text) {
+          Logger.warn("Wallpaper", "wallpapers-apply.sh stderr:", this.text)
+        }
+      }
+    }
+    onExited: (exitCode, exitStatus) => {
+      if (exitCode !== 0) {
+        Logger.warn("Wallpaper", "wallpapers-apply.sh exited with code", exitCode)
       }
     }
   }
