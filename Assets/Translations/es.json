@@ -13,36 +13,6 @@
         },
         "select-avatar": "Seleccionar imagen de avatar"
       },
-      "ui": {
-        "section": {
-          "label": "Interfaz de usuario",
-          "description": "Personaliza la apariencia, sensación y comportamiento de la interfaz."
-        },
-        "tooltips": {
-          "label": "Mostrar tooltips",
-          "description": "Activar o desactivar tooltips en toda la interfaz."
-        },
-        "dim-desktop": {
-          "label": "Atenuar escritorio",
-          "description": "Atenúa el escritorio cuando los paneles o menús están abiertos."
-        },
-        "compact-lockscreen": {
-          "label": "Pantalla de bloqueo compacta",
-          "description": "Muestra solo la entrada de inicio de sesión y controles del sistema, ocultando widgets de clima y medios."
-        },
-        "border-radius": {
-          "label": "Radio del borde",
-          "description": "Controla la redondez de las esquinas de ventanas, botones y otros elementos."
-        },
-        "animation-speed": {
-          "label": "Velocidad de la animación",
-          "description": "Ajusta la velocidad de la animación global."
-        },
-        "animation-disable": {
-          "label": "Desactivar animaciones de UI",
-          "description": "Desactivar todas las animaciones para una experiencia más rápida y responsiva."
-        }
-      },
       "screen-corners": {
         "section": {
           "label": "Esquinas de la pantalla",
@@ -58,7 +28,8 @@
         },
         "radius": {
           "label": "Radio de las esquinas de la pantalla",
-          "description": "Ajusta las esquinas redondeadas de la pantalla."
+          "description": "Ajusta las esquinas redondeadas de la pantalla.",
+          "reset": "Restablecer el radio de las esquinas de la pantalla"
         }
       },
       "fonts": {
@@ -87,33 +58,6 @@
           }
         },
         "reset-scaling": "Restablecer la escala"
-      },
-      "control-center": {
-        "title": "Centro de control",
-        "section": {
-          "label": "Centro de control",
-          "description": "Configurar el posicionamiento y comportamiento del panel del centro de control."
-        },
-        "position": {
-          "label": "Posición",
-          "description": "Elige dónde aparece el panel del centro de control cuando se abre."
-        },
-        "quickSettingsStyle": {
-          "section": {
-            "label": "Estilo de configuración rápida",
-            "description": "Personaliza la apariencia y el comportamiento de las configuraciones rápidas en el centro de control."
-          },
-          "style": {
-            "label": "Estilo de configuración rápida",
-            "description": "Elige el estilo visual para los interruptores y controles de configuración rápida."
-          }
-        },
-        "widgets": {
-          "section": {
-            "label": "Widgets",
-            "description": "Configura y gestiona los widgets del centro de control y sus opciones de visualización."
-          }
-        }
       }
     },
     "audio": {
@@ -200,11 +144,9 @@
       "monitors": {
         "section": {
           "label": "Configuración por monitor",
-          "description": "Ajusta la escala y el brillo para cada pantalla."
+          "description": "Ajustar el brillo de la configuración para cada pantalla."
         },
-        "scale": "Escala",
         "brightness": "Brillo",
-        "reset-scaling": "Restablecer escala",
         "brightness-step": {
           "label": "Tamaño del paso de brillo",
           "description": "Ajusta el tamaño del paso para los cambios de brillo (rueda de desplazamiento y atajos de teclado)."
@@ -280,7 +222,7 @@
       "widgets": {
         "section": {
           "label": "Posicionamiento de widgets",
-          "description": "Arrastra y suelta widgets para reordenarlos dentro de cada sección, o usa los botones de añadir/eliminar para gestionar los widgets."
+          "description": "Arrastra y suelta widgets para reordenarlos. Las insignias indican el uso: [I]zquierda, [C]entro, [D]erecha."
         }
       },
       "monitors": {
@@ -746,29 +688,8 @@
           "description": "¡Un saludo a nuestro <b>increíble</b> colaborador número {count}!",
           "description_plural": "¡Un saludo a nuestros {count} <b>increíbles</b> colaboradores!"
         }
-      }
-    },
-    "control-center": {
-      "title": "Centro de control",
-      "quickSettingsStyle": {
-        "section": {
-          "label": "Estilo de configuración rápida",
-          "description": "Personaliza la apariencia y el comportamiento de las configuraciones rápidas en el centro de control."
-        },
-        "style": {
-          "label": "Estilo de configuración rápida",
-          "description": "Elige el estilo visual para los interruptores y controles de configuración rápida."
-        }
       },
-      "widgets": {
-        "section": {
-          "label": "Widgets",
-          "description": "Configura y gestiona los widgets del centro de control y sus opciones de visualización."
-        }
-      },
-      "quickSettings": {
-        "sectionName": "Ajustes rápidos"
-      }
+      "support": "Apóyanos"
     },
     "hooks": {
       "title": "Hooks",
@@ -801,6 +722,69 @@
           "label": "Parámetros disponibles",
           "description": "• Hook de fondo de pantalla: $1 = ruta del fondo de pantalla, $2 = nombre de la pantalla\n• Hook de cambio de tema: $1 = true/false (estado del modo oscuro)"
         }
+      }
+    },
+    "control-center": {
+      "position": {
+        "description": "Elige dónde aparece el panel del Centro de control cuando se abre.",
+        "label": "Posición"
+      },
+      "section": {
+        "description": "Configurar el posicionamiento y el comportamiento del panel del Centro de control.",
+        "label": "Apariencia"
+      },
+      "title": "Centro de control",
+      "cards": {
+        "section": {
+          "description": "Personaliza qué controles aparecen en el Centro de control y en qué orden.",
+          "label": "Tarjetas"
+        }
+      },
+      "shortcuts": {
+        "section": {
+          "description": "Configurar y administrar los widgets de accesos directos.",
+          "label": "Widgets de accesos directos"
+        },
+        "sectionLeft": "Izquierda",
+        "sectionRight": "Derecha"
+      }
+    },
+    "user-interface": {
+      "animation-disable": {
+        "description": "Desactiva todas las animaciones para una experiencia más rápida y con mayor capacidad de respuesta.",
+        "label": "Desactivar animaciones de la interfaz de usuario"
+      },
+      "animation-speed": {
+        "description": "Ajustar la velocidad global de la animación.",
+        "label": "Velocidad de animación",
+        "reset": "Restablecer la velocidad de la animación"
+      },
+      "border-radius": {
+        "description": "Controla la redondez de las esquinas de las ventanas, los botones y otros elementos.",
+        "label": "Radio de borde",
+        "reset": "Restablecer el radio del borde"
+      },
+      "compact-lockscreen": {
+        "description": "Mostrar solo el campo de inicio de sesión y los controles del sistema, ocultando los widgets del clima y multimedia.",
+        "label": "Pantalla de bloqueo compacta"
+      },
+      "dim-desktop": {
+        "description": "Atenuar el escritorio cuando los paneles o menús estén abiertos.",
+        "label": "Dim escritorio"
+      },
+      "scaling": {
+        "description": "Cambia el tamaño de la interfaz de usuario general, excluyendo la barra.",
+        "label": "Escalado de la interfaz",
+        "reset-scaling": "Restablecer el escalado de la interfaz"
+      },
+      "section": {
+        "description": "Personaliza la apariencia, el ambiente y el comportamiento de la interfaz.",
+        "label": "Apariencia"
+      },
+      "title": "Interfaz de usuario",
+      "tooltips": {
+        "description": "Activar o desactivar los avisos emergentes en toda la interfaz.",
+        "label": "Mostrar sugerencias"
       }
     }
   },
@@ -905,9 +889,9 @@
         "search-placeholder": "Buscar widgets..."
       },
       "active-window": {
-        "auto-hide": {
-          "label": "Ocultar automáticamente",
-          "description": "Ocultar automáticamente el widget cuando no hay ventana activa."
+        "hide-mode": {
+          "label": "Modo de ocultación",
+          "description": "Controla el comportamiento del widget cuando no hay ventana activa."
         },
         "show-app-icon": {
           "label": "Mostrar icono de la aplicación",
@@ -1054,9 +1038,9 @@
         }
       },
       "media-mini": {
-        "auto-hide": {
-          "label": "Ocultar automáticamente",
-          "description": "Ocultar automáticamente el widget cuando no se está reproduciendo ningún medio."
+        "hide-mode": {
+          "label": "Modo de ocultación",
+          "description": "Controla el comportamiento del widget cuando no se está reproduciendo ningún medio."
         },
         "show-album-art": {
           "label": "Mostrar arte del álbum",
@@ -1110,6 +1094,10 @@
         }
       },
       "taskbar": {
+        "hide-mode": {
+          "label": "Modo de ocultación",
+          "description": "Controla cómo se comporta el widget cuando no hay ventanas coincidentes."
+        },
         "only-active-workspaces": {
           "description": "Mostrar solo las aplicaciones de los espacios de trabajo activos.",
           "label": "Solo desde espacios de trabajo activos"
@@ -1301,7 +1289,8 @@
       "density": {
         "compact": "Compacta",
         "default": "Predeterminada",
-        "comfortable": "Cómoda"
+        "comfortable": "Cómoda",
+        "mini": "Mini"
       }
     },
     "launcher": {
@@ -1390,24 +1379,22 @@
         "microphone-input": "Entrada del micrófono",
         "both": "Salida del sistema + entrada del micrófono"
       }
+    },
+    "hide-modes": {
+      "hidden": "Ocultar cuando esté vacío",
+      "transparent": "Transparente cuando está vacío",
+      "visible": "Siempre visible"
     }
   },
   "session-menu": {
     "title": "Menú de sesión",
-    "click-again": "Haz clic de nuevo para ejecutar inmediatamente",
     "action-in-seconds": "{action} en {seconds} segundos...",
     "lock": "Bloquear",
-    "lock-subtitle": "Bloquea tu sesión",
     "lock-and-suspend": "Bloquear y Suspender",
-    "lock-and-suspend-subtitle": "Bloquear sesión y poner el sistema en suspensión",
     "suspend": "Suspender",
     "reboot": "Reiniciar",
     "logout": "Cerrar sesión",
-    "logout-subtitle": "Finaliza tu sesión",
-    "shutdown": "Apagar",
-    "reboot-subtitle": "Reinicia tu computadora.",
-    "shutdown-subtitle": "Apaga tu computadora.",
-    "suspend-subtitle": "Poner el sistema en reposo"
+    "shutdown": "Apagar"
   },
   "plugins": {
     "applications": "Aplicaciones",
@@ -1571,6 +1558,9 @@
       "enabled": "Activado",
       "disabled": "Desactivado"
     },
+    "kofi": {
+      "opened": "Página de Ko-fi abierta en tu navegador"
+    },
     "do-not-disturb": {
       "enabled": "'No molestar' activado",
       "disabled": "'No molestar' desactivado",
@@ -1588,6 +1578,19 @@
     "battery": {
       "low": "Batería baja",
       "low-desc": "La batería está al {percent}%. Por favor, conecta el cargador."
+    },
+    "battery-manager": {
+      "title": "Umbral de batería",
+      "set-success-desc": "Umbral de batería establecido en {percent}%",
+      "initial-setup": "Configuración inicial requerida",
+      "set-failed": "No se pudo establecer el umbral de batería",
+      "install-success": "Instalado correctamente",
+      "install-missing": "Faltan archivos requeridos",
+      "install-unsupported": "El sistema no es compatible",
+      "install-failed": "Error en la instalación",
+      "uninstall-setup": "Desinstalando, se requiere autenticación",
+      "uninstall-success": "Desinstalado correctamente",
+      "uninstall-failed": "Error en la desinstalación"
     },
     "missing-control-center": {
       "label": "Se eliminó el último widget del Centro de control",
@@ -1620,6 +1623,13 @@
     "charging-rate": "Tasa de carga: {rate} W.",
     "discharging-rate": "Tasa de descarga: {rate} W.",
     "charging": "Cargando.",
-    "discharging": "Descargando."
+    "discharging": "Descargando.",
+    "panel": {
+      "title": "Umbral de carga",
+      "full": "Capacidad total ({percent}%)",
+      "balanced": "Equilibrado ({percent}%)",
+      "lifespan": "Vida útil prolongada ({percent}%)",
+      "disabled": "Administrador de batería deshabilitado"
+    }
   }
 }

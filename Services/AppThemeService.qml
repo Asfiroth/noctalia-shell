@@ -91,11 +91,13 @@ Singleton {
     Logger.log("AppThemeService", "Service started")
   }
 
+  // --------------------------------------------------------------------------------
   function generate() {
     if (Settings.data.colorSchemes.useWallpaperColors) {
       generateFromWallpaper()
     } else {
-      generateFromPredefinedScheme()
+      // Re-apply the scheme, this is the best way to regenerate all templates too.
+      ColorSchemeService.applyScheme(Settings.data.colorSchemes.predefinedScheme)
     }
   }
 
@@ -271,11 +273,13 @@ Singleton {
   }
 
   function replaceColorsInFile(filePath, colors) {
+    // This handle both ".hex" and ".hex_stripped" the EXACT same way. Our predefined color schemes are
+    // always RRGGBB without alpha so this is fine and keeps compatibility with matugen.
     let script = ""
     Object.keys(colors).forEach(colorKey => {
                                   const colorValue = colors[colorKey].default.hex
                                   const escapedColor = colorValue.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
-                                  script += `sed -i 's/{{colors\\.${colorKey}\\.default\\.hex}}/${escapedColor}/g' '${filePath}'\n`
+                                  script += `sed -i 's/{{colors\\.${colorKey}\\.default\\.hex\\(_stripped\\)\\?}}/${escapedColor}/g' '${filePath}'\n`
                                 })
     return script
   }
