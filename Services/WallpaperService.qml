@@ -471,13 +471,13 @@ Singleton {
     stderr: StdioCollector {
       onStreamFinished: {
         if (this.text) {
-          Logger.warn("Wallpaper", "wallpapers-apply.sh stderr:", this.text)
+          Logger.w("Wallpaper", "wallpapers-apply.sh stderr:", this.text)
         }
       }
     }
     onExited: (exitCode, exitStatus) => {
       if (exitCode !== 0) {
-        Logger.warn("Wallpaper", "wallpapers-apply.sh exited with code", exitCode)
+        Logger.w("Wallpaper", "wallpapers-apply.sh exited with code", exitCode)
       }
     }
   }
