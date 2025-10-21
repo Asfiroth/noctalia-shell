@@ -26,6 +26,7 @@ NPanel {
     Audio,
     Bar,
     ColorScheme,
+    LockScreen,
     ControlCenter,
     OSD,
     Display,
@@ -118,6 +119,11 @@ NPanel {
     id: userInterfaceTab
     UserInterfaceTab {}
   }
+  Component {
+    id: lockScreenTab
+    LockScreenTab {}
+  }
+
   // Order *DOES* matter
   function updateTabsModel() {
     let newTabs = [{
@@ -150,6 +156,11 @@ NPanel {
                      "label": "settings.launcher.title",
                      "icon": "settings-launcher",
                      "source": launcherTab
+                   }, {
+                     "id": SettingsPanel.Tab.LockScreen,
+                     "label": "settings.lock-screen.title",
+                     "icon": "settings-lock-screen",
+                     "source": lockScreenTab
                    }, {
                      "id": SettingsPanel.Tab.Audio,
                      "label": "settings.audio.title",
@@ -351,7 +362,7 @@ NPanel {
           Layout.alignment: Qt.AlignTop
           color: Color.mSurfaceVariant
           border.color: Color.mOutline
-          border.width: Math.max(1, Style.borderS)
+          border.width: Style.borderS
           radius: Style.radiusM
 
           MouseArea {
@@ -453,7 +464,7 @@ NPanel {
           radius: Style.radiusM
           color: Color.mSurfaceVariant
           border.color: Color.mOutline
-          border.width: Math.max(1, Style.borderS)
+          border.width: Style.borderS
 
           ColumnLayout {
             id: contentLayout

@@ -9,6 +9,7 @@ RowLayout {
 
   property string label: ""
   property string description: ""
+  property bool enabled: true
   property bool checked: false
   property bool hovering: false
   property int baseSize: Math.round(Style.baseWidgetSize * 0.8 * Style.uiScaleRatio)
@@ -18,6 +19,7 @@ RowLayout {
   signal exited
 
   Layout.fillWidth: true
+  opacity: enabled ? 1.0 : 0.6
 
   NLabel {
     label: root.label
@@ -32,7 +34,7 @@ RowLayout {
     radius: height * 0.5
     color: root.checked ? Color.mPrimary : Color.mSurface
     border.color: Color.mOutline
-    border.width: Math.max(1, Style.borderS)
+    border.width: Style.borderS
 
     Behavior on color {
       ColorAnimation {
@@ -53,7 +55,7 @@ RowLayout {
       radius: height * 0.5
       color: root.checked ? Color.mOnPrimary : Color.mPrimary
       border.color: root.checked ? Color.mSurface : Color.mSurface
-      border.width: Math.max(1, Style.borderM)
+      border.width: Style.borderM
       anchors.verticalCenter: parent.verticalCenter
       anchors.verticalCenterOffset: 0
       x: root.checked ? switcher.width - width - 3 : 3
@@ -71,14 +73,20 @@ RowLayout {
       cursorShape: Qt.PointingHandCursor
       hoverEnabled: true
       onEntered: {
+        if (!enabled)
+          return
         hovering = true
         root.entered()
       }
       onExited: {
+        if (!enabled)
+          return
         hovering = false
         root.exited()
       }
       onClicked: {
+        if (!enabled)
+          return
         root.toggled(!root.checked)
       }
     }

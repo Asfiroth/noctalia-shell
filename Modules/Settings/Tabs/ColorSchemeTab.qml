@@ -159,7 +159,6 @@ ColumnLayout {
     label: I18n.tr("settings.color-scheme.dark-mode.switch.label")
     description: I18n.tr("settings.color-scheme.dark-mode.switch.description")
     checked: Settings.data.colorSchemes.darkMode
-    enabled: true
     onToggled: checked => {
                  Settings.data.colorSchemes.darkMode = checked
                  root.cacheVersion++ // Force UI update for dark/light variants
@@ -241,6 +240,7 @@ ColumnLayout {
   NToggle {
     label: I18n.tr("settings.color-scheme.color-source.use-wallpaper-colors.label")
     description: I18n.tr("settings.color-scheme.color-source.use-wallpaper-colors.description")
+    enabled: ProgramCheckerService.matugenAvailable
     checked: Settings.data.colorSchemes.useWallpaperColors
     onToggled: checked => {
                  if (checked) {
@@ -318,7 +318,7 @@ ColumnLayout {
 
     // Color Schemes Grid
     GridLayout {
-      columns: 3
+      columns: 2
       rowSpacing: Style.marginM
       columnSpacing: Style.marginM
       Layout.fillWidth: true
@@ -334,10 +334,10 @@ ColumnLayout {
 
           Layout.fillWidth: true
           Layout.alignment: Qt.AlignHCenter
-          height: 50
+          height: 50 * Style.uiScaleRatio
           radius: Style.radiusS
           color: root.getSchemeColor(schemeName, "mSurface")
-          border.width: Math.max(1, Style.borderL)
+          border.width: Style.borderL
           border.color: {
             if (Settings.data.colorSchemes.predefinedScheme === schemeName) {
               return Color.mSecondary
@@ -349,14 +349,14 @@ ColumnLayout {
           }
 
           RowLayout {
+            id: scheme
             anchors.fill: parent
             anchors.margins: Style.marginL
-            spacing: Style.marginXS
+            spacing: Style.marginS
 
             NText {
               text: schemeItem.schemeName
               pointSize: Style.fontSizeS
-              font.weight: Style.fontWeightMedium
               color: Color.mOnSurface
               Layout.fillWidth: true
               elide: Text.ElideRight
@@ -365,31 +365,33 @@ ColumnLayout {
               maximumLineCount: 1
             }
 
+            property int diameter: 16 * Style.uiScaleRatio
+
             Rectangle {
-              width: 14
-              height: 14
-              radius: width * 0.5
+              width: scheme.diameter
+              height: scheme.diameter
+              radius: scheme.diameter * 0.5
               color: root.getSchemeColor(schemeItem.schemeName, "mPrimary")
             }
 
             Rectangle {
-              width: 14
-              height: 14
-              radius: width * 0.5
+              width: scheme.diameter
+              height: scheme.diameter
+              radius: scheme.diameter * 0.5
               color: root.getSchemeColor(schemeItem.schemeName, "mSecondary")
             }
 
             Rectangle {
-              width: 14
-              height: 14
-              radius: width * 0.5
+              width: scheme.diameter
+              height: scheme.diameter
+              radius: scheme.diameter * 0.5
               color: root.getSchemeColor(schemeItem.schemeName, "mTertiary")
             }
 
             Rectangle {
-              width: 14
-              height: 14
-              radius: width * 0.5
+              width: scheme.diameter
+              height: scheme.diameter
+              radius: scheme.diameter * 0.5
               color: root.getSchemeColor(schemeItem.schemeName, "mError")
             }
           }
@@ -413,13 +415,13 @@ ColumnLayout {
             visible: (Settings.data.colorSchemes.predefinedScheme === schemeItem.schemeName)
             anchors.right: parent.right
             anchors.top: parent.top
-            anchors.rightMargin: -3
+            anchors.rightMargin: 0
             anchors.topMargin: -3
             width: 20
             height: 20
             radius: width * 0.5
             color: Color.mSecondary
-            border.width: Math.max(1, Style.borderS)
+            border.width: Style.borderS
             border.color: Color.mOnSecondary
 
             NIcon {
@@ -660,6 +662,23 @@ ColumnLayout {
         onToggled: checked => {
                      if (ProgramCheckerService.pywalfoxAvailable) {
                        Settings.data.templates.pywalfox = checked
+                       AppThemeService.generate()
+                     }
+                   }
+      }
+      NCheckbox {
+        label: "Vicinae"
+        description: ProgramCheckerService.vicinaeAvailable ? I18n.tr("settings.color-scheme.templates.programs.vicinae.description", {
+                                                                        "filepath": "~/.local/share/vicinae/themes/matugen.toml"
+                                                                      }) : I18n.tr("settings.color-scheme.templates.programs.vicinae.description-missing", {
+                                                                                     "app": "vicinae"
+                                                                                   })
+        checked: Settings.data.templates.vicinae
+        enabled: ProgramCheckerService.vicinaeAvailable
+        opacity: ProgramCheckerService.vicinaeAvailable ? 1.0 : 0.6
+        onToggled: checked => {
+                     if (ProgramCheckerService.vicinaeAvailable) {
+                       Settings.data.templates.vicinae = checked
                        AppThemeService.generate()
                      }
                    }

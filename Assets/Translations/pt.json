@@ -32,16 +32,6 @@
           "reset": "Redefinir raio dos cantos da tela"
         }
       },
-      "lockscreen": {
-        "section": {
-          "label": "Tela de bloqueio",
-          "description": "Configure o comportamento da tela de bloqueio."
-        },
-        "lock-on-suspend": {
-          "label": "Bloquear ao suspender",
-          "description": "Bloquear automaticamente a tela ao suspender o sistema."
-        }
-      },
       "fonts": {
         "section": {
           "label": "Fontes",
@@ -79,7 +69,8 @@
           "description": "Selecione o idioma usado na interface da aplicação.",
           "auto-detect": "Automático"
         }
-      }
+      },
+      "launch-setup-wizard": "Iniciar o assistente de configuração"
     },
     "audio": {
       "title": "Áudio",
@@ -481,11 +472,11 @@
           "description": "Muda para um tema mais escuro para facilitar a visualização à noite."
         },
         "mode": {
-          "label": "Modo escuro automático",
-          "description": "Ativa a troca automática entre o modo claro e escuro.",
-          "off": "Desativado",
+          "description": "Ativa a mudança automática entre o modo claro e o modo escuro.",
+          "label": "Agendamento do modo escuro",
+          "location": "Localização",
           "manual": "Manual",
-          "location": "Localização"
+          "off": "Desligado"
         }
       },
       "predefined": {
@@ -499,10 +490,6 @@
         }
       },
       "templates": {
-        "section": {
-          "label": "Modelos",
-          "description": "Aplicar cores a aplicações externas."
-        },
         "ui": {
           "label": "UI",
           "description": "Tematização do ambiente de desktop e kit de ferramentas de UI.",
@@ -539,6 +526,10 @@
             "description": "Escrever {filepath} e recarregar",
             "description-missing": "Requer que o {app} esteja instalado"
           },
+          "vicinae": {
+            "description": "Escrever {filepath} e recarregar",
+            "description-missing": "Requer que o {app} esteja instalado"
+          },
           "discord": {
             "description": "Escrever {filepath} para {client}",
             "description-missing": "Nenhum cliente Discord detectado. Instale vencord, vesktop, webcord, armcord, equibop, lightcord ou dorion."
@@ -555,6 +546,10 @@
             "label": "Modelos do usuário",
             "description": "Ativa a configuração do Matugen definida pelo usuário. Um arquivo de modelo será criado em ~/.config/noctalia/user-templates.toml na primeira ativação"
           }
+        },
+        "section": {
+          "description": "Aplicar cores a aplicações externas.",
+          "label": "Modelos"
         }
       }
     },
@@ -597,6 +592,10 @@
         "week-numbers": {
           "label": "Mostrar números da semana",
           "description": "Exibe a semana do ano (ex., Semana 38) no calendário."
+        },
+        "show-events": {
+          "label": "Mostrar eventos do calendário",
+          "description": "Exibir eventos no painel do calendário."
         }
       }
     },
@@ -792,6 +791,10 @@
         "description": "Desative todas as animações para uma experiência mais rápida e responsiva.",
         "label": "Desativar animações da interface do usuário"
       },
+      "panels-overlay": {
+        "label": "Abrir painéis na camada de sobreposição",
+        "description": "Os painéis aparecerão sobre janelas em tela cheia"
+      },
       "animation-speed": {
         "description": "Ajustar a velocidade global da animação.",
         "label": "Velocidade da animação",
@@ -801,10 +804,6 @@
         "description": "Controla o arredondamento dos cantos de janelas, botões e outros elementos.",
         "label": "Raio da borda",
         "reset": "Redefinir raio da borda"
-      },
-      "compact-lockscreen": {
-        "description": "Mostrar apenas a entrada de login e os controles do sistema, ocultando widgets de clima e mídia.",
-        "label": "Tela de bloqueio compacta"
       },
       "dim-desktop": {
         "description": "Escurecer a área de trabalho quando painéis ou menus estiverem abertos.",
@@ -824,6 +823,17 @@
         "description": "Ativar ou desativar dicas de ferramentas em toda a interface.",
         "label": "Mostrar dicas de ferramenta"
       }
+    },
+    "lock-screen": {
+      "compact-lockscreen": {
+        "description": "Mostrar apenas a entrada de login e os controles do sistema, ocultando os widgets de clima e mídia.",
+        "label": "Tela de bloqueio compacta"
+      },
+      "lock-on-suspend": {
+        "description": "Bloquear a tela automaticamente ao suspender o sistema.",
+        "label": "Bloquear ao suspender"
+      },
+      "title": "Tela de bloqueio"
     }
   },
   "widgets": {
@@ -914,6 +924,9 @@
       },
       "cancel": "Cancelar",
       "apply": "Aplicar"
+    },
+    "text-input": {
+      "clear": "Limpar"
     }
   },
   "bar": {
@@ -1253,6 +1266,8 @@
   "tooltips": {
     "refresh": "Atualizar",
     "close": "Fechar",
+    "up": "Acima",
+    "home": "Início",
     "refresh-wallpaper-list": "Atualizar lista de papéis de parede",
     "refresh-devices": "Atualizar dispositivos",
     "forget-network": "Esquecer rede",

@@ -5,13 +5,13 @@
       "profile": {
         "section": {
           "label": "Profil",
-          "description": "Bearbeiten Sie Ihre Benutzerdaten und Ihren Avatar."
+          "description": "Hier kannst du deinen Avatar ändern."
         },
         "picture": {
-          "label": "{user}s Profilbild",
-          "description": "Ihr Profilbild, das in der gesamten Benutzeroberfläche angezeigt wird."
+          "label": "{user}s Avatar",
+          "description": "Der Avatar, der in der gesamten Benutzeroberfläche angezeigt wird."
         },
-        "select-avatar": "Avatar-Bild auswählen"
+        "select-avatar": "Avatar auswählen"
       },
       "screen-corners": {
         "section": {
@@ -32,28 +32,18 @@
           "reset": "Eckenradius des Bildschirms zurücksetzen"
         }
       },
-      "lockscreen": {
-        "section": {
-          "label": "Sperrbildschirm",
-          "description": "Sperrbildschirm-Verhalten konfigurieren."
-        },
-        "lock-on-suspend": {
-          "label": "Beim Standby sperren",
-          "description": "Bildschirm automatisch sperren, wenn das System in den Standby-Modus wechselt."
-        }
-      },
       "fonts": {
         "section": {
           "label": "Schriftarten",
-          "description": "Wählen Sie die in der Benutzeroberfläche verwendeten Schriftarten."
+          "description": "Wählen die Schriftart an die auf der Benutzeroberfläche angezeigt wird."
         },
         "default": {
-          "label": "Standard-Schriftart",
+          "label": "Standard Schriftart",
           "description": "Hauptschriftart für die gesamte Benutzeroberfläche.",
           "placeholder": "Standard-Schriftart auswählen...",
           "search-placeholder": "Schriftarten suchen...",
           "scale": {
-            "description": "Vergrößern oder verkleinern Sie die Größe des Standardtextes.",
+            "description": "Hier kannst du die größe des Standardtextes ändern.",
             "label": "Standardmäßige Schriftgröße"
           }
         },
@@ -63,7 +53,7 @@
           "placeholder": "Monospace-Schriftart auswählen...",
           "search-placeholder": "Monospace-Schriftarten suchen...",
           "scale": {
-            "description": "Die Größe des nichtproportionalen Textes vergrößern oder verkleinern.",
+            "description": "Hier kannst du die größe des Monotextes ändern",
             "label": "Schriftgröße mit fester Breite"
           }
         },
@@ -72,14 +62,15 @@
       "language": {
         "section": {
           "label": "Sprache",
-          "description": "Wählen Sie Ihre bevorzugte Sprache für die Anwendung."
+          "description": "Hier kannst du die Sprache von Noctalia ändern."
         },
         "select": {
           "label": "Anwendungssprache",
-          "description": "Wählen Sie die in der Anwendungsoberfläche verwendete Sprache.",
+          "description": "Wählen die in der Anwendungsoberfläche verwendete Sprache.",
           "auto-detect": "Automatisch"
         }
-      }
+      },
+      "launch-setup-wizard": "Starte den Setup-Assistenten"
     },
     "audio": {
       "title": "Audio",
@@ -243,13 +234,13 @@
       "widgets": {
         "section": {
           "label": "Widget-Positionierung",
-          "description": "Widgets per Drag & Drop neu anordnen. Abzeichen zeigen die Verwendung an: [L]inks, [M]itte, [R]echts."
+          "description": "Widgets per Drag & Drop neu anordnen. Symoble zeigen die Verwendung an: [L]inks, [M]itte, [R]echts."
         }
       },
       "monitors": {
         "section": {
           "label": "Monitor-Anzeige",
-          "description": "Statusleiste auf bestimmten Monitoren anzeigen. Standard ist alle, wenn keine ausgewählt sind."
+          "description": "Statusleiste auf bestimmten Monitoren anzeigen. Standardmäßig auf allen."
         }
       },
       "tray": {
@@ -319,7 +310,7 @@
         },
         "clipboard-history": {
           "label": "Zwischenablage-Verlauf aktivieren",
-          "description": "Zugriff auf zuvor kopierte Elemente über den Starter."
+          "description": "Zugriff auf zuvor kopierte Elemente über den Launcher."
         },
         "sort-by-usage": {
           "label": "Nach Häufigkeit sortieren",
@@ -343,8 +334,8 @@
           "description": "Erscheinungsbild und Verhalten von Benachrichtigungen konfigurieren."
         },
         "do-not-disturb": {
-          "label": "Nicht stören",
-          "description": "Alle Benachrichtigungs-Popups deaktivieren, wenn aktiviert."
+          "label": "Bitte nicht stören",
+          "description": "Alle Benachrichtigungs-Popups deaktivieren."
         },
         "enable-osd": {
           "label": "Bildschirmanzeige aktivieren",
@@ -384,35 +375,35 @@
       "monitors": {
         "section": {
           "label": "Monitor-Anzeige",
-          "description": "Benachrichtigungen auf bestimmten Monitoren anzeigen. Standard ist alle, wenn keine ausgewählt sind."
+          "description": "Benachrichtigungen auf bestimmten Monitoren anzeigen. Standardmäßig werden sie auf allen Monitoren angezeigt"
         }
       }
     },
     "osd": {
-      "title": "Bildschirmanzeige",
+      "title": "On-Screen Display",
       "description": "Bildschirm-Overlays wie Lautstärke- und Helligkeitsanzeigen konfigurieren.",
       "section": {
         "general": {
           "label": "Allgemein",
-          "description": "Sichtbarkeit und Verhalten der OSD konfigurieren."
+          "description": "Sichtbarkeit und Verhalten vom On-Screen Display konfigurieren."
         }
       },
       "enabled": {
-        "label": "Bildschirmanzeige aktivieren",
+        "label": "On-Screen Display aktivieren",
         "description": "Lautstärke- und Helligkeitsänderungen in Echtzeit anzeigen."
       },
       "always-on-top": {
         "label": "Immer im Vordergrund",
-        "description": "Bildschirmanzeige über Vollbildfenstern und anderen Ebenen anzeigen."
+        "description": "On-Screen Display über Vollbildfenstern und anderen Ebenen anzeigen."
       },
       "location": {
         "label": "Position",
-        "description": "Wo Bildschirmanzeigen erscheinen."
+        "description": "Wo On-Screen Displays erscheinen."
       },
       "duration": {
         "section": {
           "label": "Automatisches Ausblenden",
-          "description": "Wie lange die OSD sichtbar bleibt, bevor sie automatisch ausgeblendet wird."
+          "description": "Wie lange das On-Screen Display sichtbar bleibt, bevor es automatisch ausgeblendet wird."
         },
         "auto-hide": {
           "label": "Ausblenden nach",
@@ -422,7 +413,7 @@
       "monitors": {
         "section": {
           "label": "Monitor-Anzeige",
-          "description": "OSD auf bestimmten Monitoren anzeigen. Standard ist alle, wenn keine ausgewählt sind."
+          "description": "On-Screen Display auf bestimmten Monitoren anzeigen. Standardmäßig auf allen angezeigt."
         }
       }
     },
@@ -475,7 +466,7 @@
           "description": "Dauer der Übergangsanimationen in Sekunden."
         },
         "edge-smoothness": {
-          "label": "Übergangskante weichzeichnen",
+          "label": "Übergangseffect weichzeichnen",
           "description": "Wendet einen weichen, gefiederten Effekt auf die Kante von Übergängen an."
         }
       },
@@ -537,10 +528,6 @@
         }
       },
       "templates": {
-        "section": {
-          "label": "Vorlagen",
-          "description": "Farben auf externe Anwendungen anwenden."
-        },
         "ui": {
           "label": "UI",
           "description": "Desktop-Umgebung und UI-Toolkit-Theming.",
@@ -559,15 +546,15 @@
           "description": "Terminal-Emulator-Theming.",
           "kitty": {
             "description": "Schreibt {filepath} und lädt neu",
-            "description-missing": "Erfordert kitty Terminal"
+            "description-missing": "Erfordert {app} Terminal"
           },
           "ghostty": {
             "description": "Schreibt {filepath} und lädt neu",
-            "description-missing": "Erfordert ghostty Terminal"
+            "description-missing": "Erfordert {app} Terminal"
           },
           "foot": {
             "description": "Schreibt {filepath} und lädt neu",
-            "description-missing": "Erfordert foot Terminal"
+            "description-missing": "Erfordert {app} Terminal"
           }
         },
         "programs": {
@@ -575,7 +562,11 @@
           "description": "Anwendungsspezifisches Theming.",
           "fuzzel": {
             "description": "Schreibt {filepath} und lädt neu",
-            "description-missing": "Erfordert fuzzel Starter"
+            "description-missing": "Erfordert die Installation von {app}"
+          },
+          "vicinae": {
+            "description": "Schreibt {filepath} und lädt neu",
+            "description-missing": "Erfordert die Installation von {app}"
           },
           "discord": {
             "description": "Schreibt {filepath} für {client}",
@@ -583,7 +574,7 @@
           },
           "pywalfox": {
             "description": "Schreibt {filepath} und führt pywalfox update aus",
-            "description-missing": "Erfordert pywalfox Paket"
+            "description-missing": "Erfordert die Installation von {app} "
           }
         },
         "misc": {
@@ -593,6 +584,10 @@
             "label": "Benutzer-Vorlagen",
             "description": "Benutzerdefinierte Matugen-Konfiguration aktivieren. Eine Vorlagendatei wird beim ersten Aktivieren unter ~/.config/noctalia/user-templates.toml erstellt"
           }
+        },
+        "section": {
+          "description": "Farben auf externe Anwendungen anwenden.",
+          "label": "Vorlagen"
         }
       }
     },
@@ -605,7 +600,7 @@
         },
         "search": {
           "label": "Nach einem Standort suchen",
-          "description": "z.B. Berlin, Deutschland",
+          "description": "z.B. Dortmund, Deutschland",
           "placeholder": "Standortnamen eingeben"
         }
       },
@@ -634,7 +629,11 @@
         },
         "week-numbers": {
           "label": "Wochennummern anzeigen",
-          "description": "Zeigt die Woche des Jahres (z.B. Woche 38) im Kalender an."
+          "description": "Zeigt die Kalender Wochen an (z.B. Woche 38)"
+        },
+        "show-events": {
+          "label": "Kalenderereignisse anzeigen",
+          "description": "Ereignisse im Kalenderpanel anzeigen."
         }
       }
     },
@@ -727,7 +726,7 @@
           "description_plural": "Ein Dankeschön an unsere {count} <b>großartigen</b> Mitwirkenden!"
         }
       },
-      "support": "Unterstützen Sie uns"
+      "support": "Unterstütz uns"
     },
     "hooks": {
       "title": "Hooks",
@@ -792,6 +791,10 @@
         "description": "Deaktivieren Sie alle Animationen für eine schnellere und reaktionsfreudigere Erfahrung.",
         "label": "UI-Animationen deaktivieren"
       },
+      "panels-overlay": {
+        "label": "Panels in Overlay-Ebene öffnen",
+        "description": "Panels werden über Vollbildfenstern angezeigt"
+      },
       "animation-speed": {
         "description": "Globale Animationsgeschwindigkeit anpassen.",
         "label": "Animationsgeschwindigkeit",
@@ -801,10 +804,6 @@
         "description": "Steuert die Eckenrundung von Fenstern, Schaltflächen und anderen Elementen.",
         "label": "Eckenradius",
         "reset": "Rahmenradius zurücksetzen"
-      },
-      "compact-lockscreen": {
-        "description": "Zeige nur die Login-Eingabe und Systemsteuerung, blende Wetter- und Medien-Widgets aus.",
-        "label": "Kompakter Sperrbildschirm"
       },
       "dim-desktop": {
         "description": "Den Desktop abdunkeln, wenn Bedienfelder oder Menüs geöffnet sind.",
@@ -824,6 +823,17 @@
         "description": "Tooltips in der gesamten Benutzeroberfläche aktivieren oder deaktivieren.",
         "label": "Tooltips anzeigen"
       }
+    },
+    "lock-screen": {
+      "compact-lockscreen": {
+        "description": "Zeige nur die Login-Eingabe und Systemsteuerung, blende Wetter- und Medien-Widgets aus.",
+        "label": "Kompakter Sperrbildschirm"
+      },
+      "lock-on-suspend": {
+        "description": "Den Bildschirm beim Suspendieren des Systems automatisch sperren.",
+        "label": "Sperren beim Ruhezustand"
+      },
+      "title": "Sperrbildschirm"
     }
   },
   "general": {
@@ -836,7 +846,7 @@
     "mainly-clear": "Überwiegend klar",
     "partly-cloudy": "Teilweise bewölkt",
     "overcast": "Bedeckt",
-    "fog": "Nebel",
+    "fog": "Nebelig",
     "drizzle": "Nieselregen",
     "snow": "Schnee",
     "rain-showers": "Regenschauer",
@@ -852,7 +862,7 @@
       "select-file": "Datei auswählen",
       "cancel": "Abbrechen",
       "search-placeholder": "Dateien und Ordner suchen...",
-      "select-current": "Aktuelle auswählen",
+      "select-current": "Aktuelles Objekt auswählen",
       "title": "Dateiauswahl"
     },
     "datetime-tokens": {
@@ -931,6 +941,9 @@
       },
       "cancel": "Abbrechen",
       "apply": "Anwenden"
+    },
+    "text-input": {
+      "clear": "Löschen"
     }
   },
   "bar": {
@@ -1270,6 +1283,8 @@
   "tooltips": {
     "refresh": "Aktualisieren",
     "close": "Schließen",
+    "up": "Nach oben",
+    "home": "Home",
     "refresh-wallpaper-list": "Hintergrundbild-Liste aktualisieren",
     "refresh-devices": "Geräte aktualisieren",
     "forget-network": "Netzwerk vergessen",
@@ -1293,8 +1308,8 @@
     "enable-keep-awake": "Wach bleiben aktivieren",
     "disable-keep-awake": "Wach bleiben deaktivieren",
     "wallpaper-selector": "Linksklick: Hintergrundbild-Auswahl öffnen.\nRechtsklick: Zufälliges Hintergrundbild setzen.",
-    "do-not-disturb-enabled": "'Nicht stören' aktiviert",
-    "do-not-disturb-disabled": "'Nicht stören' deaktiviert",
+    "do-not-disturb-enabled": "'Bitte nicht stören' aktiviert",
+    "do-not-disturb-disabled": "'Bitte nicht stören' deaktiviert",
     "connect-disconnect-devices": "Linksklick zum Verbinden. Rechtsklick zum Vergessen.",
     "set-power-profile": "'{profile}' Energieprofil setzen",
     "switch-to-light-mode": "Zum hellen Modus wechseln",
@@ -1303,8 +1318,8 @@
     "night-light-enabled": "Nachtlicht ist aktiviert.\nLinksklick zum Wechseln des Modus.\nRechtsklick für Einstellungen.",
     "night-light-forced": "Nachtlicht ist erzwungen.\nLinksklick zum Wechseln des Modus.\nRechtsklick für Einstellungen.",
     "night-light-not-installed": "Nachtlicht ist nicht verfügbar.\nwlsunset ist nicht installiert.",
-    "click-to-start-recording": "Klicken zum Starten der Aufnahme",
-    "click-to-stop-recording": "Klicken zum Stoppen der Aufnahme",
+    "click-to-start-recording": "Klicken zum Starten einer Bildschirm Aufnahme",
+    "click-to-stop-recording": "Klicken zum Stoppen einer Bildschirm Aufnahme",
     "open-control-center": "Kontrollzentrum öffnen",
     "volume-at": "Lautstärke bei {volume}%\nLinksklick zum Stumm-/Lautschalten. Rechtsklick für Einstellungen.\nScrollen zum Ändern der Lautstärke.",
     "microphone-volume-at": "Mikrofon-Lautstärke bei {volume}%\nLinksklick zum Stumm-/Lautschalten. Rechtsklick für Einstellungen.\nScrollen zum Ändern der Lautstärke.",
@@ -1549,7 +1564,7 @@
         "stopped": "Aufnehmen"
       },
       "tooltip": {
-        "action": "Klicken zum Starten/Stoppen der Bildschirmaufnahme"
+        "action": "Klicken zum Starten/Stoppen einer Bildschirmaufnahme"
       }
     },
     "powerProfile": {

@@ -32,16 +32,6 @@
           "reset": "Restablecer el radio de las esquinas de la pantalla"
         }
       },
-      "lockscreen": {
-        "section": {
-          "label": "Pantalla de bloqueo",
-          "description": "Configura el comportamiento de la pantalla de bloqueo."
-        },
-        "lock-on-suspend": {
-          "label": "Bloquear al suspender",
-          "description": "Bloquear automáticamente la pantalla al suspender el sistema."
-        }
-      },
       "fonts": {
         "section": {
           "label": "Fuentes",
@@ -79,7 +69,8 @@
           "description": "Selecciona el idioma utilizado en la interfaz de la aplicación.",
           "auto-detect": "Automático"
         }
-      }
+      },
+      "launch-setup-wizard": "Inicie el asistente de configuración"
     },
     "audio": {
       "title": "Audio",
@@ -519,11 +510,11 @@
           "description": "Cambia a un tema más oscuro para una visualización más fácil por la noche."
         },
         "mode": {
-          "label": "Modo oscuro automático",
-          "description": "Habilita el cambio automático entre el modo claro y oscuro.",
-          "off": "Desactivado",
+          "description": "Permite el cambio automático entre el modo claro y el modo oscuro.",
+          "label": "Programación del modo oscuro",
+          "location": "Ubicación",
           "manual": "Manual",
-          "location": "Ubicación"
+          "off": "Apagado"
         }
       },
       "predefined": {
@@ -537,10 +528,6 @@
         }
       },
       "templates": {
-        "section": {
-          "label": "Plantillas",
-          "description": "Aplicar colores a aplicaciones externas."
-        },
         "ui": {
           "label": "UI",
           "description": "Tematización del entorno de escritorio y de la interfaz de usuario.",
@@ -577,6 +564,10 @@
             "description": "Escribir {filepath} y recargar",
             "description-missing": "Requiere que {app} esté instalado"
           },
+          "vicinae": {
+            "description": "Escribir {filepath} y recargar",
+            "description-missing": "Requiere que {app} esté instalado"
+          },
           "discord": {
             "description": "Escribir {filepath} para {client}",
             "description-missing": "No se detectó cliente de Discord. Instala vencord, vesktop, webcord, armcord, equibop, lightcord o dorion."
@@ -593,6 +584,10 @@
             "label": "Plantillas de usuario",
             "description": "Habilitar configuración de Matugen definida por el usuario. Se creará un archivo de plantilla en ~/.config/noctalia/user-templates.toml al activar por primera vez"
           }
+        },
+        "section": {
+          "description": "Aplicar colores a aplicaciones externas.",
+          "label": "Plantillas"
         }
       }
     },
@@ -635,6 +630,10 @@
         "week-numbers": {
           "label": "Mostrar números de semana",
           "description": "Muestra la semana del año (ej., Semana 38) en el calendario."
+        },
+        "show-events": {
+          "label": "Mostrar eventos del calendario",
+          "description": "Mostrar eventos en el panel del calendario."
         }
       }
     },
@@ -792,6 +791,10 @@
         "description": "Desactiva todas las animaciones para una experiencia más rápida y con mayor capacidad de respuesta.",
         "label": "Desactivar animaciones de la interfaz de usuario"
       },
+      "panels-overlay": {
+        "label": "Abrir paneles en capa superpuesta",
+        "description": "Los paneles aparecerán sobre las ventanas en pantalla completa"
+      },
       "animation-speed": {
         "description": "Ajustar la velocidad global de la animación.",
         "label": "Velocidad de animación",
@@ -801,10 +804,6 @@
         "description": "Controla la redondez de las esquinas de las ventanas, los botones y otros elementos.",
         "label": "Radio de borde",
         "reset": "Restablecer el radio del borde"
-      },
-      "compact-lockscreen": {
-        "description": "Mostrar solo el campo de inicio de sesión y los controles del sistema, ocultando los widgets del clima y multimedia.",
-        "label": "Pantalla de bloqueo compacta"
       },
       "dim-desktop": {
         "description": "Atenuar el escritorio cuando los paneles o menús estén abiertos.",
@@ -824,6 +823,17 @@
         "description": "Activar o desactivar los avisos emergentes en toda la interfaz.",
         "label": "Mostrar sugerencias"
       }
+    },
+    "lock-screen": {
+      "compact-lockscreen": {
+        "description": "Mostrar solo el campo de inicio de sesión y los controles del sistema, ocultando los widgets del clima y multimedia.",
+        "label": "Pantalla de bloqueo compacta"
+      },
+      "lock-on-suspend": {
+        "description": "Bloquear la pantalla automáticamente al suspender el sistema.",
+        "label": "Bloquear al suspender"
+      },
+      "title": "Pantalla de bloqueo"
     }
   },
   "widgets": {
@@ -914,6 +924,9 @@
       },
       "cancel": "Cancelar",
       "apply": "Aplicar"
+    },
+    "text-input": {
+      "clear": "Borrar"
     }
   },
   "bar": {
@@ -1253,6 +1266,8 @@
   "tooltips": {
     "refresh": "Actualizar",
     "close": "Cerrar",
+    "up": "Arriba",
+    "home": "Inicio",
     "refresh-wallpaper-list": "Actualizar lista de fondos de pantalla",
     "refresh-devices": "Actualizar dispositivos",
     "forget-network": "Olvidar red",
