@@ -323,6 +323,14 @@
         "terminal-command": {
           "label": "Commande du terminal",
           "description": "Commande pour lancer un terminal. Ex: 'kitty -e' ou 'gnome-terminal --'."
+        },
+        "custom-launch-prefix": {
+          "label": "Préfixe de lancement personnalisé",
+          "description": "Préfixer les commandes avec un lanceur personnalisé (ex. 'runapp' pour l'intégration systemd)."
+        },
+        "custom-launch-prefix-enabled": {
+          "label": "Activer le préfixe de lancement personnalisé",
+          "description": "Utiliser un préfixe personnalisé pour lancer les applications au lieu de la méthode par défaut."
         }
       }
     },
@@ -634,6 +642,10 @@
         "show-events": {
           "label": "Afficher les événements du calendrier",
           "description": "Afficher les événements dans le panneau du calendrier."
+        },
+        "use-analog": {
+          "description": "Afficher une horloge de style analogique sur l'écran du calendrier.",
+          "label": "Utiliser une horloge de style analogique."
         }
       }
     },
@@ -1044,6 +1056,10 @@
         "hide-unoccupied": {
           "label": "Masquer les inoccupés",
           "description": "Ne pas afficher les espaces de travail sans fenêtres."
+        },
+        "character-count": {
+          "label": "Nombre de caractères",
+          "description": "Nombre de caractères à afficher des noms d'espaces de travail (1-10)."
         }
       },
       "microphone": {
@@ -1085,11 +1101,20 @@
         "dynamic-text": "Texte dynamique",
         "display-command-output": {
           "label": "Afficher la sortie de la commande",
-          "description": "Entrez une commande à exécuter à intervalle régulier. La première ligne de sa sortie sera affichée sous forme de texte."
+          "description": "Entrez une commande à exécuter à intervalle régulier. La première ligne de sa sortie sera affichée sous forme de texte.",
+          "stream-description": "Entrez une commande à exécuter en continu."
         },
         "refresh-interval": {
           "label": "Intervalle d'actualisation",
           "description": "Intervalle en millisecondes."
+        },
+        "text-stream": {
+          "label": "Flux",
+          "description": "Les lignes diffusées depuis la commande seront affichées sous forme de texte sur le bouton."
+        },
+        "collapse-condition": {
+          "label": "Condition d’effondrement",
+          "description": "Si le texte de sortie correspond à cette valeur, le bouton se repliera."
         }
       },
       "media-mini": {
@@ -1339,6 +1364,7 @@
     "enter-width-pixels": "Entrez la largeur en pixels",
     "enter-command": "Entrez la commande à exécuter (application ou script personnalisé)",
     "command-example": "echo \"Bonjour le monde\"",
+    "enter-text-to-collapse": "par ex., 'rien n’est en lecture'. Utilisez /regex/ pour les modèles.",
     "search-wallpapers": "Tapez pour filtrer les fonds d'écran...",
     "search-launcher": "Rechercher des entrées... ou utilisez > pour les commandes",
     "search": "Rechercher...",

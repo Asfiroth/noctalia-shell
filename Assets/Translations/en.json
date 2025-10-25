@@ -323,6 +323,14 @@
         "terminal-command": {
           "label": "Terminal command",
           "description": "Command to launch a terminal. E.g., 'kitty -e' or 'gnome-terminal --'."
+        },
+        "custom-launch-prefix": {
+          "label": "Custom launch prefix",
+          "description": "Prefix commands with a custom launcher (e.g., 'runapp' for systemd integration)."
+        },
+        "custom-launch-prefix-enabled": {
+          "label": "Enable custom launch prefix",
+          "description": "Use a custom prefix for launching applications instead of the default method."
         }
       }
     },
@@ -634,6 +642,10 @@
         "show-events": {
           "label": "Show calendar events",
           "description": "Display events in the calendar panel."
+        },
+        "use-analog": {
+          "label": "Use analog style clock",
+          "description": "Show an analog style clock on the calendar screen."
         }
       }
     },
@@ -1044,6 +1056,10 @@
         "hide-unoccupied": {
           "label": "Hide unoccupied",
           "description": "Don't display workspaces without windows."
+        },
+        "character-count": {
+          "label": "Character count",
+          "description": "Number of characters to display from workspace names (1-10)."
         }
       },
       "microphone": {
@@ -1083,13 +1099,22 @@
           "description": "Command to execute when the button is middle-clicked."
         },
         "dynamic-text": "Dynamic text",
+        "text-stream": {
+          "label": "Stream",
+          "description": "Streamed lines from the command will be displayed as text on the button."
+        },
         "display-command-output": {
           "label": "Display Command Output",
-          "description": "Enter a command to run at a regular interval. The first line of its output will be displayed as text."
+          "description": "Enter a command to run at a regular interval. The first line of its output will be displayed as text.",
+          "stream-description": "Enter a command to run continuously."
         },
         "refresh-interval": {
           "label": "Refresh interval",
           "description": "Interval in milliseconds."
+        },
+        "collapse-condition": {
+          "label": "Collapse condition",
+          "description": "If the output text matches this value, the button will collapse."
         }
       },
       "media-mini": {
@@ -1339,6 +1364,7 @@
     "enter-width-pixels": "Enter width in pixels",
     "enter-command": "Enter command to execute (app or custom script)",
     "command-example": "echo \"Hello World\"",
+    "enter-text-to-collapse": "e.g., 'nothing is playing'. Use /regex/ for patterns.",
     "search-wallpapers": "Type to filter wallpapers...",
     "search-launcher": "Search entries... or use > for commands",
     "search": "Search...",

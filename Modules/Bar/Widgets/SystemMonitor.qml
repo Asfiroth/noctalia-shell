@@ -2,6 +2,7 @@ import QtQuick
 import QtQuick.Layouts
 import Quickshell
 import qs.Commons
+import qs.Modules.Settings
 import qs.Services
 import qs.Widgets
 
@@ -328,7 +329,7 @@ Rectangle {
         }
 
         NText {
-          text: `${SystemStatService.diskPercent}%`
+          text: `${SystemStatService.diskPercents["/"]}%`
           family: Settings.data.ui.fontFixed
           pointSize: textSize
           applyUiScale: false
@@ -343,6 +344,15 @@ Rectangle {
           scale: isVertical ? Math.min(1.0, root.width / implicitWidth) : 1.0
         }
       }
+    }
+  }
+
+  MouseArea {
+    anchors.fill: parent
+    acceptedButtons: Qt.RightButton
+    onClicked: {
+      var directPanel = PanelService.getPanel("directWidgetSettingsPanel")
+      directPanel.openWidgetSettings(root.section, root.sectionWidgetIndex, root.widgetId, root.widgetSettings)
     }
   }
 }

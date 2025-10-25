@@ -83,7 +83,9 @@ Singleton {
                                     "rightClickExec": "",
                                     "middleClickExec": "",
                                     "textCommand": "",
-                                    "textIntervalMs": 3000
+                                    "textStream": false,
+                                    "textIntervalMs": 3000,
+                                    "textCollapse": ""
                                   },
                                   "KeyboardLayout": {
                                     "allowUserSettings": true,
@@ -144,7 +146,8 @@ Singleton {
                                   "Workspace": {
                                     "allowUserSettings": true,
                                     "labelMode": "index",
-                                    "hideUnoccupied": false
+                                    "hideUnoccupied": false,
+                                    "characterCount": 2
                                   },
                                   "Volume": {
                                     "allowUserSettings": true,

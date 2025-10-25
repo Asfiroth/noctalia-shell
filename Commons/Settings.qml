@@ -203,6 +203,7 @@ Singleton {
       property bool use12hourFormat: false
       property bool showWeekNumberInCalendar: false
       property bool showCalendarEvents: true
+      property bool analogClockInCalendar: false
     }
 
     // screen recorder
@@ -246,6 +247,8 @@ Singleton {
       property bool useApp2Unit: false
       property bool sortByMostUsed: true
       property string terminalCommand: "xterm -e"
+      property bool customLaunchPrefixEnabled: false
+      property string customLaunchPrefix: ""
     }
 
     // control center

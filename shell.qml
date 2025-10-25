@@ -92,6 +92,7 @@ ShellRoot {
         BluetoothService.init()
         BatteryService.init()
         IdleInhibitorService.init()
+        PowerProfileService.init()
       }
 
       Background {}
@@ -139,6 +140,11 @@ ShellRoot {
       SettingsPanel {
         id: settingsPanel
         objectName: "settingsPanel"
+      }
+
+      DirectWidgetSettingsPanel {
+        id: directWidgetSettingsPanel
+        objectName: "directWidgetSettingsPanel"
       }
 
       NotificationHistoryPanel {
