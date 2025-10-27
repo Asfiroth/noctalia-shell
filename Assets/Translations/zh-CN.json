@@ -162,6 +162,10 @@
         "brightness-step": {
           "label": "亮度步长",
           "description": "调整亮度变化的步长（滚轮和键盘快捷键）。"
+        },
+        "enforce-minimum": {
+          "label": "限制最小亮度为 1%",
+          "description": "解决亮度为 0% 时部分显示器背光完全关闭的问题。"
         }
       },
       "night-light": {
@@ -509,7 +513,16 @@
         },
         "matugen-scheme-type": {
           "label": "Matugen 配色方案类型",
-          "description": "为 Matugen 选择配色方案生成算法。"
+          "description": {
+            "scheme-content": "推导出与底层图像紧密匹配的颜色",
+            "scheme-expressive": "充满活力的调色板，色彩饱和度高",
+            "scheme-fidelity": "保留原始色调的高保真调色板",
+            "scheme-fruit-salad": "鲜艳对比色的缤纷组合",
+            "scheme-monochrome": "围绕单一色调构建的极简调色板",
+            "scheme-neutral": "柔和的色调，沉稳平静。",
+            "scheme-rainbow": "涵盖整个光谱的多元调色板",
+            "scheme-tonal-spot": "平衡的色调，重点突出"
+          }
         }
       },
       "dark-mode": {
@@ -1204,6 +1217,12 @@
           "label": "着色图标",
           "description": "将主题颜色应用到系统托盘图标。"
         }
+      },
+      "audio-visualizer": {
+        "width": {
+          "label": "宽度",
+          "description": "自定义组件的宽度。"
+        }
       }
     }
   },
@@ -1341,7 +1360,9 @@
     "play": "播放",
     "next-media": "下一媒体",
     "power-profile": "'{profile}' 电源模式",
-    "keyboard-layout": "{layout} 键盘布局"
+    "keyboard-layout": "{layout} 键盘布局",
+    "output-muted": "静音输出设备",
+    "input-muted": "静音输入设备"
   },
   "clock": {
     "tooltip": "打开日历"
@@ -1665,10 +1686,6 @@
     "power-profile": {
       "changed": "电源模式已更改",
       "profile-name": "\"{profile}\""
-    },
-    "audio": {
-      "muted": "已静音",
-      "unmuted": "已取消静音"
     },
     "battery": {
       "low": "电量低",

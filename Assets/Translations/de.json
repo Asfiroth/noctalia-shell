@@ -162,6 +162,10 @@
         "brightness-step": {
           "label": "Helligkeits-Schrittgröße",
           "description": "Schrittgröße für Helligkeitsänderungen anpassen (Mausrad und Tastenkombinationen)."
+        },
+        "enforce-minimum": {
+          "label": "Mindesthelligkeit erzwingen (1%)",
+          "description": "Löst das Problem, dass die Hintergrundbeleuchtung auf einigen Displays bei 0% Helligkeit vollständig ausgeschaltet wird."
         }
       },
       "night-light": {
@@ -509,7 +513,16 @@
         },
         "matugen-scheme-type": {
           "label": "Matugen-Schema-Typ",
-          "description": "Wählen Sie einen Farbstil für Matugen aus."
+          "description": {
+            "scheme-content": "Leitet Farben ab, die eng mit dem zugrunde liegenden Bild übereinstimmen.",
+            "scheme-expressive": "Lebendige Farbpalette mit verspielter Sättigung",
+            "scheme-fidelity": "Farbtreue Palette, die die Originalfarbtöne beibehält",
+            "scheme-fruit-salad": "Farbenfroher Mix aus leuchtenden, kontrastreichen Akzenten",
+            "scheme-monochrome": "Minimale Farbpalette, die auf einem einzigen Farbton basiert.",
+            "scheme-neutral": "Gedämpfte Farbpalette mit dezenten und beruhigenden Tönen.",
+            "scheme-rainbow": "Vielfältige Palette, die das gesamte Spektrum abdeckt",
+            "scheme-tonal-spot": "Ausgewogene Farbpalette mit gezielten Akzenten"
+          }
         }
       },
       "dark-mode": {
@@ -1221,6 +1234,12 @@
           "label": "Symbole einfärben",
           "description": "Theme-Farben auf Tray-Symbole anwenden."
         }
+      },
+      "audio-visualizer": {
+        "width": {
+          "label": "Breite",
+          "description": "Benutzerdefinierte Komponentenbreite."
+        }
       }
     }
   },
@@ -1358,7 +1377,9 @@
     "play": "Wiedergeben",
     "next-media": "Nächstes Medium",
     "power-profile": "'{profile}' Energieprofil",
-    "keyboard-layout": "{layout} Tastaturlayout"
+    "keyboard-layout": "{layout} Tastaturlayout",
+    "output-muted": "Audio-Ausgabe stummschalten",
+    "input-muted": "Audio-Eingabe stummschalten"
   },
   "clock": {
     "tooltip": "Kalender öffnen"
@@ -1705,10 +1726,6 @@
     "power-profile": {
       "changed": "Energieprofil geändert",
       "profile-name": "\"{profile}\""
-    },
-    "audio": {
-      "muted": "Stummgeschaltet",
-      "unmuted": "Lautgeschaltet"
     },
     "battery": {
       "low": "Niedriger Batteriestand",

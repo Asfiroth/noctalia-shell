@@ -162,6 +162,10 @@
         "brightness-step": {
           "label": "Incrément de luminosité",
           "description": "Ajustez l'incrément pour les changements de luminosité (molette de la souris et raccourcis clavier)."
+        },
+        "enforce-minimum": {
+          "label": "Imposer une luminosité minimale (1%)",
+          "description": "Résout le problème de l'extinction complète du rétroéclairage sur certains écrans à 0% de luminosité."
         }
       },
       "night-light": {
@@ -509,7 +513,16 @@
         },
         "matugen-scheme-type": {
           "label": "Type de schéma Matugen",
-          "description": "Choisissez l'algorithme de génération de schéma de couleurs pour Matugen."
+          "description": {
+            "scheme-content": "Dérive des couleurs qui correspondent étroitement à l'image sous-jacente.",
+            "scheme-expressive": "Palette vibrante avec une saturation ludique.",
+            "scheme-fidelity": "Palette haute fidélité qui préserve les teintes sources.",
+            "scheme-fruit-salad": "Mélange coloré d'accents vifs et contrastés.",
+            "scheme-monochrome": "Palette minimaliste construite autour d'une seule teinte.",
+            "scheme-neutral": "Palette de couleurs atténuées aux tons doux et apaisants.",
+            "scheme-rainbow": "Palette diversifiée couvrant tout le spectre.",
+            "scheme-tonal-spot": "Palette équilibrée avec des accents ciblés."
+          }
         }
       },
       "dark-mode": {
@@ -1204,6 +1217,12 @@
           "label": "Coloriser les icônes",
           "description": "Appliquer les couleurs du thème aux icônes de la barre système."
         }
+      },
+      "audio-visualizer": {
+        "width": {
+          "label": "Largeur",
+          "description": "Largeur personnalisée du composant."
+        }
       }
     }
   },
@@ -1341,7 +1360,9 @@
     "play": "Lecture",
     "next-media": "Média suivant",
     "power-profile": "Profil d'alimentation '{profile}'",
-    "keyboard-layout": "Disposition du clavier {layout}"
+    "keyboard-layout": "Disposition du clavier {layout}",
+    "output-muted": "Couper la sortie audio",
+    "input-muted": "Couper l'entrée audio"
   },
   "clock": {
     "tooltip": "Ouvrir le calendrier"
@@ -1665,10 +1686,6 @@
     "power-profile": {
       "changed": "Profil d'alimentation changé",
       "profile-name": "\"{profile}\""
-    },
-    "audio": {
-      "muted": "Son coupé",
-      "unmuted": "Son rétabli"
     },
     "battery": {
       "low": "Batterie faible",

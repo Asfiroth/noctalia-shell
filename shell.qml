@@ -27,6 +27,7 @@ import qs.Modules.SessionMenu
 // Bar & Bar Components
 import qs.Modules.Bar
 import qs.Modules.Bar.Extras
+import qs.Modules.Bar.Audio
 import qs.Modules.Bar.Bluetooth
 import qs.Modules.Bar.Battery
 import qs.Modules.Bar.Calendar
@@ -93,6 +94,7 @@ ShellRoot {
         BatteryService.init()
         IdleInhibitorService.init()
         PowerProfileService.init()
+        DistroService.init()
       }
 
       Background {}
@@ -165,6 +167,11 @@ ShellRoot {
       BluetoothPanel {
         id: bluetoothPanel
         objectName: "bluetoothPanel"
+      }
+
+      AudioPanel {
+        id: audioPanel
+        objectName: "audioPanel"
       }
 
       WallpaperPanel {

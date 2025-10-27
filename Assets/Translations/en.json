@@ -162,6 +162,10 @@
         "brightness-step": {
           "label": "Brightness step size",
           "description": "Adjust the step size for brightness changes (scroll wheel and keyboard shortcuts)."
+        },
+        "enforce-minimum": {
+          "label": "Enforce minimum brightness (1%)",
+          "description": "Solves the problem of backlight completely turning off on some displays at 0% brightness."
         }
       },
       "night-light": {
@@ -509,7 +513,16 @@
         },
         "matugen-scheme-type": {
           "label": "Matugen scheme type",
-          "description": "Choose the color scheme generation algorithm for Matugen."
+          "description": {
+            "scheme-content": "Derives colors that closely match the underlying image",
+            "scheme-expressive": "Vibrant palette with playful saturation",
+            "scheme-fidelity": "High-fidelity palette that preserves source hues",
+            "scheme-fruit-salad": "Colorful mix of bright contrasting accents",
+            "scheme-monochrome": "Minimal palette built around a single hue",
+            "scheme-neutral": "Muted palette with subdued and calming tones",
+            "scheme-rainbow": "Diverse palette spanning the full spectrum",
+            "scheme-tonal-spot": "Balanced palette with focused accents"
+          }
         }
       },
       "dark-mode": {
@@ -1204,6 +1217,12 @@
           "label": "Colorize Icons",
           "description": "Apply theme colors to tray icons."
         }
+      },
+      "audio-visualizer": {
+        "width": {
+          "label": "Width",
+          "description": "Custom component width."
+        }
       }
     }
   },
@@ -1333,7 +1352,9 @@
     "play": "Play",
     "next-media": "Next media",
     "power-profile": "'{profile}' power profile",
-    "keyboard-layout": "{layout} keyboard layout"
+    "keyboard-layout": "{layout} keyboard layout",
+    "output-muted": "Muted audio output",
+    "input-muted": "Muted audio input"
   },
   "clock": {
     "tooltip": "Open calendar"
@@ -1665,10 +1686,6 @@
     "power-profile": {
       "changed": "Power profile changed",
       "profile-name": "\"{profile}\""
-    },
-    "audio": {
-      "muted": "Muted",
-      "unmuted": "Unmuted"
     },
     "battery": {
       "low": "Low battery",

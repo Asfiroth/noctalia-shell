@@ -162,6 +162,10 @@
         "brightness-step": {
           "label": "Tamanho do passo do brilho",
           "description": "Ajuste o tamanho do passo para alterações de brilho (roda do mouse e atalhos de teclado)."
+        },
+        "enforce-minimum": {
+          "label": "Forçar brilho mínimo (1%)",
+          "description": "Resolve o problema da retroiluminação apagar completamente em alguns monitores com brilho em 0%."
         }
       },
       "night-light": {
@@ -471,7 +475,16 @@
         },
         "matugen-scheme-type": {
           "label": "Tipo de esquema Matugen",
-          "description": "Escolha o algoritmo de geração de esquema de cores para Matugen."
+          "description": {
+            "scheme-content": "Deriva cores que correspondem de perto à imagem subjacente.",
+            "scheme-expressive": "Paleta vibrante com saturação divertida.",
+            "scheme-fidelity": "Paleta de alta fidelidade que preserva as tonalidades originais.",
+            "scheme-fruit-salad": "Mistura colorida de detalhes contrastantes e vibrantes.",
+            "scheme-monochrome": "Paleta minimalista construída em torno de uma única tonalidade.",
+            "scheme-neutral": "Paleta de cores neutras com tons suaves e calmantes.",
+            "scheme-rainbow": "Paleta diversificada abrangendo todo o espectro.",
+            "scheme-tonal-spot": "Paleta equilibrada com toques focais."
+          }
         }
       },
       "dark-mode": {
@@ -1204,6 +1217,12 @@
           "label": "Colorir ícones",
           "description": "Aplicar cores do tema aos ícones da bandeja do sistema."
         }
+      },
+      "audio-visualizer": {
+        "width": {
+          "label": "Largura",
+          "description": "Largura do componente personalizado."
+        }
       }
     }
   },
@@ -1341,7 +1360,9 @@
     "play": "Reproduzir",
     "next-media": "Próxima mídia",
     "power-profile": "Perfil de energia '{profile}'",
-    "keyboard-layout": "Layout de teclado {layout}"
+    "keyboard-layout": "Layout de teclado {layout}",
+    "output-muted": "Silenciar saída de áudio",
+    "input-muted": "Silenciar entrada de áudio"
   },
   "clock": {
     "tooltip": "Abrir calendário"
@@ -1665,10 +1686,6 @@
     "power-profile": {
       "changed": "Perfil de energia alterado",
       "profile-name": "\"{profile}\""
-    },
-    "audio": {
-      "muted": "Silenciado",
-      "unmuted": "Som ativado"
     },
     "battery": {
       "low": "Bateria Fraca",
