@@ -360,6 +360,10 @@
         "always-on-top": {
           "label": "Always on top",
           "description": "Display notifications above fullscreen windows and other layers."
+        },
+        "background-opacity": {
+          "label": "Background opacity",
+          "description": "Adjust the opacity of notification backgrounds."
         }
       },
       "duration": {
@@ -448,6 +452,10 @@
           "label": "Wallpaper folder",
           "description": "Path to your main wallpaper folder.",
           "tooltip": "Browse for wallpaper folder"
+        },
+        "recursive-search": {
+          "label": "Search subfolders",
+          "description": "Also search for wallpapers in subfolders of the wallpaper directory."
         },
         "monitor-specific": {
           "label": "Monitor-specific directories",
@@ -591,6 +599,10 @@
           },
           "vicinae": {
             "description": "Write {filepath} and reload",
+            "description-missing": "Requires {app} to be installed"
+          },
+          "walker": {
+            "description": "Write {filepath} and set theme to noctalia",
             "description-missing": "Requires {app} to be installed"
           },
           "discord": {
@@ -1128,6 +1140,10 @@
         "collapse-condition": {
           "label": "Collapse condition",
           "description": "If the output text matches this value, the button will collapse."
+        },
+        "parse-json": {
+          "label": "Parse output as JSON",
+          "description": "Parse the command output as a JSON object to dynamically set text and icon."
         }
       },
       "media-mini": {
@@ -1222,6 +1238,10 @@
         "width": {
           "label": "Width",
           "description": "Custom component width."
+        },
+        "hide-when-idle": {
+          "label": "Hide when no media is playing",
+          "description": "When enabled, the visualizer is hidden unless a player is actively playing."
         }
       }
     }
@@ -1342,6 +1362,7 @@
     "open-control-center": "Open control center",
     "volume-at": "Volume at {volume}%\nLeft click to toggle mute. Right click for settings.\nScroll to modify volume.",
     "microphone-volume-at": "Microphone volume at {volume}%\nLeft click to toggle mute. Right click for settings.\nScroll to modify volume.",
+    "brightness-at": "Brightness: {brightness}%\nRight click for settings.\nScroll to modify brightness.",
     "manage-wifi": "Manage Wi-Fi",
     "bluetooth-devices": "Bluetooth devices",
     "open-notification-history-enable-dnd": "Open notification history\nRight-click to enable \"Do not disturb\".",

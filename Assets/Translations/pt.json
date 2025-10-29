@@ -360,6 +360,10 @@
         "always-on-top": {
           "label": "Sempre no topo",
           "description": "Exibe notificações acima de janelas em tela cheia e outras camadas."
+        },
+        "background-opacity": {
+          "label": "Opacidade do fundo",
+          "description": "Ajustar a opacidade dos fundos das notificações."
         }
       },
       "duration": {
@@ -410,6 +414,10 @@
           "label": "Pasta de papéis de parede",
           "description": "Caminho para a sua pasta principal de papéis de parede.",
           "tooltip": "Procurar pasta de papéis de parede"
+        },
+        "recursive-search": {
+          "label": "Buscar em subpastas",
+          "description": "Também buscar papéis de parede em subpastas do diretório de papéis de parede."
         },
         "monitor-specific": {
           "label": "Diretórios específicos por monitor",
@@ -549,6 +557,10 @@
           },
           "vicinae": {
             "description": "Escrever {filepath} e recarregar",
+            "description-missing": "Requer que o {app} esteja instalado"
+          },
+          "walker": {
+            "description": "Escrever {filepath} e definir tema como noctalia",
             "description-missing": "Requer que o {app} esteja instalado"
           },
           "discord": {
@@ -1128,6 +1140,10 @@
         "collapse-condition": {
           "label": "Condição de recolhimento",
           "description": "Se o texto de saída corresponder a este valor, o botão será recolhido."
+        },
+        "parse-json": {
+          "label": "Analisar saída como JSON",
+          "description": "Analisa a saída do comando como um objeto JSON para definir dinamicamente o texto e o ícone."
         }
       },
       "media-mini": {
@@ -1222,6 +1238,10 @@
         "width": {
           "label": "Largura",
           "description": "Largura do componente personalizado."
+        },
+        "hide-when-idle": {
+          "label": "Ocultar quando não houver reprodução",
+          "description": "Quando ativado, o visualizador fica oculto a menos que haja reprodução ativa."
         }
       }
     }
@@ -1350,6 +1370,7 @@
     "open-control-center": "Abrir central de controle",
     "volume-at": "Volume em {volume}%\nClique esquerdo para silenciar. Clique direito para configurações.\nRole para modificar o volume.",
     "microphone-volume-at": "Volume do microfone em {volume}%\nClique esquerdo para silenciar. Clique direito para configurações.\nRole para modificar o volume.",
+    "brightness-at": "Brilho: {brightness}%\nClique direito para configurações.\nRole para modificar o brilho.",
     "manage-wifi": "Gerenciar Wi-Fi",
     "bluetooth-devices": "Dispositivos Bluetooth",
     "open-notification-history-enable-dnd": "Abrir histórico de notificações\nClique direito para ativar \"Não perturbe\".",

@@ -360,6 +360,10 @@
         "always-on-top": {
           "label": "Immer im Vordergrund",
           "description": "Benachrichtigungen über Vollbildfenstern und anderen Ebenen anzeigen."
+        },
+        "background-opacity": {
+          "label": "Hintergrund-Transparenz",
+          "description": "Transparenz der Benachrichtigungshintergründe anpassen."
         }
       },
       "duration": {
@@ -448,6 +452,10 @@
           "label": "Hintergrundbild-Ordner",
           "description": "Pfad zu Ihrem Haupt-Hintergrundbild-Ordner.",
           "tooltip": "Nach Hintergrundbild-Ordner suchen"
+        },
+        "recursive-search": {
+          "label": "Unterordner durchsuchen",
+          "description": "Auch nach Hintergrundbildern in Unterordnern des Hintergrundbild-Verzeichnisses suchen."
         },
         "monitor-specific": {
           "label": "Monitor-spezifische Verzeichnisse",
@@ -587,6 +595,10 @@
           },
           "vicinae": {
             "description": "Schreibt {filepath} und lädt neu",
+            "description-missing": "Erfordert die Installation von {app}"
+          },
+          "walker": {
+            "description": "Schreibt {filepath} und setzt das Theme auf noctalia",
             "description-missing": "Erfordert die Installation von {app}"
           },
           "discord": {
@@ -1145,6 +1157,10 @@
         "collapse-condition": {
           "label": "Collapse condition",
           "description": "If the output text matches this value, the button will collapse."
+        },
+        "parse-json": {
+          "label": "Ausgabe als JSON parsen",
+          "description": "Die Befehlsausgabe als JSON-Objekt parsen, um Text und Symbol dynamisch festzulegen."
         }
       },
       "media-mini": {
@@ -1239,6 +1255,10 @@
         "width": {
           "label": "Breite",
           "description": "Benutzerdefinierte Komponentenbreite."
+        },
+        "hide-when-idle": {
+          "label": "Ausblenden, wenn keine Medien wiedergegeben werden",
+          "description": "Wenn aktiviert, wird der Visualizer ausgeblendet, sofern keine Wiedergabe läuft."
         }
       }
     }
@@ -1367,6 +1387,7 @@
     "open-control-center": "Kontrollzentrum öffnen",
     "volume-at": "Lautstärke bei {volume}%\nLinksklick zum Stumm-/Lautschalten. Rechtsklick für Einstellungen.\nScrollen zum Ändern der Lautstärke.",
     "microphone-volume-at": "Mikrofon-Lautstärke bei {volume}%\nLinksklick zum Stumm-/Lautschalten. Rechtsklick für Einstellungen.\nScrollen zum Ändern der Lautstärke.",
+    "brightness-at": "Helligkeit: {brightness}%\nRechtsklick für Einstellungen.\nScrollen zum Ändern der Helligkeit.",
     "manage-wifi": "WLAN verwalten",
     "bluetooth-devices": "Bluetooth-Geräte",
     "open-notification-history-enable-dnd": "Benachrichtigungsverlauf öffnen\nRechtsklick um 'Nicht stören' zu aktivieren.",

@@ -360,6 +360,10 @@
         "always-on-top": {
           "label": "Siempre visible",
           "description": "Muestra las notificaciones sobre ventanas a pantalla completa y otras capas."
+        },
+        "background-opacity": {
+          "label": "Opacidad del fondo",
+          "description": "Ajustar la opacidad de los fondos de las notificaciones."
         }
       },
       "duration": {
@@ -448,6 +452,10 @@
           "label": "Carpeta de fondos de pantalla",
           "description": "Ruta a tu carpeta principal de fondos de pantalla.",
           "tooltip": "Buscar carpeta de fondos de pantalla"
+        },
+        "recursive-search": {
+          "label": "Buscar en subcarpetas",
+          "description": "Buscar fondos de pantalla también en subcarpetas del directorio de fondos de pantalla."
         },
         "monitor-specific": {
           "label": "Directorios específicos por monitor",
@@ -587,6 +595,10 @@
           },
           "vicinae": {
             "description": "Escribir {filepath} y recargar",
+            "description-missing": "Requiere que {app} esté instalado"
+          },
+          "walker": {
+            "description": "Escribir {filepath} y establecer tema a noctalia",
             "description-missing": "Requiere que {app} esté instalado"
           },
           "discord": {
@@ -1128,6 +1140,10 @@
         "collapse-condition": {
           "label": "Condición de colapso",
           "description": "Si el texto de salida coincide con este valor, el botón se colapsará."
+        },
+        "parse-json": {
+          "label": "Analizar salida como JSON",
+          "description": "Analizar la salida del comando como un objeto JSON para establecer dinámicamente el texto y el ícono."
         }
       },
       "media-mini": {
@@ -1222,6 +1238,10 @@
         "width": {
           "label": "Ancho",
           "description": "Ancho del componente personalizado."
+        },
+        "hide-when-idle": {
+          "label": "Ocultar cuando no se reproduce",
+          "description": "Si está activado, el visualizador se oculta salvo que haya reproducción activa."
         }
       }
     }
@@ -1350,6 +1370,7 @@
     "open-control-center": "Abrir el centro de control",
     "volume-at": "Volumen al {volume}%\nClic izquierdo para silenciar. Clic derecho para configuración.\nDesplaza para modificar el volumen.",
     "microphone-volume-at": "Volumen del micrófono al {volume}%\nClic izquierdo para silenciar. Clic derecho para configuración.\nDesplaza para modificar el volumen.",
+    "brightness-at": "Brillo: {brightness}%\nClic derecho para configuración.\nDesplaza para modificar el brillo.",
     "manage-wifi": "Gestionar Wi-Fi",
     "bluetooth-devices": "Dispositivos Bluetooth",
     "open-notification-history-enable-dnd": "Abrir historial de notificaciones\nClic derecho para activar \"No molestar\".",

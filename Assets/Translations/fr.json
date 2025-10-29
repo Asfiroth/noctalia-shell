@@ -360,6 +360,10 @@
         "always-on-top": {
           "label": "Toujours au premier plan",
           "description": "Afficher les notifications au-dessus des fenêtres en plein écran et des autres applications."
+        },
+        "background-opacity": {
+          "label": "Opacité du fond",
+          "description": "Ajuster l'opacité des arrière-plans de notifications."
         }
       },
       "duration": {
@@ -448,6 +452,10 @@
           "label": "Dossier des fonds d'écran",
           "description": "Chemin vers votre dossier principal de fonds d'écran.",
           "tooltip": "Parcourir le dossier des fonds d'écran"
+        },
+        "recursive-search": {
+          "label": "Rechercher dans les sous-dossiers",
+          "description": "Rechercher également des fonds d'écran dans les sous-dossiers du répertoire des fonds d'écran."
         },
         "monitor-specific": {
           "label": "Dossiers spécifiques au moniteur",
@@ -587,6 +595,10 @@
           },
           "vicinae": {
             "description": "Écrire {filepath} et recharger",
+            "description-missing": "Nécessite que le lanceur {app} soit installé"
+          },
+          "walker": {
+            "description": "Écrire {filepath} et définir le thème sur noctalia",
             "description-missing": "Nécessite que le lanceur {app} soit installé"
           },
           "discord": {
@@ -1128,6 +1140,10 @@
         "collapse-condition": {
           "label": "Condition d’effondrement",
           "description": "Si le texte de sortie correspond à cette valeur, le bouton se repliera."
+        },
+        "parse-json": {
+          "label": "Analyser la sortie en JSON",
+          "description": "Analyser la sortie de la commande en tant qu'objet JSON pour définir dynamiquement le texte et l'icône."
         }
       },
       "media-mini": {
@@ -1222,6 +1238,10 @@
         "width": {
           "label": "Largeur",
           "description": "Largeur personnalisée du composant."
+        },
+        "hide-when-idle": {
+          "label": "Masquer lorsqu'aucun média n'est en lecture",
+          "description": "Si activé, le visualiseur est masqué sauf lorsqu'un lecteur est en lecture."
         }
       }
     }
@@ -1350,6 +1370,7 @@
     "open-control-center": "Ouvrir le centre de contrôle",
     "volume-at": "Volume à {volume}%\nClic gauche pour couper/rétablir le son. Clic droit pour les paramètres.\nFaites défiler pour modifier le volume.",
     "microphone-volume-at": "Volume du microphone à {volume}%\nClic gauche pour couper/rétablir le son. Clic droit pour les paramètres.\nFaites défiler pour modifier le volume.",
+    "brightness-at": "Luminosité : {brightness}%\nClic droit pour les paramètres.\nFaites défiler pour modifier la luminosité.",
     "manage-wifi": "Gérer le Wi-Fi",
     "bluetooth-devices": "Appareils Bluetooth",
     "open-notification-history-enable-dnd": "Ouvrir l'historique des notifications\nClic droit pour activer \"Ne pas déranger\".",

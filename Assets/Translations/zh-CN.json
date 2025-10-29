@@ -360,6 +360,10 @@
         "always-on-top": {
           "label": "始终置顶",
           "description": "在全屏窗口和其他图层上方显示通知。"
+        },
+        "background-opacity": {
+          "label": "背景透明度",
+          "description": "调整通知背景的透明度。"
         }
       },
       "duration": {
@@ -448,6 +452,10 @@
           "label": "壁纸文件夹",
           "description": "您的主壁纸文件夹路径。",
           "tooltip": "浏览壁纸文件夹"
+        },
+        "recursive-search": {
+          "label": "搜索子文件夹",
+          "description": "同时在壁纸目录的子文件夹中搜索壁纸。"
         },
         "monitor-specific": {
           "label": "显示器特定目录",
@@ -587,6 +595,10 @@
           },
           "vicinae": {
             "description": "写入 {filepath} 并重新加载",
+            "description-missing": "需要安装 {app}"
+          },
+          "walker": {
+            "description": "写入 {filepath} 并将主题设置为 noctalia",
             "description-missing": "需要安装 {app}"
           },
           "discord": {
@@ -1127,7 +1139,11 @@
         },
         "collapse-condition": {
           "label": "折叠条件",
-          "description": "如果输出文本与此值匹配，按钮的文本将会折叠不去显示。"
+          "description": "如果输出文本与此值匹配，按钮将折叠。"
+        },
+        "parse-json": {
+          "label": "将输出解析为 JSON",
+          "description": "将命令输出解析为 JSON 对象，以动态设置文本和图标。"
         }
       },
       "media-mini": {
@@ -1222,6 +1238,10 @@
         "width": {
           "label": "宽度",
           "description": "自定义组件的宽度。"
+        },
+        "hide-when-idle": {
+          "label": "无媒体播放时隐藏",
+          "description": "启用后，除非正在播放媒体，否则隐藏可视化显示。"
         }
       }
     }
@@ -1350,6 +1370,7 @@
     "open-control-center": "打开控制中心",
     "volume-at": "音量 {volume}%\n左键点击切换静音。右键点击进入设置。\n滚动调整音量。",
     "microphone-volume-at": "麦克风音量 {volume}%\n左键点击切换静音。右键点击进入设置。\n滚动调整音量。",
+    "brightness-at": "亮度：{brightness}%\n右键点击进入设置。\n滚动调整亮度。",
     "manage-wifi": "管理 Wi-Fi",
     "bluetooth-devices": "蓝牙设备",
     "open-notification-history-enable-dnd": "打开通知历史记录\n右键点击启用\"勿扰模式\"。",
