@@ -855,10 +855,6 @@
         "description": "Changes the size of the general user interface, excluding the bar.",
         "reset-scaling": "Reset interface scaling"
       },
-      "dim-desktop": {
-        "label": "Dim desktop",
-        "description": "Dim the desktop when panels or menus are open."
-      },
       "border-radius": {
         "label": "Border radius",
         "description": "Controls the corner roundness of windows, buttons, and other elements.",
@@ -1266,6 +1262,18 @@
         }
       },
       "lock-keys": {
+        "indicator-style": {
+          "label": "Indicator Style",
+          "description": "Icon style for the lock key indicators",
+          "large": "Large Letters",
+          "small": "Small Letters",
+          "square": "Square Letters",
+          "square-round": "Rounded Squre Letters",
+          "circle": "Circle Letters",
+          "circle-dash": "Dashed Circle Letters",
+          "circle-dot": "Dotted Circle Letters",
+          "hex": "Hexagon Letters"
+        },
         "show-caps-lock": {
           "label": "Caps Lock",
           "description": "Display caps lock status."
@@ -1395,8 +1403,8 @@
     "click-to-start-recording": "Click to start recording",
     "click-to-stop-recording": "Click to stop recording",
     "open-control-center": "Open control center",
-    "volume-at": "Volume at {volume}%\nLeft click to toggle mute. Right click for settings.\nScroll to modify volume.",
-    "microphone-volume-at": "Microphone volume at {volume}%\nLeft click to toggle mute. Right click for settings.\nScroll to modify volume.",
+    "volume-at": "Volume at {volume}%\nLeft click for settings. Right click to toggle mute.\nScroll to modify volume.",
+    "microphone-volume-at": "Microphone volume at {volume}%\nLeft click for settings. Right click to toggle mute.\nScroll to modify volume.",
     "brightness-at": "Brightness: {brightness}%\nRight click for settings.\nScroll to modify brightness.",
     "manage-wifi": "Manage Wi-Fi",
     "bluetooth-devices": "Bluetooth devices",

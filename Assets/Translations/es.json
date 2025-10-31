@@ -859,10 +859,6 @@
         "label": "Radio de borde",
         "reset": "Restablecer el radio del borde"
       },
-      "dim-desktop": {
-        "description": "Atenuar el escritorio cuando los paneles o menús estén abiertos.",
-        "label": "Dim escritorio"
-      },
       "scaling": {
         "description": "Cambia el tamaño de la interfaz de usuario general, excluyendo la barra.",
         "label": "Escalado de la interfaz",
@@ -1277,6 +1273,18 @@
         "show-scroll-lock": {
           "description": "Mostrar el estado de Bloq Despl.",
           "label": "Bloq Despl"
+        },
+        "indicator-style": {
+          "circle": "Letras circulares",
+          "circle-dash": "Letras de círculo discontinuo",
+          "circle-dot": "Letras de círculo punteado",
+          "description": "Estilo de icono para los indicadores de las teclas de bloqueo",
+          "hex": "Letras hexagonales",
+          "label": "Estilo del indicador",
+          "large": "Letras grandes",
+          "small": "Letras minúsculas",
+          "square": "Letras cuadradas",
+          "square-round": "Letras cuadradas redondeadas"
         }
       }
     }
@@ -1403,8 +1411,6 @@
     "click-to-start-recording": "Haz clic para iniciar la grabación",
     "click-to-stop-recording": "Haz clic para detener la grabación",
     "open-control-center": "Abrir el centro de control",
-    "volume-at": "Volumen al {volume}%\nClic izquierdo para silenciar. Clic derecho para configuración.\nDesplaza para modificar el volumen.",
-    "microphone-volume-at": "Volumen del micrófono al {volume}%\nClic izquierdo para silenciar. Clic derecho para configuración.\nDesplaza para modificar el volumen.",
     "brightness-at": "Brillo: {brightness}%\nClic derecho para configuración.\nDesplaza para modificar el brillo.",
     "manage-wifi": "Gestionar Wi-Fi",
     "bluetooth-devices": "Dispositivos Bluetooth",
@@ -1418,7 +1424,9 @@
     "power-profile": "Perfil de energía '{profile}'",
     "keyboard-layout": "Distribución de teclado {layout}",
     "output-muted": "Silenciar salida de audio",
-    "input-muted": "Silenciar entrada de audio"
+    "input-muted": "Silenciar entrada de audio",
+    "microphone-volume-at": "Volumen del micrófono al {volume}%.\nClic izquierdo para ajustes. Clic derecho para activar/desactivar silencio.\nDesplázate para modificar el volumen.",
+    "volume-at": "Volumen al {volume}%.\nClic izquierdo para ajustes. Clic derecho para alternar silencio.\nDesplázate para modificar el volumen."
   },
   "clock": {
     "tooltip": "Abrir calendario"
