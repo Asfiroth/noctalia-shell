@@ -257,6 +257,10 @@
     },
     "dock": {
       "title": "Dock",
+      "enabled": {
+        "label": "启用 Dock",
+        "description": "完全显示或隐藏 Dock"
+      },
       "appearance": {
         "section": {
           "label": "外观",
@@ -289,7 +293,7 @@
       "monitors": {
         "section": {
           "label": "显示器显示",
-          "description": "选择在哪个显示器上显示 Dock。"
+          "description": "在特定显示器上显示 Dock。如果未选择任何显示器，则默认为全部。"
         },
         "only-same-output": {
           "description": "仅显示输出结果中dock所在位置的应用。",
@@ -608,6 +612,10 @@
           "pywalfox": {
             "description": "写入 {filepath} 并运行 pywalfox update",
             "description-missing": "需要安装 {app}"
+          },
+          "code": {
+            "description": "写入 {filepath}。Hyprluna 主题需要手动安装和激活。",
+            "description-missing": "需要安装 {app}"
           }
         },
         "misc": {
@@ -649,6 +657,10 @@
         "fahrenheit": {
           "label": "以华氏度显示温度 (°F)",
           "description": "以华氏度而非摄氏度显示温度。"
+        },
+        "show-in-calendar": {
+          "description": "直接在您的日历视图中显示每日天气预报。",
+          "label": "在日历中显示天气"
         }
       },
       "date-time": {
@@ -671,6 +683,11 @@
         "use-analog": {
           "description": "在日历屏幕上显示一个模拟时钟。",
           "label": "使用模拟时钟样式"
+        },
+        "first-day-of-week": {
+          "automatic": "自动（使用系统区域设置）",
+          "description": "选择日历中一周的起始日。",
+          "label": "一周的第一天"
         }
       }
     },
@@ -859,6 +876,10 @@
       "tooltips": {
         "description": "启用或禁用整个界面的工具提示。",
         "label": "显示工具提示"
+      },
+      "panels-attached-to-bar": {
+        "description": "启用后，面板将以美观的倒角设计附加到栏上。",
+        "label": "将面板连接到杆上"
       }
     },
     "lock-screen": {
@@ -1242,6 +1263,20 @@
         "hide-when-idle": {
           "label": "无媒体播放时隐藏",
           "description": "启用后，除非正在播放媒体，否则隐藏可视化显示。"
+        }
+      },
+      "lock-keys": {
+        "show-caps-lock": {
+          "description": "显示大写锁定状态。",
+          "label": "大写锁定"
+        },
+        "show-num-lock": {
+          "description": "显示数字锁定键状态。",
+          "label": "数字锁定"
+        },
+        "show-scroll-lock": {
+          "description": "显示滚动锁定状态。",
+          "label": "滚动锁定"
         }
       }
     }

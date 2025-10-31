@@ -257,6 +257,10 @@
     },
     "dock": {
       "title": "Dock",
+      "enabled": {
+        "label": "Habilitar dock",
+        "description": "Mostrar u ocultar el dock por completo"
+      },
       "appearance": {
         "section": {
           "label": "Apariencia",
@@ -289,7 +293,7 @@
       "monitors": {
         "section": {
           "label": "Visualización en monitor",
-          "description": "Elige en qué monitor mostrar el dock."
+          "description": "Mostrar el dock en monitores específicos. Por defecto, se muestra en todos si no se elige ninguno."
         },
         "only-same-output": {
           "description": "Mostrar solo las aplicaciones de la salida donde se encuentra el dock.",
@@ -608,6 +612,10 @@
           "pywalfox": {
             "description": "Escribir {filepath} y ejecutar pywalfox update",
             "description-missing": "Requiere que {app} esté instalado"
+          },
+          "code": {
+            "description": "Escribe {filepath}. El tema Hyprluna debe ser instalado y activado manualmente.",
+            "description-missing": "Requiere que {app} esté instalado/a."
           }
         },
         "misc": {
@@ -649,6 +657,10 @@
         "fahrenheit": {
           "label": "Mostrar temperatura en Fahrenheit (°F)",
           "description": "Muestra la temperatura en Fahrenheit en lugar de Celsius."
+        },
+        "show-in-calendar": {
+          "description": "Muestra el pronóstico del tiempo diario directamente en la vista de tu calendario.",
+          "label": "Mostrar el clima en el calendario"
         }
       },
       "date-time": {
@@ -671,6 +683,11 @@
         "use-analog": {
           "description": "Mostrar un reloj de estilo analógico en la pantalla del calendario.",
           "label": "Usar reloj de estilo analógico"
+        },
+        "first-day-of-week": {
+          "automatic": "Automático (usar la configuración regional del sistema)",
+          "description": "Elige qué día empieza la semana en el calendario.",
+          "label": "Primer día de la semana"
         }
       }
     },
@@ -859,6 +876,10 @@
       "tooltips": {
         "description": "Activar o desactivar los avisos emergentes en toda la interfaz.",
         "label": "Mostrar sugerencias"
+      },
+      "panels-attached-to-bar": {
+        "description": "Cuando está habilitado, los paneles se adjuntarán a la barra con un hermoso diseño de esquina invertida.",
+        "label": "Adjuntar paneles a la barra"
       }
     },
     "lock-screen": {
@@ -1242,6 +1263,20 @@
         "hide-when-idle": {
           "label": "Ocultar cuando no se reproduce",
           "description": "Si está activado, el visualizador se oculta salvo que haya reproducción activa."
+        }
+      },
+      "lock-keys": {
+        "show-caps-lock": {
+          "description": "Mostrar el estado de Bloq Mayús.",
+          "label": "Bloq Mayús"
+        },
+        "show-num-lock": {
+          "description": "Mostrar el estado de bloqueo numérico.",
+          "label": "Bloq Num"
+        },
+        "show-scroll-lock": {
+          "description": "Mostrar el estado de Bloq Despl.",
+          "label": "Bloq Despl"
         }
       }
     }

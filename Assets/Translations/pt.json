@@ -257,6 +257,10 @@
     },
     "dock": {
       "title": "Dock",
+      "enabled": {
+        "label": "Ativar dock",
+        "description": "Mostrar ou ocultar o dock completamente"
+      },
       "appearance": {
         "section": {
           "label": "Aparência",
@@ -289,7 +293,7 @@
       "monitors": {
         "section": {
           "label": "Exibição no monitor",
-          "description": "Escolha em qual monitor exibir a dock."
+          "description": "Mostrar dock em monitores específicos. O padrão é todos se nenhum for escolhido."
         },
         "only-same-output": {
           "description": "Mostrar apenas aplicativos da saída onde o dock está localizado.",
@@ -570,6 +574,10 @@
           "pywalfox": {
             "description": "Escrever {filepath} e executar pywalfox update",
             "description-missing": "Requer que o {app} esteja instalado"
+          },
+          "code": {
+            "description": "Escreva em {filepath}. O tema Hyprluna precisa ser instalado e ativado manualmente.",
+            "description-missing": "Requer que o {app} esteja instalado."
           }
         },
         "misc": {
@@ -611,6 +619,10 @@
         "fahrenheit": {
           "label": "Exibir temperatura em Fahrenheit (°F)",
           "description": "Exibe a temperatura em Fahrenheit em vez de Celsius."
+        },
+        "show-in-calendar": {
+          "description": "Mostre a previsão do tempo diária diretamente na sua visualização de calendário.",
+          "label": "Exibir clima no calendário"
         }
       },
       "date-time": {
@@ -633,6 +645,11 @@
         "use-analog": {
           "description": "Mostrar um relógio estilo analógico na tela do calendário.",
           "label": "Use um relógio de estilo analógico."
+        },
+        "first-day-of-week": {
+          "automatic": "Automático (usar localização do sistema)",
+          "description": "Escolha qual dia começa a semana no calendário.",
+          "label": "Primeiro dia da semana"
         }
       }
     },
@@ -859,6 +876,10 @@
       "tooltips": {
         "description": "Ativar ou desativar dicas de ferramentas em toda a interface.",
         "label": "Mostrar dicas de ferramenta"
+      },
+      "panels-attached-to-bar": {
+        "description": "Quando ativado, os painéis serão anexados à barra com um belo design de canto invertido.",
+        "label": "Anexar painéis à barra"
       }
     },
     "lock-screen": {
@@ -1242,6 +1263,20 @@
         "hide-when-idle": {
           "label": "Ocultar quando não houver reprodução",
           "description": "Quando ativado, o visualizador fica oculto a menos que haja reprodução ativa."
+        }
+      },
+      "lock-keys": {
+        "show-caps-lock": {
+          "description": "Exibir o status do Caps Lock.",
+          "label": "Caps Lock"
+        },
+        "show-num-lock": {
+          "description": "Exibir o status do Num Lock.",
+          "label": "Bloq Num"
+        },
+        "show-scroll-lock": {
+          "description": "Exibir o status do Scroll Lock.",
+          "label": "Scroll Lock"
         }
       }
     }

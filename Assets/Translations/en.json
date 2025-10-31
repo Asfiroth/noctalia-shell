@@ -257,6 +257,10 @@
     },
     "dock": {
       "title": "Dock",
+      "enabled": {
+        "label": "Enable dock",
+        "description": "Show or hide the dock entirely"
+      },
       "appearance": {
         "section": {
           "label": "Appearance",
@@ -289,7 +293,7 @@
       "monitors": {
         "section": {
           "label": "Monitor display",
-          "description": "Choose which monitor to display the dock on."
+          "description": "Show dock on specific monitors. Defaults to all if none are chosen."
         },
         "only-same-output": {
           "label": "Only apps from same output",
@@ -606,11 +610,15 @@
             "description-missing": "Requires {app} to be installed"
           },
           "discord": {
-            "description": "Write {filepath} for {client}",
+            "description": "Write {filepath} for {client}. Hyprluna theme needs to be activated manually.",
             "description-missing": "No Discord client detected. Install vencord, vesktop, webcord, armcord, equibop, lightcord, or dorion."
           },
           "pywalfox": {
             "description": "Write {filepath} and run pywalfox update",
+            "description-missing": "Requires {app} to be installed"
+          },
+          "code": {
+            "description": "Write {filepath}. Hyprluna theme needs to be installed and activated manually.",
             "description-missing": "Requires {app} to be installed"
           }
         },
@@ -649,6 +657,10 @@
         "fahrenheit": {
           "label": "Display temperature in Fahrenheit (°F)",
           "description": "Display temperature in Fahrenheit instead of Celsius."
+        },
+        "show-in-calendar": {
+          "label": "Display weather in calendar",
+          "description": "Show the daily weather forecast directly in your calendar view."
         }
       },
       "date-time": {
@@ -663,6 +675,11 @@
         "week-numbers": {
           "label": "Show week numbers",
           "description": "Displays the week of the year (e.g., Week 38) in the calendar."
+        },
+        "first-day-of-week": {
+          "label": "First day of week",
+          "description": "Choose which day starts the week in the calendar.",
+          "automatic": "Automatic (use system locale)"
         },
         "show-events": {
           "label": "Show calendar events",
@@ -855,6 +872,10 @@
       "animation-disable": {
         "label": "Disable UI Animations",
         "description": "Disable all animations for a faster, more responsive experience."
+      },
+      "panels-attached-to-bar": {
+        "label": "Attach panels to bar",
+        "description": "When enabled, panels will be attached to the bar with beautiful inverted corner design"
       },
       "panels-overlay": {
         "label": "Open panels in overlay layer",
@@ -1242,6 +1263,20 @@
         "hide-when-idle": {
           "label": "Hide when no media is playing",
           "description": "When enabled, the visualizer is hidden unless a player is actively playing."
+        }
+      },
+      "lock-keys": {
+        "show-caps-lock": {
+          "label": "Caps Lock",
+          "description": "Display caps lock status."
+        },
+        "show-num-lock": {
+          "label": "Num Lock",
+          "description": "Display num lock status."
+        },
+        "show-scroll-lock": {
+          "label": "Scroll Lock",
+          "description": "Display scroll lock status."
         }
       }
     }
