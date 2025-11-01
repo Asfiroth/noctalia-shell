@@ -1259,6 +1259,10 @@
         "hide-when-idle": {
           "label": "Masquer lorsqu'aucun média n'est en lecture",
           "description": "Si activé, le visualiseur est masqué sauf lorsqu'un lecteur est en lecture."
+        },
+        "color-name": {
+          "description": "Sélectionnez la couleur du visualiseur.",
+          "label": "Couleur de remplissage"
         }
       },
       "lock-keys": {
@@ -1425,8 +1429,8 @@
     "keyboard-layout": "Disposition du clavier {layout}",
     "output-muted": "Couper la sortie audio",
     "input-muted": "Couper l'entrée audio",
-    "microphone-volume-at": "Volume du microphone à {volume}%.\nClic gauche pour les paramètres. Clic droit pour activer/désactiver le mode muet.\nDéfilement pour modifier le volume.",
-    "volume-at": "Volume à {volume}%.\nClic gauche pour les paramètres. Clic droit pour activer/désactiver le mode muet.\nFaites défiler pour modifier le volume."
+    "microphone-volume-at": "Volume du microphone à {volume}%.\nClic gauche pour les paramètres. Clic droit pour activer/désactiver le mode muet.\nFaites défiler pour modifier le volume.",
+    "volume-at": "Volume de sortie à {volume}%.\nClic gauche pour les paramètres. Clic droit pour activer/désactiver le mode muet.\nFaites défiler pour modifier le volume."
   },
   "clock": {
     "tooltip": "Ouvrir le calendrier"
@@ -1564,6 +1568,13 @@
       "hidden": "Masquer si vide",
       "transparent": "Transparent quand vide",
       "visible": "Toujours visible"
+    },
+    "colors": {
+      "error": "Erreur",
+      "primary": "Primaire",
+      "secondary": "Secondaire",
+      "tertiary": "Tertiaire",
+      "onSurface": "En surface"
     }
   },
   "session-menu": {
@@ -1708,6 +1719,10 @@
       "disabled": "Couleurs du fond d'écran désactivées",
       "not-installed": "Matugen non installé - requis pour l'extraction des couleurs du fond d'écran"
     },
+    "matugen": {
+      "failed": "Échec du traitement Matugen",
+      "failed-general": "Matugen a rencontré une erreur lors du traitement des modèles"
+    },
     "recording": {
       "stopping": "Arrêt de l'enregistrement...",
       "started": "Enregistrement démarré",
@@ -1737,6 +1752,14 @@
     "bluetooth": {
       "enabled": "Activé",
       "disabled": "Désactivé"
+    },
+    "airplane-mode": {
+      "title": "Mode avion",
+      "enabled": "Activé",
+      "disabled": "Désactivé"
+    },
+    "internet": {
+      "limited": "Connecté sans Internet"
     },
     "kofi": {
       "opened": "Page Ko-fi ouverte dans votre navigateur"

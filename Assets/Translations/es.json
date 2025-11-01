@@ -1259,6 +1259,10 @@
         "hide-when-idle": {
           "label": "Ocultar cuando no se reproduce",
           "description": "Si está activado, el visualizador se oculta salvo que haya reproducción activa."
+        },
+        "color-name": {
+          "description": "Selecciona el color para el visualizador.",
+          "label": "Color de relleno"
         }
       },
       "lock-keys": {
@@ -1425,8 +1429,8 @@
     "keyboard-layout": "Distribución de teclado {layout}",
     "output-muted": "Silenciar salida de audio",
     "input-muted": "Silenciar entrada de audio",
-    "microphone-volume-at": "Volumen del micrófono al {volume}%.\nClic izquierdo para ajustes. Clic derecho para activar/desactivar silencio.\nDesplázate para modificar el volumen.",
-    "volume-at": "Volumen al {volume}%.\nClic izquierdo para ajustes. Clic derecho para alternar silencio.\nDesplázate para modificar el volumen."
+    "microphone-volume-at": "Volumen del micrófono al {volume}%.\nClic izquierdo para ajustes. Clic derecho para activar/desactivar el silencio.\nDesplázate para modificar el volumen.",
+    "volume-at": "Volumen de salida al {volume}%.\nClic izquierdo para ajustes. Clic derecho para activar/desactivar el silencio.\nDesplázate para modificar el volumen."
   },
   "clock": {
     "tooltip": "Abrir calendario"
@@ -1564,6 +1568,13 @@
       "hidden": "Ocultar cuando esté vacío",
       "transparent": "Transparente cuando está vacío",
       "visible": "Siempre visible"
+    },
+    "colors": {
+      "error": "Error",
+      "primary": "Primario",
+      "secondary": "Secundario",
+      "tertiary": "Terciario",
+      "onSurface": "En la superficie"
     }
   },
   "session-menu": {
@@ -1708,6 +1719,10 @@
       "disabled": "Colores del fondo de pantalla desactivados",
       "not-installed": "Matugen no instalado - requerido para extraer colores del fondo de pantalla"
     },
+    "matugen": {
+      "failed": "Error en el procesamiento de Matugen",
+      "failed-general": "Matugen encontró un error al procesar las plantillas"
+    },
     "recording": {
       "stopping": "Deteniendo grabación...",
       "started": "Grabación iniciada",
@@ -1737,6 +1752,14 @@
     "bluetooth": {
       "enabled": "Activado",
       "disabled": "Desactivado"
+    },
+    "airplane-mode": {
+      "title": "Modo avión",
+      "enabled": "Activado",
+      "disabled": "Desactivado"
+    },
+    "internet": {
+      "limited": "Conectado sin Internet"
     },
     "kofi": {
       "opened": "Página de Ko-fi abierta en tu navegador"

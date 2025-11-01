@@ -1276,6 +1276,10 @@
         "hide-when-idle": {
           "label": "Ausblenden, wenn keine Medien wiedergegeben werden",
           "description": "Wenn aktiviert, wird der Visualizer ausgeblendet, sofern keine Wiedergabe läuft."
+        },
+        "color-name": {
+          "description": "Wähle die Farbe für den Visualisierer aus.",
+          "label": "Füllfarbe"
         }
       },
       "lock-keys": {
@@ -1428,8 +1432,6 @@
     "click-to-start-recording": "Klicken zum Starten einer Bildschirmaufnahme",
     "click-to-stop-recording": "Klicken zum Stoppen einer Bildschirmaufnahme",
     "open-control-center": "Kontrollzentrum öffnen",
-    "volume-at": "Lautstärke bei {volume}%\nLinksklick zum Stumm-/Lautschalten. Rechtsklick für Einstellungen.\nScrollen zum Ändern der Lautstärke.",
-    "microphone-volume-at": "Mikrofon-Lautstärke bei {volume}%\nLinksklick zum Stumm-/Lautschalten. Rechtsklick für Einstellungen.\nScrollen zum Ändern der Lautstärke.",
     "brightness-at": "Helligkeit: {brightness}%\nRechtsklick für Einstellungen.\nScrollen zum Ändern der Helligkeit.",
     "manage-wifi": "WLAN verwalten",
     "bluetooth-devices": "Bluetooth-Geräte",
@@ -1443,7 +1445,9 @@
     "power-profile": "'{profile}' Energieprofil",
     "keyboard-layout": "{layout} Tastaturlayout",
     "output-muted": "Audio-Ausgabe stummschalten",
-    "input-muted": "Audio-Eingabe stummschalten"
+    "input-muted": "Audio-Eingabe stummschalten",
+    "microphone-volume-at": "Mikrofonlautstärke bei {volume}%.\nLinksklick für Einstellungen. Rechtsklick zum Stummschalten.\nScrollen zum Ändern der Lautstärke.",
+    "volume-at": "Lautstärke bei {volume}%.\nLinksklick für Einstellungen. Rechtsklick zum Stummschalten.\nScrollen zum Ändern der Lautstärke."
   },
   "clock": {
     "tooltip": "Kalender öffnen"
@@ -1581,6 +1585,13 @@
       "hidden": "Ausblenden, wenn leer",
       "transparent": "Transparent, wenn leer",
       "visible": "Immer sichtbar"
+    },
+    "colors": {
+      "error": "Fehler",
+      "primary": "Primär",
+      "secondary": "Sekundär",
+      "tertiary": "Tertiär",
+      "onSurface": "An der Oberfläche"
     }
   },
   "session-menu": {
@@ -1748,6 +1759,10 @@
       "disabled": "Hintergrundbild-Farben deaktiviert",
       "not-installed": "Matugen nicht installiert - erforderlich für Hintergrundbild-Farbextraktion"
     },
+    "matugen": {
+      "failed": "Matugen-Verarbeitung fehlgeschlagen",
+      "failed-general": "Matugen ist beim Verarbeiten der Vorlagen auf einen Fehler gestoßen"
+    },
     "recording": {
       "stopping": "Aufnahme wird gestoppt…",
       "started": "Aufnahme gestartet",
@@ -1777,6 +1792,14 @@
     "bluetooth": {
       "enabled": "Aktiviert",
       "disabled": "Deaktiviert"
+    },
+    "airplane-mode": {
+      "title": "Flugmodus",
+      "enabled": "Aktiviert",
+      "disabled": "Deaktiviert"
+    },
+    "internet": {
+      "limited": "Verbunden ohne Internet"
     },
     "kofi": {
       "opened": "Ko-fi-Seite in Ihrem Browser geöffnet"

@@ -1,4 +1,5 @@
 import QtQuick
+import QtQuick.Effects
 import Quickshell
 import Quickshell.Wayland
 import qs.Commons
@@ -9,7 +10,8 @@ Loader {
 
   property ShellScreen screen
 
-  property bool attachedToBar: Settings.data.ui.panelsAttachedToBar
+  readonly property real opacityThreshold: 0.33
+  property bool attachedToBar: (Settings.data.ui.panelsAttachedToBar && Settings.data.bar.backgroundOpacity > opacityThreshold)
   property bool useOverlay: Settings.data.ui.panelsOverlayLayer
 
   property Component panelContent: null
@@ -211,18 +213,29 @@ Loader {
       NShapedRectangle {
         id: panelBackground
 
-        backgroundColor: (attachedToBar && Settings.data.bar.backgroundOpacity > 0 && (topLeftInverted || topRightInverted || bottomLeftInverted || bottomRightInverted)) ? Qt.alpha(panelBackgroundColor, Settings.data.bar.backgroundOpacity) : panelBackgroundColor
+        backgroundColor: (attachedToBar && (topLeftInverted || topRightInverted || bottomLeftInverted || bottomRightInverted)) ? Qt.alpha(panelBackgroundColor, Settings.data.bar.backgroundOpacity) : panelBackgroundColor
 
         topLeftRadius: Style.radiusL
         topRightRadius: Style.radiusL
         bottomLeftRadius: Style.radiusL
         bottomRightRadius: Style.radiusL
 
+        // Drop shadow effect
+        layer.enabled: true
+        layer.effect: MultiEffect {
+          shadowEnabled: true
+          shadowBlur: 0.85
+          shadowOpacity: 0.45
+          shadowColor: Color.mShadow
+          shadowHorizontalOffset: (barPosition === "left" || barPosition === "top") ? 6 : - 6
+          shadowVerticalOffset: (barPosition === "left" || barPosition === "top") ? 6 : - 6
+        }
+
         // Set inverted corners based on panel anchors and bar position
 
         // Top-left corner
         topLeftInverted: {
-          if (!attachedToBar || Settings.data.bar.backgroundOpacity <= 0)
+          if (!attachedToBar)
             return false
 
           // Inverted if panel is anchored to top edge (bar is at top)
@@ -237,7 +250,7 @@ Loader {
 
         // Top-right corner
         topRightInverted: {
-          if (!attachedToBar || Settings.data.bar.backgroundOpacity <= 0)
+          if (!attachedToBar)
             return false
 
           // Inverted if panel is anchored to top edge (bar is at top)
@@ -252,7 +265,7 @@ Loader {
 
         // Bottom-left corner
         bottomLeftInverted: {
-          if (!attachedToBar || Settings.data.bar.backgroundOpacity <= 0)
+          if (!attachedToBar)
             return false
 
           // Inverted if panel is anchored to bottom edge (bar is at bottom)
@@ -267,7 +280,7 @@ Loader {
 
         // Bottom-right corner
         bottomRightInverted: {
-          if (!attachedToBar || Settings.data.bar.backgroundOpacity <= 0)
+          if (!attachedToBar)
             return false
 
           // Inverted if panel is anchored to bottom edge (bar is at bottom)
@@ -607,7 +620,7 @@ Loader {
           anchors.fill: parent
           anchors.margins: 0
           color: Color.transparent
-          border.color: Color.mTertiary
+          border.color: Color.mPrimary
           border.width: Style.borderM
           radius: Style.radiusL
           visible: panelBackground.isDragged && dragHandler.active
@@ -619,7 +632,7 @@ Loader {
             anchors.fill: parent
             anchors.margins: 0
             color: Color.transparent
-            border.color: Color.mTertiary
+            border.color: Color.mPrimary
             border.width: Style.borderS
             radius: Style.radiusL
             opacity: 0.3
