@@ -13,7 +13,6 @@ NPanel {
 
   preferredWidth: 420 * Style.uiScaleRatio
   preferredHeight: 500 * Style.uiScaleRatio
-  panelKeyboardFocus: true
 
   panelContent: Rectangle {
     color: Color.transparent
@@ -220,7 +219,9 @@ NPanel {
                 text: I18n.tr("bluetooth.panel.pairing-mode")
                 pointSize: Style.fontSizeM
                 color: Color.mOnSurfaceVariant
-                Layout.alignment: Qt.AlignHCenter
+                horizontalAlignment: Text.AlignHCenter
+                Layout.fillWidth: true
+                wrapMode: Text.WordWrap
               }
             }
           }

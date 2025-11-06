@@ -14,7 +14,7 @@ Singleton {
   readonly property alias data: adapter
   property bool isLoaded: false
   property bool directoriesCreated: false
-  property int settingsVersion: 16
+  property int settingsVersion: 18
   property bool isDebug: Quickshell.env("NOCTALIA_DEBUG") === "1"
 
   // Define our app directories
@@ -54,8 +54,9 @@ Singleton {
     // This should only be activated once when the settings structure has changed
     // Then it should be commented out again, regular users don't need to generate
     // default settings on every start
-    // TODO: automate this someday!
-    //generateDefaultSettings()
+    if (isDebug) {
+      generateDefaultSettings()
+    }
 
     // Patch-in the local default, resolved to user's home
     adapter.general.avatarImage = defaultAvatar
@@ -146,6 +147,12 @@ Singleton {
       property real marginVertical: 0.25
       property real marginHorizontal: 0.25
 
+      // Bar outer corners (inverted/concave corners at bar edges when not floating)
+      property bool outerCorners: true
+
+      // Reserves space with compositor
+      property bool exclusive: true
+
       // Widget configuration for modular bar system
       property JsonObject widgets
       widgets: JsonObject {
@@ -182,6 +189,7 @@ Singleton {
     // general
     property JsonObject general: JsonObject {
       property string avatarImage: ""
+      property bool dimDesktop: true
       property bool showScreenCorners: false
       property bool forceBlackScreenCorners: false
       property real scaleRatio: 1.0
@@ -191,7 +199,22 @@ Singleton {
       property bool animationDisabled: false
       property bool compactLockScreen: false
       property bool lockOnSuspend: true
+      property bool enableShadows: true
+      property string shadowDirection: "bottom_right"
+      property int shadowOffsetX: 2
+      property int shadowOffsetY: 3
       property string language: ""
+    }
+
+    // ui
+    property JsonObject ui: JsonObject {
+      property string fontDefault: "Roboto"
+      property string fontFixed: "DejaVu Sans Mono"
+      property real fontDefaultScale: 1.0
+      property real fontFixedScale: 1.0
+      property bool tooltipsEnabled: true
+      property bool panelsAttachedToBar: true
+      property bool panelsOverlayLayer: false
     }
 
     // location
@@ -224,6 +247,7 @@ Singleton {
     property JsonObject wallpaper: JsonObject {
       property bool enabled: true
       property string engine: ""
+      property bool overviewEnabled: true
       property string directory: ""
       property bool enableMultiMonitorDirectories: false
       property bool recursiveSearch: false
@@ -237,6 +261,7 @@ Singleton {
       property string transitionType: "random"
       property real transitionEdgeSmoothness: 0.05
       property list<var> monitors: []
+      property string panelPosition: "follow_bar"
     }
 
     // applauncher
@@ -347,21 +372,11 @@ Singleton {
       property string preferredPlayer: ""
     }
 
-    // ui
-    property JsonObject ui: JsonObject {
-      property string fontDefault: "Roboto"
-      property string fontFixed: "DejaVu Sans Mono"
-      property real fontDefaultScale: 1.0
-      property real fontFixedScale: 1.0
-      property bool tooltipsEnabled: true
-      property bool panelsAttachedToBar: true
-      property bool panelsOverlayLayer: true
-    }
-
     // brightness
     property JsonObject brightness: JsonObject {
       property int brightnessStep: 5
       property bool enforceMinimum: true
+      property bool enableDdcSupport: false
     }
 
     property JsonObject colorSchemes: JsonObject {
@@ -384,6 +399,7 @@ Singleton {
       property bool kitty: false
       property bool ghostty: false
       property bool foot: false
+      property bool wezterm: false
       property bool fuzzel: false
       property bool discord: false
       property bool discord_vesktop: false
@@ -513,6 +529,18 @@ Singleton {
       Logger.w("Settings", "BarWidgetRegistry not ready, deferring upgrade")
       Qt.callLater(upgradeSettingsData)
       return
+    }
+
+    // TEMP - disable Open panels on overlay which used to be true by default.
+    if (adapter.settingsVersion < 18) {
+      try {
+        if (adapter.ui.panelsOverlayLayer) {
+          adapter.ui.panelsOverlayLayer = false
+          Logger.i("Settings", "Upgraded panelsOverlayLayer to false by default")
+        }
+      } catch (e) {
+
+      }
     }
 
     const sections = ["left", "center", "right"]

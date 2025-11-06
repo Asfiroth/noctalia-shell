@@ -18,7 +18,7 @@ Singleton {
                            "Clock": clockComponent,
                            "ControlCenter": controlCenterComponent,
                            "CustomButton": customButtonComponent,
-                           "DarkMode": darkMode,
+                           "DarkMode": darkModeComponent,
                            "KeepAwake": keepAwakeComponent,
                            "KeyboardLayout": keyboardLayoutComponent,
                            "LockKeys": lockKeysComponent,
@@ -101,10 +101,12 @@ Singleton {
                                   },
                                   "LockKeys": {
                                     "allowUserSettings": true,
-                                    "indicatorStyle": "large",
                                     "showCapsLock": true,
                                     "showNumLock": true,
-                                    "showScrollLock": true
+                                    "showScrollLock": true,
+                                    "capsLockIcon": "letter-c",
+                                    "numLockIcon": "letter-n",
+                                    "scrollLockIcon": "letter-s"
                                   },
                                   "MediaMini": {
                                     "allowUserSettings": true,
@@ -112,6 +114,7 @@ Singleton {
                                     "scrollingMode": "hover",
                                     "maxWidth": 145,
                                     "useFixedWidth": false,
+                                    "hideWhenIdle": false,
                                     "showAlbumArt": false,
                                     "showVisualizer": false,
                                     "visualizerType": "linear"
@@ -151,7 +154,8 @@ Singleton {
                                   "Tray": {
                                     "allowUserSettings": true,
                                     "blacklist": [],
-                                    "colorizeIcons": false
+                                    "colorizeIcons": false,
+                                    "favorites": []
                                   },
                                   "WiFi": {
                                     "allowUserSettings": true,
@@ -191,7 +195,7 @@ Singleton {
   property Component customButtonComponent: Component {
     CustomButton {}
   }
-  property Component darkMode: Component {
+  property Component darkModeComponent: Component {
     DarkMode {}
   }
   property Component keyboardLayoutComponent: Component {

@@ -11,7 +11,7 @@ import Quickshell.Widgets
 import qs.Commons
 import qs.Services
 import qs.Widgets
-import qs.Modules.Audio
+import qs.Modules.AudioSpectrum
 import qs.Modules.Bar.Calendar
 
 Loader {
@@ -57,7 +57,7 @@ Loader {
         locked: lockScreen.active
 
         WlSessionLockSurface {
-          readonly property var now: Time.date
+          readonly property var now: Time.now
 
           Item {
             id: batteryIndicator
@@ -348,9 +348,11 @@ Loader {
                         "es": "dddd, d 'de' MMMM",
                         "fr": "dddd d MMMM",
                         "pt": "dddd, d 'de' MMMM",
-                        "zh": "yyyy年M月d日 dddd"
+                        "zh": "yyyy年M月d日 dddd",
+                        "uk": "dddd, d MMMM",
+                        "tr": "dddd, d MMMM"
                       }
-                      return I18n.locale.toString(Time.date, formats[lang] || "dddd, MMMM d")
+                      return I18n.locale.toString(Time.now, formats[lang] || "dddd, MMMM d")
                     }
                     pointSize: Style.fontSizeXL
                     font.weight: Font.Medium
@@ -365,8 +367,9 @@ Loader {
                 }
 
                 // Clock
-                ClockLoader {
-                  now: Time.date
+                NClock {
+                  now: Time.now
+                  clockStyle: Settings.data.location.analogClockInCalendar ? "analog" : "digital"
                   Layout.preferredWidth: 70
                   Layout.preferredHeight: 70
                   Layout.alignment: Qt.AlignVCenter

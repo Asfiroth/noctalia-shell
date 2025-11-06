@@ -16,7 +16,8 @@ Singleton {
                                           "foot": "~/.config/foot/themes/noctalia",
                                           "ghostty": "~/.config/ghostty/themes/noctalia",
                                           "kitty": "~/.config/kitty/themes/noctalia.conf",
-                                          "alacritty": "~/.config/alacritty/themes/noctalia.toml"
+                                          "alacritty": "~/.config/alacritty/themes/noctalia.toml",
+                                          "wezterm": "~/.config/wezterm/colors/Noctalia.toml"
                                         })
 
   readonly property var schemeNameMap: ({
@@ -387,7 +388,12 @@ Singleton {
     const mode = Settings.data.colorSchemes.darkMode ? 'dark' : 'light'
 
     colorScheme = schemeNameMap[colorScheme] || colorScheme
-    const extension = terminal === 'kitty' ? ".conf" : ""
+    let extension = ""
+    if (terminal === 'kitty') {
+      extension = ".conf"
+    } else if (terminal === 'wezterm') {
+      extension = ".toml"
+    }
 
     return `${Quickshell.shellDir}/Assets/ColorScheme/${colorScheme}/terminal/${terminal}/${colorScheme}-${mode}${extension}`
   }
@@ -454,15 +460,11 @@ Singleton {
     id: generateProcess
     workingDirectory: Quickshell.shellDir
     running: false
-    
+
     onExited: function (exitCode) {
       if (exitCode !== 0) {
         // Capture error output from stderr first, then stdout, or use fallback message
-        const errorMsg = (stderr.text && stderr.text.trim() !== "") 
-          ? stderr.text.trim() 
-          : ((stdout.text && stdout.text.trim() !== "") 
-              ? stdout.text.trim() 
-              : I18n.tr("toast.matugen.failed-general"))
+        const errorMsg = (stderr.text && stderr.text.trim() !== "") ? stderr.text.trim() : ((stdout.text && stdout.text.trim() !== "") ? stdout.text.trim() : I18n.tr("toast.matugen.failed-general"))
         Logger.e("AppThemeService", "Matugen process failed with exit code:", exitCode)
         if (stderr.text && stderr.text.trim() !== "") {
           Logger.e("AppThemeService", "Matugen stderr:", stderr.text)
@@ -470,14 +472,10 @@ Singleton {
         if (stdout.text && stdout.text.trim() !== "") {
           Logger.e("AppThemeService", "Matugen stdout:", stdout.text)
         }
-        ToastService.showError(
-          I18n.tr("toast.matugen.failed"),
-          errorMsg,
-          6000
-        )
+        ToastService.showError(I18n.tr("toast.matugen.failed"), errorMsg, 6000)
       }
     }
-    
+
     stdout: StdioCollector {
       onStreamFinished: {
         if (this.text) {

@@ -12,9 +12,10 @@ NPanel {
   id: root
 
   property ShellScreen screen
-  readonly property var now: Time.date
+  readonly property var now: Time.now
 
-  panelKeyboardFocus: true
+  preferredWidth: 500 * Style.uiScaleRatio
+  preferredHeight: 700 * Style.uiScaleRatio
 
   // Helper function to calculate ISO week number
   function getISOWeekNumber(date) {
@@ -44,7 +45,8 @@ NPanel {
       return numWeeks * rowHeight
     }
 
-    property real contentPreferredHeight: banner.height + calendar.height + weatherLoader.height + Style.marginM * 4 + (Settings.data.location.weatherEnabled && Settings.data.location.showCalendarWeather) * Style.marginM
+    // Use implicitHeight from content + margins to avoid binding loops
+    property real contentPreferredHeight: content.implicitHeight + Style.marginL * 2
 
     ColumnLayout {
       id: content
@@ -58,30 +60,16 @@ NPanel {
       readonly property bool weatherReady: Settings.data.location.weatherEnabled && (LocationService.data.weather !== null)
 
       function checkIsCurrentMonth() {
-        return (Time.date.getMonth() === grid.month) && (Time.date.getFullYear() === grid.year)
+        return (now.getMonth() === grid.month) && (now.getFullYear() === grid.year)
       }
 
       Component.onCompleted: {
         isCurrentMonth = checkIsCurrentMonth()
       }
 
-      Shortcut {
-        sequence: "Escape"
-        onActivated: {
-          if (timerActive) {
-            cancelTimer()
-          } else {
-            cancelTimer()
-            root.close()
-          }
-        }
-        context: Qt.WidgetShortcut
-        enabled: root.opened
-      }
-
       Connections {
         target: Time
-        function onDateChanged() {
+        function onNowChanged() {
           content.isCurrentMonth = content.checkIsCurrentMonth()
         }
       }
@@ -130,7 +118,7 @@ NPanel {
               clip: true
 
               Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft
-              text: Time.date.getDate()
+              text: now.getDate()
               pointSize: Style.fontSizeXXXL * 1.5
               font.weight: Style.fontWeightBold
               color: Color.mOnPrimary
@@ -213,11 +201,12 @@ NPanel {
         }
 
         // Analog clock
-        ClockLoader {
+        NClock {
           id: clockLoader
           anchors.right: parent.right
           anchors.rightMargin: Style.marginXL
           anchors.verticalCenter: parent.verticalCenter
+          clockStyle: Settings.data.location.analogClockInCalendar ? "analog" : "digital"
           progressColor: Color.mOnPrimary
           Layout.alignment: Qt.AlignVCenter
           now: root.now
@@ -277,8 +266,8 @@ NPanel {
             NIconButton {
               icon: "calendar"
               onClicked: {
-                grid.month = Time.date.getMonth()
-                grid.year = Time.date.getFullYear()
+                grid.month = now.getMonth()
+                grid.year = now.getFullYear()
                 content.isCurrentMonth = true
                 CalendarService.loadEvents()
               }
@@ -484,8 +473,8 @@ NPanel {
               columnSpacing: Style.marginXXS
               rowSpacing: Style.marginXXS
 
-              property int month: Time.date.getMonth()
-              property int year: Time.date.getFullYear()
+              property int month: now.getMonth()
+              property int year: now.getFullYear()
 
               Behavior on Layout.preferredHeight {
                 NumberAnimation {
@@ -622,8 +611,10 @@ NPanel {
 
                       onClicked: {
                         const dateWithSlashes = `${(modelData.month + 1).toString().padStart(2, '0')}/${modelData.day.toString().padStart(2, '0')}/${modelData.year.toString().substring(2)}`
-                        Quickshell.execDetached(["gnome-calendar", "--date", dateWithSlashes])
-                        PanelService.getPanel("calendarPanel").toggle(null)
+                        if (ProgramCheckerService.gnomeCalendarAvailable) {
+                          Quickshell.execDetached(["gnome-calendar", "--date", dateWithSlashes])
+                          root.close()
+                        }
                       }
 
                       onExited: {

@@ -17,8 +17,7 @@ NPanel {
   property bool localInputVolumeChanging: false
 
   preferredWidth: 380 * Style.uiScaleRatio
-  preferredHeight: 500 * Style.uiScaleRatio
-  panelKeyboardFocus: true
+  preferredHeight: 420 * Style.uiScaleRatio
 
   // Connections to update local volumes when AudioService changes
   Connections {
@@ -57,7 +56,12 @@ NPanel {
   panelContent: Rectangle {
     color: Color.transparent
 
+    // Use implicitHeight from content + margins to avoid binding loops
+    property real contentPreferredHeight: mainColumn.implicitHeight + Style.marginL * 2
+
+    // property real contentPreferredHeight: Math.min(screen.height * 0.42, mainColumn.implicitHeight) + Style.marginL * 2
     ColumnLayout {
+      id: mainColumn
       anchors.fill: parent
       anchors.margins: Style.marginL
       spacing: Style.marginM
