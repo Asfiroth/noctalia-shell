@@ -36,6 +36,16 @@ Item {
   }
 
   IpcHandler {
+    target: "calendar"
+    function toggle() {
+      root.withTargetScreen(screen => {
+                              var calendarPanel = PanelService.getPanel("calendarPanel", screen)
+                              calendarPanel?.toggle(null, "Clock")
+                            })
+    }
+  }
+
+  IpcHandler {
     target: "notifications"
     function toggleHistory() {
       // Will attempt to open the panel next to the bar button if any.
@@ -46,6 +56,12 @@ Item {
     }
     function toggleDND() {
       Settings.data.notifications.doNotDisturb = !Settings.data.notifications.doNotDisturb
+    }
+    function enableDND() {
+      Settings.data.notifications.doNotDisturb = true
+    }
+    function disableDND() {
+      Settings.data.notifications.doNotDisturb = false
     }
     function clear() {
       NotificationService.clearHistory()
@@ -192,7 +208,7 @@ Item {
                               var controlCenterPanel = PanelService.getPanel("controlCenterPanel", screen)
                               if (Settings.data.controlCenter.position === "close_to_bar_button") {
                                 // Will attempt to open the panel next to the bar button if any.
-                                controlCenterPanel.toggle(null, "ControlCenter")
+                                controlCenterPanel?.toggle(null, "ControlCenter")
                               } else {
                                 controlCenterPanel?.toggle()
                               }
@@ -276,6 +292,18 @@ Item {
         PowerProfileService.setProfile(0)
         break
       }
+    }
+
+    function toggleNoctaliaPerformance() {
+      PowerProfileService.toggleNoctaliaPerformance()
+    }
+
+    function enableNoctaliaPerformance() {
+      PowerProfileService.setNoctaliaPerformance(true)
+    }
+
+    function disableNoctaliaPerformance() {
+      PowerProfileService.setNoctaliaPerformance(false)
     }
   }
 

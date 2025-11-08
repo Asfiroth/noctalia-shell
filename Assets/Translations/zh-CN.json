@@ -1524,6 +1524,10 @@
         "description": "自定义界面的外观、感觉和行为。",
         "label": "外观"
       },
+      "settings-panel-attached-to-bar": {
+        "description": "使设置窗口与边栏保持对齐，实现统一的外观。",
+        "label": "将设置窗口贴合边栏"
+      },
       "shadows": {
         "description": "启用条形图和面板下的阴影。",
         "direction": {
@@ -1734,6 +1738,11 @@
       "normal": "正常模式",
       "not-installed": "未安装 wlsunset"
     },
+    "noctalia-performance": {
+      "disabled": "性能模式已禁用",
+      "enabled": "已启用性能模式",
+      "label": "夜之颂演出"
+    },
     "power-profile": {
       "changed": "电源模式已更改",
       "profile-name": "\"{profile}\""
@@ -1793,6 +1802,8 @@
     "night-light-enabled": "夜间模式已启用。\n左键点击循环模式。\n右键点击访问设置。",
     "night-light-forced": "夜间模式已强制启用。\n左键点击循环模式。\n右键点击访问设置。",
     "night-light-not-installed": "夜间模式不可用。\nwlsunset 未安装。",
+    "noctalia-performance-disabled": "Noctalia 性能模式已禁用。\n左键点击以启用。",
+    "noctalia-performance-enabled": "Noctalia 性能模式已启用。\n左键点击以禁用。",
     "open-control-center": "打开控制中心",
     "open-notification-history-disable-dnd": "打开通知历史记录\n右键点击禁用\"勿扰模式\"。",
     "open-notification-history-enable-dnd": "打开通知历史记录\n右键点击启用\"勿扰模式\"。",

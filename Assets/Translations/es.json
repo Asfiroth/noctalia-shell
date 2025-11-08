@@ -1524,6 +1524,10 @@
         "description": "Personaliza la apariencia, el ambiente y el comportamiento de la interfaz.",
         "label": "Apariencia"
       },
+      "settings-panel-attached-to-bar": {
+        "description": "Mantén la ventana de Configuración alineada con la barra para un aspecto unificado.",
+        "label": "Ajustar Configuración a la barra"
+      },
       "shadows": {
         "description": "Habilita sombras paralelas debajo de las barras y los paneles.",
         "direction": {
@@ -1734,6 +1738,11 @@
       "normal": "Modo normal",
       "not-installed": "wlsunset no está instalado"
     },
+    "noctalia-performance": {
+      "disabled": "Modo de rendimiento desactivado",
+      "enabled": "Modo de rendimiento activado",
+      "label": "Actuación de Noctalia"
+    },
     "power-profile": {
       "changed": "Perfil de energía cambiado",
       "profile-name": "\"{profile}\""
@@ -1793,6 +1802,8 @@
     "night-light-enabled": "Luz nocturna activada.\nClic izquierdo para cambiar de modo.\nClic derecho para acceder a la configuración.",
     "night-light-forced": "Luz nocturna forzada.\nClic izquierdo para cambiar de modo.\nClic derecho para acceder a la configuración.",
     "night-light-not-installed": "Luz nocturna no disponible.\nwlsunset no está instalado.",
+    "noctalia-performance-disabled": "El modo de rendimiento de Noctalia está desactivado.\nClic izquierdo para activar.",
+    "noctalia-performance-enabled": "El modo de rendimiento de Noctalia está activado.\nClic izquierdo para desactivar.",
     "open-control-center": "Abrir el centro de control",
     "open-notification-history-disable-dnd": "Abrir historial de notificaciones\nClic derecho para desactivar \"No molestar\".",
     "open-notification-history-enable-dnd": "Abrir historial de notificaciones\nClic derecho para activar \"No molestar\".",
