@@ -123,6 +123,10 @@
           "stream-description": "Introduce un comando para ejecutar continuamente."
         },
         "dynamic-text": "Texto dinámico",
+        "hide-vertical": {
+          "description": "Si está activado, el texto de la salida del comando no se mostrará cuando la barra esté en un diseño vertical (izquierda o derecha).",
+          "label": "Ocultar texto en barra vertical"
+        },
         "icon": {
           "description": "Selecciona un icono de la biblioteca.",
           "label": "Icono"
@@ -276,6 +280,16 @@
         "only-same-output": {
           "description": "Muestra solo las aplicaciones del resultado donde se encuentra la barra.",
           "label": "Solo de la misma salida"
+        }
+      },
+      "taskbar-grouped": {
+        "show-workspace-numbers": {
+          "label": "Mostrar números de espacio de trabajo",
+          "description": "Mostrar números de espacio de trabajo en la esquina superior izquierda de los grupos de tareas."
+        },
+        "show-numbers-only-when-occupied": {
+          "label": "Mostrar números solo cuando estén ocupados",
+          "description": "Mostrar números de espacio de trabajo solo para espacios de trabajo con ventanas abiertas."
         }
       },
       "tray": {
@@ -1735,6 +1749,9 @@
     "keep-awake": {
       "disabled": "Desactivado",
       "enabled": "Activado"
+    },
+    "keyboard-layout": {
+      "changed": "Distribución de teclado cambiada a {layout}"
     },
     "kofi": {
       "opened": "Página de Ko-fi abierta en tu navegador"

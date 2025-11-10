@@ -222,13 +222,19 @@ Singleton {
   }
 
   function replaceColorsInFile(filePath, colors) {
-    // This handles both ".hex" and ".hex_stripped" the EXACT same way. Our predefined color schemes are
-    // always RRGGBB without alpha so this is fine and keeps compatibility with matugen.
     let script = ""
     Object.keys(colors).forEach(colorKey => {
-                                  const colorValue = colors[colorKey].default.hex
-                                  const escapedColor = colorValue.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
-                                  script += `sed -i 's/{{colors\\.${colorKey}\\.default\\.hex\\(_stripped\\)\\?}}/${escapedColor}/g' '${filePath}'\n`
+                                  const hexValue = colors[colorKey].default.hex
+                                  const hexStrippedValue = colors[colorKey].default.hex_stripped
+
+                                  const escapedHex = hexValue.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+                                  const escapedHexStripped = hexStrippedValue.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+
+                                  // replace hex_stripped
+                                  script += `sed -i 's/{{colors\\.${colorKey}\\.default\\.hex_stripped}}/${escapedHexStripped}/g' '${filePath}'\n`
+
+                                  // replace hex
+                                  script += `sed -i 's/{{colors\\.${colorKey}\\.default\\.hex}}/${escapedHex}/g' '${filePath}'\n`
                                 })
     return script
   }
@@ -326,18 +332,16 @@ Singleton {
 
     // Error reporting helpers
     property string generator: ""
-    function showWarning() {
+
+    function buildErrorMessage() {
       const description = (stderr.text && stderr.text.trim() !== "") ? stderr.text.trim() : ((stdout.text && stdout.text.trim() !== "") ? stdout.text.trim() : I18n.tr("toast.theming-processor-failed.desc-generic"))
       const title = I18n.tr(`toast.theming-processor-failed.title-${generator}`)
-
-      // Give a bit more time to the user to read, as it can contains important information for debugging user's templates.
-      ToastService.showWarning(title, description, 8000)
       return description
     }
 
     onExited: function (exitCode) {
       if (exitCode !== 0) {
-        const description = generateProcess.showWarning()
+        const description = generateProcess.buildErrorMessage()
         Logger.e("TemplateProcessor", "Process failed with exit code", exitCode, description)
       }
     }
@@ -348,24 +352,27 @@ Singleton {
         Logger.d("TemplateProcessor", "stdout:", this.text)
       }
     }
+
     stderr: StdioCollector {
       onStreamFinished: {
         if (this.text) {
-          const description = generateProcess.showWarning()
+          const description = generateProcess.buildErrorMessage()
           Logger.e("TemplateProcessor", "Process failed", description)
         }
       }
     }
   }
 
+  // ------------
   Process {
     id: copyProcess
     workingDirectory: Quickshell.shellDir
     running: false
     stderr: StdioCollector {
       onStreamFinished: {
-        if (this.text)
-        Logger.d("TemplateProcessor", "copyProcess stderr:", this.text)
+        if (this.text) {
+          Logger.e("TemplateProcessor", "copyProcess stderr:", this.text)
+        }
       }
     }
   }

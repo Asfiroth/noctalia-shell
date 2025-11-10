@@ -123,6 +123,10 @@
           "stream-description": "Enter a command to run continuously."
         },
         "dynamic-text": "Dynamic text",
+        "hide-vertical": {
+          "description": "If enabled, the text from the command output will not be shown when the bar is in a vertical layout (left or right).",
+          "label": "Hide text in vertical bar"
+        },
         "icon": {
           "description": "Select an icon from the library.",
           "label": "Icon"
@@ -276,6 +280,16 @@
         "only-same-output": {
           "description": "Show only apps from the output where the bar is located.",
           "label": "Only from same output"
+        }
+      },
+      "taskbar-grouped": {
+        "show-workspace-numbers": {
+          "label": "Show workspace numbers",
+          "description": "Display workspace numbers in the top-left corner of task groups."
+        },
+        "show-numbers-only-when-occupied": {
+          "label": "Show numbers only when occupied",
+          "description": "Only show workspace numbers for workspaces that have open windows."
         }
       },
       "tray": {
@@ -1735,6 +1749,9 @@
     "keep-awake": {
       "disabled": "Disabled",
       "enabled": "Enabled"
+    },
+    "keyboard-layout": {
+      "changed": "Keyboard layout changed to {layout}"
     },
     "kofi": {
       "opened": "Ko-fi page opened in your browser"

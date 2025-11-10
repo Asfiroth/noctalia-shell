@@ -7,6 +7,7 @@ import Quickshell.Io
 import Quickshell.Services.Notifications
 import qs.Commons
 import qs.Services.Power
+import qs.Services.UI
 import "../../Helpers/sha256.js" as Checksum
 
 Singleton {
@@ -20,6 +21,8 @@ Singleton {
 
   // State
   property real lastSeenTs: 0
+  // Volatile property that doesn't persist to settings (similar to noctaliaPerformanceMode)
+  property bool doNotDisturb: false
 
   // Models
   property ListModel activeList: ListModel {}
@@ -160,7 +163,7 @@ Singleton {
     const data = createData(notification)
     addToHistory(data)
 
-    if (Settings.data.notifications?.doNotDisturb || PowerProfileService.noctaliaPerformanceMode)
+    if (root.doNotDisturb || PowerProfileService.noctaliaPerformanceMode)
       return
 
     // Check if this is a replacement notification
@@ -727,11 +730,7 @@ Singleton {
   // Signals
   signal animateAndRemove(string notificationId)
 
-  Connections {
-    target: Settings.data.notifications
-    function onDoNotDisturbChanged() {
-      const enabled = Settings.data.notifications.doNotDisturb
-      ToastService.showNotice(enabled ? I18n.tr("toast.do-not-disturb.enabled") : I18n.tr("toast.do-not-disturb.disabled"), enabled ? I18n.tr("toast.do-not-disturb.enabled-desc") : I18n.tr("toast.do-not-disturb.disabled-desc"), enabled ? "bell-off" : "bell")
-    }
+  onDoNotDisturbChanged: {
+    ToastService.showNotice(doNotDisturb ? I18n.tr("toast.do-not-disturb.enabled") : I18n.tr("toast.do-not-disturb.disabled"), doNotDisturb ? I18n.tr("toast.do-not-disturb.enabled-desc") : I18n.tr("toast.do-not-disturb.disabled-desc"), doNotDisturb ? "bell-off" : "bell")
   }
 }

@@ -99,7 +99,8 @@ Singleton {
                                     "textStream": false,
                                     "textIntervalMs": 3000,
                                     "textCollapse": "",
-                                    "parseJson": false
+                                    "parseJson": false,
+                                    "hideTextInVerticalBar": false
                                   },
                                   "KeyboardLayout": {
                                     "allowUserSettings": true,
@@ -156,7 +157,9 @@ Singleton {
                                     "colorizeIcons": false
                                   },
                                   "TaskbarGrouped": {
-                                    "allowUserSettings": true
+                                    "allowUserSettings": true,
+                                    "showWorkspaceNumbers": true,
+                                    "showNumbersOnlyWhenOccupied": true
                                   },
                                   "Tray": {
                                     "allowUserSettings": true,

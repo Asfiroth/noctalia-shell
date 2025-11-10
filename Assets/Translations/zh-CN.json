@@ -123,6 +123,10 @@
           "stream-description": "输入一个要持续运行的命令。"
         },
         "dynamic-text": "动态文本",
+        "hide-vertical": {
+          "description": "如果启用，当栏处于垂直布局（左或右）时，将不显示命令输出的文本。",
+          "label": "在垂直栏中隐藏文本"
+        },
         "icon": {
           "description": "从库中选择图标。",
           "label": "图标"
@@ -276,6 +280,16 @@
         "only-same-output": {
           "description": "仅显示任务栏所在屏幕上的应用程序",
           "label": "仅显示同屏幕"
+        }
+      },
+      "taskbar-grouped": {
+        "show-workspace-numbers": {
+          "label": "显示工作区编号",
+          "description": "在任务组左上角显示工作区编号"
+        },
+        "show-numbers-only-when-occupied": {
+          "label": "仅在有窗口时显示编号",
+          "description": "只为有打开窗口的工作区显示编号"
         }
       },
       "tray": {
@@ -1735,6 +1749,9 @@
     "keep-awake": {
       "disabled": "已禁用",
       "enabled": "已启用"
+    },
+    "keyboard-layout": {
+      "changed": "键盘布局已更改为 {layout}"
     },
     "kofi": {
       "opened": "Ko-fi 页面已在您的浏览器中打开"

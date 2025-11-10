@@ -123,6 +123,10 @@
           "stream-description": "Sürekli çalıştırılacak bir komut girin."
         },
         "dynamic-text": "Dinamik metin",
+        "hide-vertical": {
+          "description": "Etkinleştirilirse, komut çıktısındaki metin, çubuk dikey düzende (sol veya sağ) olduğunda gösterilmeyecektir.",
+          "label": "Dikey çubukta metni gizle"
+        },
         "icon": {
           "description": "Kütüphaneden bir ikon seçin.",
           "label": "İkon"
@@ -276,6 +280,16 @@
         "only-same-output": {
           "description": "Sadece çubuğun bulunduğu çıktıdan uygulamaları göster.",
           "label": "Sadece aynı çıktıdan"
+        }
+      },
+      "taskbar-grouped": {
+        "show-workspace-numbers": {
+          "label": "Çalışma alanı numaralarını göster",
+          "description": "Görev gruplarının sol üst köşesinde çalışma alanı numaralarını göster."
+        },
+        "show-numbers-only-when-occupied": {
+          "label": "Yalnızca dolu olduğunda numaraları göster",
+          "description": "Çalışma alanı numaralarını yalnızca açık pencereleri olan çalışma alanları için göster."
         }
       },
       "tray": {
@@ -1731,6 +1745,9 @@
     "keep-awake": {
       "disabled": "Devre dışı",
       "enabled": "Etkin"
+    },
+    "keyboard-layout": {
+      "changed": "Klavye düzeni {layout} olarak değiştirildi"
     },
     "kofi": {
       "opened": "Ko-fi sayfası tarayıcınızda açıldı"
