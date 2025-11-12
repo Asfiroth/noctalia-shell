@@ -43,6 +43,9 @@ Item {
   // Edge snapping: if panel is within this distance (in pixels) from a screen edge, snap
   property real edgeSnapDistance: 50
 
+  // Edge snapping: if panel is within this distance (in pixels) from a screen edge, snap
+  property bool exclusiveKeyboard: false
+
   // Track whether panel is open
   property bool isPanelOpen: false
 
@@ -382,9 +385,14 @@ Item {
         rightEdgePos = root.width - root.barMarginH - Style.barHeight - panelWidth
       }
 
-      if (Math.abs(calculatedX - leftEdgePos) <= root.edgeSnapDistance) {
+      // Only snap to left edge if panel is actually meant to be at left (or no explicit anchor)
+      var shouldSnapToLeft = root.effectivePanelAnchorLeft || (!root.hasExplicitHorizontalAnchor && root.barPosition === "left")
+      // Only snap to right edge if panel is actually meant to be at right (or no explicit anchor)
+      var shouldSnapToRight = root.effectivePanelAnchorRight || (!root.hasExplicitHorizontalAnchor && root.barPosition === "right")
+
+      if (shouldSnapToLeft && Math.abs(calculatedX - leftEdgePos) <= root.edgeSnapDistance) {
         calculatedX = leftEdgePos
-      } else if (Math.abs(calculatedX - rightEdgePos) <= root.edgeSnapDistance) {
+      } else if (shouldSnapToRight && Math.abs(calculatedX - rightEdgePos) <= root.edgeSnapDistance) {
         calculatedX = rightEdgePos
       }
     }
@@ -515,9 +523,14 @@ Item {
         bottomEdgePos = root.height - root.barMarginV - Style.barHeight - panelHeight
       }
 
-      if (Math.abs(calculatedY - topEdgePos) <= root.edgeSnapDistance) {
+      // Only snap to top edge if panel is actually meant to be at top (or no explicit anchor)
+      var shouldSnapToTop = root.effectivePanelAnchorTop || (!root.hasExplicitVerticalAnchor && root.barPosition === "top")
+      // Only snap to bottom edge if panel is actually meant to be at bottom (or no explicit anchor)
+      var shouldSnapToBottom = root.effectivePanelAnchorBottom || (!root.hasExplicitVerticalAnchor && root.barPosition === "bottom")
+
+      if (shouldSnapToTop && Math.abs(calculatedY - topEdgePos) <= root.edgeSnapDistance) {
         calculatedY = topEdgePos
-      } else if (Math.abs(calculatedY - bottomEdgePos) <= root.edgeSnapDistance) {
+      } else if (shouldSnapToBottom && Math.abs(calculatedY - bottomEdgePos) <= root.edgeSnapDistance) {
         calculatedY = bottomEdgePos
       }
     }
