@@ -19,10 +19,6 @@ SmartPanel {
   preferredWidthRatio: 0.3
   preferredHeightRatio: 0.5
 
-  exclusiveKeyboard: true
-
-  panelBackgroundColor: Qt.alpha(Color.mSurface, Settings.data.appLauncher.backgroundOpacity)
-
   // Positioning
   readonly property string panelPosition: {
     if (Settings.data.appLauncher.position === "follow_bar") {

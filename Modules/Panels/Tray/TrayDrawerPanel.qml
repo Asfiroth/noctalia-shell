@@ -12,6 +12,9 @@ import qs.Modules.MainScreen
 SmartPanel {
   id: root
 
+  // Do not give exclusive focus to the TrayDrawer or it will prevent the dropdown menu to request it.
+  exclusiveKeyboard: false
+
   // Widget info for menu functionality
   property string widgetSection: ""
   property int widgetIndex: -1
@@ -184,7 +187,7 @@ SmartPanel {
                              }
                            } else if (mouse.button === Qt.MiddleButton) {
                              // Middle click: activate with middle button
-                             modelData.activate(1)
+                             modelData.secondaryActivate && modelData.secondaryActivate()
                            } else if (mouse.button === Qt.RightButton) {
                              // Right click: open context menu
                              TooltipService.hideImmediately()

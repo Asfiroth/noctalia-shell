@@ -133,11 +133,13 @@
         },
         "left-click": {
           "description": "Command to execute when the button is left-clicked.",
-          "label": "Left click"
+          "label": "Left click",
+          "update-text": "Update displayed text on left-click"
         },
         "middle-click": {
           "description": "Command to execute when the button is middle-clicked.",
-          "label": "Middle click"
+          "label": "Middle click",
+          "update-text": "Update displayed text on middle-click"
         },
         "parse-json": {
           "description": "Parse the command output as a JSON object to dynamically set text and icon.",
@@ -149,7 +151,8 @@
         },
         "right-click": {
           "description": "Command to execute when the button is right-clicked.",
-          "label": "Right click"
+          "label": "Right click",
+          "update-text": "Update displayed text on right-click"
         },
         "text-stream": {
           "description": "Streamed lines from the command will be displayed as text on the button.",
@@ -1437,6 +1440,10 @@
         "description": "Display OSD above fullscreen windows and other layers.",
         "label": "Always on top"
       },
+      "background-opacity": {
+        "description": "Controls the transparency of the OSD background.",
+        "label": "Background opacity"
+      },
       "description": "Configure on-screen indicators such as volume and brightness overlays.",
       "duration": {
         "auto-hide": {
@@ -1529,6 +1536,37 @@
         }
       }
     },
+    "session-menu": {
+      "countdown-duration": {
+        "description": "Set how long the countdown timer lasts before executing power actions.",
+        "label": "Countdown duration"
+      },
+      "enable-countdown": {
+        "description": "Show a countdown timer before executing power actions.",
+        "label": "Enable countdown timer"
+      },
+      "entries": {
+        "section": {
+          "description": "Customize which power actions appear in the Session Menu and in what order.",
+          "label": "Power actions"
+        }
+      },
+      "general": {
+        "section": {
+          "description": "Configure the Session Menu panel behavior and appearance.",
+          "label": "General"
+        }
+      },
+      "position": {
+        "description": "Choose where the Session Menu panel appears when opened.",
+        "label": "Position"
+      },
+      "show-header": {
+        "description": "Display the title and close button at the top of the Session Menu.",
+        "label": "Show header"
+      },
+      "title": "Session Menu"
+    },
     "user-interface": {
       "animation-disable": {
         "description": "Disable all animations for a faster, more responsive experience.",
@@ -1547,6 +1585,10 @@
       "dim-desktop": {
         "description": "Dim the desktop when panels or menus are open.",
         "label": "Dim desktop"
+      },
+      "panel-background-opacity": {
+        "description": "Set the background opacity for all panels (Launcher, Control Center, Settings, etc.).",
+        "label": "Panel background opacity"
       },
       "panels-attached-to-bar": {
         "description": "Panels lock to the bar and screen edges, creating a seamless look with stylish inverted corners.",
@@ -1643,6 +1685,10 @@
           "description": "Path to your main wallpaper folder.",
           "label": "Wallpaper folder",
           "tooltip": "Browse for wallpaper folder"
+        },
+        "hide-wallpaper-filenames": {
+          "description": "Hide wallpaper filenames in the selector.",
+          "label": "Hide filenames"
         },
         "monitor-specific": {
           "description": "Set a different wallpaper folder for each monitor.",
