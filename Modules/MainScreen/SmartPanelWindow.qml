@@ -71,6 +71,14 @@ PanelWindow {
     right: true
   }
 
+  // Margins to exclude bar area so bar remains clickable
+  margins {
+    top: placeholder.barPosition === "top" ? (placeholder.barMarginV + Style.barHeight) : 0
+    bottom: placeholder.barPosition === "bottom" ? (placeholder.barMarginV + Style.barHeight) : 0
+    left: placeholder.barPosition === "left" ? (placeholder.barMarginH + Style.barHeight) : 0
+    right: placeholder.barPosition === "right" ? (placeholder.barMarginH + Style.barHeight) : 0
+  }
+
   // Sync state to placeholder
   onIsPanelVisibleChanged: {
     placeholder.isPanelVisible = isPanelVisible
@@ -191,12 +199,11 @@ PanelWindow {
                         } else if (event.key === Qt.Key_Right && panelWrapper.onRightPressed) {
                           panelWrapper.onRightPressed()
                           event.accepted = true
-                        } else if (event.key === Qt.Key_Tab) {
-                          if (event.modifiers & Qt.ShiftModifier && panelWrapper.onShiftTabPressed) {
-                            panelWrapper.onShiftTabPressed()
-                          } else if (panelWrapper.onTabPressed) {
-                            panelWrapper.onTabPressed()
-                          }
+                        } else if (event.key === Qt.Key_Tab && panelWrapper.onTabPressed) {
+                          panelWrapper.onTabPressed()
+                          event.accepted = true
+                        } else if (event.key === Qt.Key_Backtab && panelWrapper.onBackTabPressed) {
+                          panelWrapper.onBackTabPressed()
                           event.accepted = true
                         } else if ((event.key === Qt.Key_Return || event.key === Qt.Key_Enter) && panelWrapper.onReturnPressed) {
                           panelWrapper.onReturnPressed()
@@ -244,9 +251,9 @@ PanelWindow {
     // Content wrapper with opacity animation
     Item {
       id: contentWrapper
-      // Position at placeholder location within fullscreen window
-      x: placeholder.panelItem.x
-      y: placeholder.panelItem.y
+      // Position at placeholder location, compensating for window margins
+      x: placeholder.panelItem.x - (placeholder.barPosition === "left" ? (placeholder.barMarginH + Style.barHeight) : 0)
+      y: placeholder.panelItem.y - (placeholder.barPosition === "top" ? (placeholder.barMarginV + Style.barHeight) : 0)
       width: placeholder.panelItem.width
       height: placeholder.panelItem.height
       z: 1 // Above click-to-close MouseArea

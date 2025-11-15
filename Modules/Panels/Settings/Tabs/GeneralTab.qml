@@ -33,7 +33,7 @@ ColumnLayout {
 
     NTextInputButton {
       label: I18n.tr("settings.general.profile.picture.label", {
-                       "user": Quickshell.env("USER" || "User")
+                       "user": HostService.displayName
                      })
       description: I18n.tr("settings.general.profile.picture.description")
       text: Settings.data.general.avatarImage
@@ -233,7 +233,7 @@ ColumnLayout {
   }
 
   NButton {
-    visible: !DistroService.isNixOS
+    visible: !HostService.isNixOS
     text: I18n.tr("settings.general.launch-setup-wizard")
     onClicked: {
       var targetScreen = PanelService.openedPanel ? PanelService.openedPanel.screen : (Quickshell.screens.length > 0 ? Quickshell.screens[0] : null)

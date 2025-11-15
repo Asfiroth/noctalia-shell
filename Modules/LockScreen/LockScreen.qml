@@ -15,6 +15,7 @@ import qs.Services.Location
 import qs.Services.Media
 import qs.Services.Compositor
 import qs.Services.UI
+import qs.Services.System
 import qs.Widgets
 import qs.Widgets.AudioSpectrum
 
@@ -336,7 +337,7 @@ Loader {
 
                   // Welcome back + Username on one line
                   NText {
-                    text: I18n.tr("lock-screen.welcome-back") + " " + (Quickshell.env("USER").charAt(0).toUpperCase() + Quickshell.env("USER").slice(1)) + "!"
+                    text: I18n.tr("lock-screen.welcome-back") + " " + HostService.displayName + "!"
                     pointSize: Style.fontSizeXXL
                     font.weight: Font.Medium
                     color: Color.mOnSurface
@@ -1171,6 +1172,54 @@ Loader {
                       anchors.fill: parent
                       hoverEnabled: true
                       onClicked: CompositorService.suspend()
+                    }
+
+                    Behavior on color {
+                      ColorAnimation {
+                        duration: 200
+                        easing.type: Easing.OutCubic
+                      }
+                    }
+
+                    Behavior on border.color {
+                      ColorAnimation {
+                        duration: 200
+                        easing.type: Easing.OutCubic
+                      }
+                    }
+                  }
+
+                  Rectangle {
+                    Layout.fillWidth: true
+                    Layout.preferredHeight: Settings.data.general.compactLockScreen ? 36 : 48
+                    radius: Settings.data.general.compactLockScreen ? 18 : 24
+                    color: hibernateButtonArea.containsMouse ? Color.mHover : "transparent"
+                    border.color: Color.mOutline
+                    border.width: 1
+
+                    RowLayout {
+                      anchors.centerIn: parent
+                      spacing: 6
+
+                      NIcon {
+                        icon: "hibernate"
+                        pointSize: Settings.data.general.compactLockScreen ? Style.fontSizeM : Style.fontSizeL
+                        color: hibernateButtonArea.containsMouse ? Color.mOnHover : Color.mOnSurfaceVariant
+                      }
+
+                      NText {
+                        text: I18n.tr("session-menu.hibernate")
+                        pointSize: Settings.data.general.compactLockScreen ? Style.fontSizeS : Style.fontSizeM
+                        color: hibernateButtonArea.containsMouse ? Color.mOnHover : Color.mOnSurfaceVariant
+                        font.weight: Font.Medium
+                      }
+                    }
+
+                    MouseArea {
+                      id: hibernateButtonArea
+                      anchors.fill: parent
+                      hoverEnabled: true
+                      onClicked: CompositorService.hibernate()
                     }
 
                     Behavior on color {

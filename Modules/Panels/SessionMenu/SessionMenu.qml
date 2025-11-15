@@ -65,6 +65,11 @@ SmartPanel {
       "title": I18n.tr("session-menu.suspend"),
       "isShutdown": false
     },
+    "hibernate": {
+      "icon": "hibernate",
+      "title": I18n.tr("session-menu.hibernate"),
+      "isShutdown": false
+    },
     "reboot": {
       "icon": "reboot",
       "title": I18n.tr("session-menu.reboot"),
@@ -83,7 +88,7 @@ SmartPanel {
   }
 
   // Build powerOptions from settings, filtering enabled ones and adding metadata
-  readonly property var powerOptions: (function () {
+  property var powerOptions: {
     var options = []
     var settingsOptions = Settings.data.sessionMenu.powerOptions || []
 
@@ -95,13 +100,39 @@ SmartPanel {
                        "action": settingOption.action,
                        "icon": metadata.icon,
                        "title": metadata.title,
-                       "isShutdown": metadata.isShutdown
+                       "isShutdown": metadata.isShutdown,
+                       "countdownEnabled": settingOption.countdownEnabled !== undefined ? settingOption.countdownEnabled : true
                      })
       }
     }
 
     return options
-  })()
+  }
+
+  // Update powerOptions when settings change
+  Connections {
+    target: Settings.data.sessionMenu
+    function onPowerOptionsChanged() {
+      var options = []
+      var settingsOptions = Settings.data.sessionMenu.powerOptions || []
+
+      for (var i = 0; i < settingsOptions.length; i++) {
+        var settingOption = settingsOptions[i]
+        if (settingOption.enabled && actionMetadata[settingOption.action]) {
+          var metadata = actionMetadata[settingOption.action]
+          options.push({
+                         "action": settingOption.action,
+                         "icon": metadata.icon,
+                         "title": metadata.title,
+                         "isShutdown": metadata.isShutdown,
+                         "countdownEnabled": settingOption.countdownEnabled !== undefined ? settingOption.countdownEnabled : true
+                       })
+        }
+      }
+
+      root.powerOptions = options
+    }
+  }
 
   // Lifecycle handlers
   onOpened: {
@@ -115,8 +146,23 @@ SmartPanel {
 
   // Timer management
   function startTimer(action) {
-    // If countdown is disabled, execute immediately
+    // Check if global countdown is disabled
     if (!Settings.data.sessionMenu.enableCountdown) {
+      executeAction(action)
+      return
+    }
+
+    // Check per-item countdown setting
+    var option = null
+    for (var i = 0; i < powerOptions.length; i++) {
+      if (powerOptions[i].action === action) {
+        option = powerOptions[i]
+        break
+      }
+    }
+
+    // If this specific action has countdown disabled, execute immediately
+    if (option && option.countdownEnabled === false) {
       executeAction(action)
       return
     }
@@ -158,6 +204,9 @@ SmartPanel {
       } else {
         CompositorService.suspend()
       }
+      break
+    case "hibernate":
+      CompositorService.hibernate()
       break
     case "reboot":
       CompositorService.reboot()
@@ -220,7 +269,7 @@ SmartPanel {
     selectNextWrapped()
   }
 
-  function onShiftTabPressed() {
+  function onBackTabPressed() {
     selectPreviousWrapped()
   }
 

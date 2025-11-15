@@ -53,12 +53,11 @@ Singleton {
       var vol = source.audio.volume
       if (vol !== undefined && !isNaN(vol)) {
         root._inputVolume = vol
-      } else {
-        root._inputVolume = 0
       }
+      // Don't reset to 0 if volume is undefined/NaN - preserve last known value
       root._inputMuted = !!source.audio.muted
     } else {
-      root._inputVolume = 0
+      // Only reset muted state
       root._inputMuted = true
     }
   }
@@ -102,7 +101,7 @@ Singleton {
     function onVolumeChanged() {
       var vol = source?.audio?.volume
       if (vol === undefined || isNaN(vol)) {
-        root._inputVolume = 0
+        // Don't reset to 0 if volume is undefined/NaN - preserve last known value
         return
       }
       // Only update if the value actually changed to prevent spurious signals

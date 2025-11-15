@@ -8,13 +8,15 @@ import qs.Widgets
 
 PopupWindow {
   id: root
+
+  property ShellScreen screen
+
   property var trayItem: null
   property var anchorItem: null
   property real anchorX
   property real anchorY
   property bool isSubMenu: false
   property bool isHovered: rootMouseArea.containsMouse
-  property ShellScreen screen
   property string widgetSection: ""
   property int widgetIndex: -1
 
@@ -45,7 +47,7 @@ PopupWindow {
   implicitWidth: menuWidth
 
   // Use the content height of the Flickable for implicit height
-  implicitHeight: Math.min(screen.height * 0.9, flickable.contentHeight + (Style.marginS * 2))
+  implicitHeight: Math.min(screen?.height * 0.9, flickable.contentHeight + (Style.marginS * 2))
   visible: false
   color: Color.transparent
   anchor.item: anchorItem
@@ -120,6 +122,16 @@ PopupWindow {
     border.color: Color.mOutline
     border.width: Math.max(1, Style.borderS)
     radius: Style.radiusM
+
+    // Fade-in animation
+    opacity: root.visible ? 1.0 : 0.0
+
+    Behavior on opacity {
+      NumberAnimation {
+        duration: Style.animationNormal
+        easing.type: Easing.OutQuad
+      }
+    }
   }
 
   Flickable {
@@ -128,6 +140,16 @@ PopupWindow {
     anchors.margins: Style.marginS
     contentHeight: columnLayout.implicitHeight
     interactive: true
+
+    // Fade-in animation
+    opacity: root.visible ? 1.0 : 0.0
+
+    Behavior on opacity {
+      NumberAnimation {
+        duration: Style.animationNormal
+        easing.type: Easing.OutQuad
+      }
+    }
 
     // Use a ColumnLayout to handle menu item arrangement
     ColumnLayout {

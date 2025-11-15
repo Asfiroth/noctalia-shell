@@ -192,6 +192,19 @@
       }
     ]
   },
+  "systemMonitor": {
+    "cpuWarningThreshold": 80,
+    "cpuCriticalThreshold": 90,
+    "tempWarningThreshold": 80,
+    "tempCriticalThreshold": 90,
+    "memWarningThreshold": 80,
+    "memCriticalThreshold": 90,
+    "diskWarningThreshold": 80,
+    "diskCriticalThreshold": 90,
+    "useCustomColors": false,
+    "warningColor": "",
+    "criticalColor": ""
+  },
   "dock": {
     "enabled": true,
     "displayMode": "always_visible",
@@ -218,6 +231,10 @@
       },
       {
         "action": "suspend",
+        "enabled": true
+      },
+      {
+        "action": "hibernate",
         "enabled": true
       },
       {
@@ -294,13 +311,7 @@
     "walker": false,
     "code": false,
     "spicetify": false,
-    "enableUserTemplates": false,
-    "discord_vesktop": false,
-    "discord_webcord": false,
-    "discord_armcord": false,
-    "discord_equibop": false,
-    "discord_lightcord": false,
-    "discord_dorion": false
+    "enableUserTemplates": false
   },
   "nightLight": {
     "enabled": false,
