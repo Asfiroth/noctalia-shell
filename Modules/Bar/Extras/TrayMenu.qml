@@ -16,7 +16,6 @@ PopupWindow {
   property real anchorX
   property real anchorY
   property bool isSubMenu: false
-  property bool isHovered: rootMouseArea.containsMouse
   property string widgetSection: ""
   property int widgetIndex: -1
 
@@ -62,12 +61,12 @@ PopupWindow {
 
   function showAt(item, x, y) {
     if (!item) {
-      Logger.warn("TrayMenu", "anchorItem is undefined, won't show menu.")
+      Logger.w("TrayMenu", "anchorItem is undefined, won't show menu.")
       return
     }
 
     if (!opener.children || opener.children.values.length === 0) {
-      //Logger.warn("TrayMenu", "Menu not ready, delaying show")
+      //Logger.w("TrayMenu", "Menu not ready, delaying show")
       Qt.callLater(() => showAt(item, x, y))
       return
     }

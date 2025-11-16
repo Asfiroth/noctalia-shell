@@ -580,6 +580,7 @@
     "search-icons": "例如：noctalia, niri, battery, cloud",
     "search-launcher": "搜索条目...或使用 > 执行命令",
     "search-wallpapers": "输入以筛选壁纸...",
+    "search-wallhaven": "搜索 Wallhaven...",
     "select": "选择",
     "test": "测试"
   },
@@ -1680,6 +1681,11 @@
         "description": "当面板或菜单打开时，桌面变暗。",
         "label": "昏暗的桌面"
       },
+      "dimmer-opacity": {
+        "description": "设置桌面变暗时的不透明度。",
+        "label": "变暗桌面不透明度",
+        "reset": "重置变暗桌面不透明度"
+      },
       "panel-background-opacity": {
         "description": "设置所有面板的背景不透明度（启动器、控制中心、设置等）。",
         "label": "面板背景不透明度"
@@ -1780,11 +1786,6 @@
           "label": "壁纸文件夹",
           "tooltip": "浏览壁纸文件夹"
         },
-        "selector": {
-          "description": "选择你的壁纸。",
-          "label": "壁纸选择器",
-          "tooltip": "打开壁纸选择器"
-        },
         "hide-wallpaper-filenames": {
           "description": "在选择器中隐藏壁纸文件名。",
           "label": "隐藏文件名。"
@@ -1804,6 +1805,11 @@
         },
         "select-folder": "选择壁纸文件夹",
         "select-monitor-folder": "选择显示器壁纸文件夹",
+        "selector": {
+          "description": "选择你的壁纸。",
+          "label": "壁纸选择器",
+          "tooltip": "打开壁纸选择器"
+        },
         "selector-position": {
           "description": "选择壁纸选择面板的显示位置。",
           "label": "选择器位置"
@@ -2009,6 +2015,7 @@
     "previous-month": "上个月",
     "refresh": "刷新",
     "refresh-devices": "刷新设备",
+    "refresh-wallhaven": "刷新 Wallhaven 结果",
     "refresh-wallpaper-list": "刷新壁纸列表",
     "remove-widget": "移除小部件",
     "screen-recorder-not-installed": "屏幕录制器未安装",
@@ -2043,7 +2050,50 @@
         "description": "一次性将选定的壁纸应用到所有显示器。",
         "label": "应用到所有显示器"
       },
+      "categories": {
+        "anime": "动漫",
+        "general": "通用",
+        "label": "分类",
+        "people": "人物"
+      },
+      "purity": {
+        "all": "全部",
+        "label": "内容过滤器",
+        "sfw": "SFW",
+        "sketchy": "Sketchy"
+      },
+      "resolution": {
+        "atleast": "至少",
+        "exact": "精确",
+        "label": "分辨率",
+        "mode": {
+          "label": "模式"
+        }
+      },
       "search": "搜索：",
+      "sorting": {
+        "date_added": "添加日期",
+        "favorites": "收藏",
+        "label": "排序方式",
+        "random": "随机",
+        "relevance": "相关性",
+        "toplist": "排行榜",
+        "views": "浏览量"
+      },
+      "order": {
+        "asc": "升序",
+        "desc": "降序",
+        "label": "顺序"
+      },
+      "wallhaven-settings": {
+        "apply": "应用",
+        "title": "Wallhaven 设置"
+      },
+      "source": {
+        "label": "来源",
+        "local": "本地",
+        "wallhaven": "Wallhaven"
+      },
       "title": "壁纸选择器"
     },
     "transitions": {
@@ -2054,7 +2104,12 @@
       "stripes": "条纹",
       "wipe": "擦除"
     },
-    "try-different-search": "尝试不同的搜索查询。"
+    "try-different-search": "尝试不同的搜索查询。",
+    "wallhaven": {
+      "loading": "正在加载壁纸...",
+      "no-results": "未找到壁纸。请尝试不同的搜索查询。",
+      "page": "{current} / {total}"
+    }
   },
   "weather": {
     "clear-sky": "晴朗",

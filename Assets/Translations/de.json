@@ -580,6 +580,7 @@
     "search-icons": "z.B. noctalia, niri, battery, cloud",
     "search-launcher": "Einträge suchen... oder > für Befehle verwenden",
     "search-wallpapers": "Zum Filtern von Hintergrundbildern eingeben...",
+    "search-wallhaven": "Wallhaven durchsuchen...",
     "select": "Auswählen",
     "test": "Test"
   },
@@ -1680,6 +1681,11 @@
         "description": "Den Desktop abdunkeln, wenn Fenster oder Menüs geöffnet sind.",
         "label": "Desktop abdunkeln"
       },
+      "dimmer-opacity": {
+        "description": "Deckkraft für das Abdunkeln des Desktops festlegen.",
+        "label": "Deckkraft des gedimmten Desktops",
+        "reset": "Deckkraft des gedimmten Desktops zurücksetzen"
+      },
       "panel-background-opacity": {
         "description": "Hintergrunddeckkraft für alle Paneele festlegen (Launcher, Control Center, Einstellungen usw.).",
         "label": "Paneel-Hintergrunddeckkraft"
@@ -1780,11 +1786,6 @@
           "label": "Hintergrundbild-Ordner",
           "tooltip": "Nach Hintergrundbild-Ordner suchen"
         },
-        "selector": {
-          "description": "Wählen Sie Ihr Hintergrundbild aus.",
-          "label": "Hintergrundbild-Auswahl",
-          "tooltip": "Hintergrundbild-Auswahl öffnen"
-        },
         "hide-wallpaper-filenames": {
           "description": "Hintergrundbilddateinamen im Auswahlmenü ausblenden.",
           "label": "Dateinamen ausblenden"
@@ -1804,6 +1805,11 @@
         },
         "select-folder": "Hintergrundbild-Ordner auswählen",
         "select-monitor-folder": "Monitor-Hintergrundbild-Ordner auswählen",
+        "selector": {
+          "description": "Wählen Sie Ihr Hintergrundbild aus.",
+          "label": "Hintergrundbild-Auswahl",
+          "tooltip": "Hintergrundbild-Auswahl öffnen"
+        },
         "selector-position": {
           "description": "Wählen Sie aus, wo das Hintergrundbild-Auswahlfeld angezeigt wird.",
           "label": "Position"
@@ -2009,6 +2015,7 @@
     "previous-month": "Vorheriger Monat",
     "refresh": "Aktualisieren",
     "refresh-devices": "Geräte aktualisieren",
+    "refresh-wallhaven": "Wallhaven-Ergebnisse aktualisieren",
     "refresh-wallpaper-list": "Hintergrundbild-Liste aktualisieren",
     "remove-widget": "Widget entfernen",
     "screen-recorder-not-installed": "Bildschirmrekorder ist nicht installiert",
@@ -2043,7 +2050,50 @@
         "description": "Ausgewähltes Hintergrundbild auf alle Monitore gleichzeitig anwenden.",
         "label": "Auf alle Monitore anwenden"
       },
+      "categories": {
+        "anime": "Anime",
+        "general": "Allgemein",
+        "label": "Kategorien",
+        "people": "Personen"
+      },
+      "purity": {
+        "all": "Alle",
+        "label": "Inhaltsfilter",
+        "sfw": "SFW",
+        "sketchy": "Sketchy"
+      },
+      "resolution": {
+        "atleast": "Mindestens",
+        "exact": "Exakt",
+        "label": "Auflösung",
+        "mode": {
+          "label": "Modus"
+        }
+      },
       "search": "Suchen:",
+      "sorting": {
+        "date_added": "Hinzugefügt am",
+        "favorites": "Favoriten",
+        "label": "Sortieren nach",
+        "random": "Zufällig",
+        "relevance": "Relevanz",
+        "toplist": "Topliste",
+        "views": "Aufrufe"
+      },
+      "order": {
+        "asc": "Aufsteigend",
+        "desc": "Absteigend",
+        "label": "Reihenfolge"
+      },
+      "wallhaven-settings": {
+        "apply": "Anwenden",
+        "title": "Wallhaven-Einstellungen"
+      },
+      "source": {
+        "label": "Quelle",
+        "local": "Lokal",
+        "wallhaven": "Wallhaven"
+      },
       "title": "Hintergrundbild-Auswahl"
     },
     "transitions": {
@@ -2054,7 +2104,12 @@
       "stripes": "Streifen",
       "wipe": "Wischen"
     },
-    "try-different-search": "Versuchen Sie eine andere Suchanfrage."
+    "try-different-search": "Versuchen Sie eine andere Suchanfrage.",
+    "wallhaven": {
+      "loading": "Hintergrundbilder werden geladen...",
+      "no-results": "Keine Hintergrundbilder gefunden. Versuchen Sie eine andere Suchanfrage.",
+      "page": "{current} von {total}"
+    }
   },
   "weather": {
     "clear-sky": "Klarer Himmel",

@@ -580,6 +580,7 @@
     "search-icons": "ex: noctalia, niri, batterie, nuage",
     "search-launcher": "Rechercher des entrées... ou utilisez > pour les commandes",
     "search-wallpapers": "Tapez pour filtrer les fonds d'écran...",
+    "search-wallhaven": "Rechercher sur Wallhaven...",
     "select": "Sélectionner",
     "test": "Tester"
   },
@@ -1680,6 +1681,11 @@
         "description": "Atténuer le bureau lorsque des panneaux ou des menus sont ouverts.",
         "label": "Dim bureau"
       },
+      "dimmer-opacity": {
+        "description": "Définir le niveau d'opacité pour l'assombrissement du bureau.",
+        "label": "Opacité du bureau atténué",
+        "reset": "Réinitialiser l'opacité du bureau atténué"
+      },
       "panel-background-opacity": {
         "description": "Définir l'opacité de fond pour tous les panneaux (Lanceur, Centre de contrôle, Paramètres, etc.).",
         "label": "Opacité de fond des panneaux"
@@ -1780,11 +1786,6 @@
           "label": "Dossier des fonds d'écran",
           "tooltip": "Parcourir le dossier des fonds d'écran"
         },
-        "selector": {
-          "description": "Choisissez votre fond d’écran.",
-          "label": "Sélecteur de fond d’écran",
-          "tooltip": "Ouvrir le sélecteur de fond d’écran"
-        },
         "hide-wallpaper-filenames": {
           "description": "Masquer les noms de fichiers des fonds d'écran dans le sélecteur.",
           "label": "Masquer les noms de fichiers"
@@ -1804,6 +1805,11 @@
         },
         "select-folder": "Sélectionner le dossier des fonds d'écran",
         "select-monitor-folder": "Sélectionner le dossier des fonds d'écran du moniteur",
+        "selector": {
+          "description": "Choisissez votre fond d’écran.",
+          "label": "Sélecteur de fond d’écran",
+          "tooltip": "Ouvrir le sélecteur de fond d’écran"
+        },
         "selector-position": {
           "description": "Choisissez l'emplacement d'affichage du panneau de sélection du fond d'écran.",
           "label": "Position"
@@ -2009,6 +2015,7 @@
     "previous-month": "Mois précédent",
     "refresh": "Actualiser",
     "refresh-devices": "Actualiser les appareils",
+    "refresh-wallhaven": "Actualiser les résultats de Wallhaven",
     "refresh-wallpaper-list": "Actualiser la liste des fonds d'écran",
     "remove-widget": "Supprimer le widget",
     "screen-recorder-not-installed": "L'enregistreur d'écran n'est pas installé",
@@ -2043,7 +2050,50 @@
         "description": "Appliquer le fond d'écran sélectionné à tous les moniteurs en même temps.",
         "label": "Appliquer à tous les moniteurs"
       },
+      "categories": {
+        "anime": "Anime",
+        "general": "Général",
+        "label": "Catégories",
+        "people": "Personnes"
+      },
+      "purity": {
+        "all": "Tout",
+        "label": "Filtre de contenu",
+        "sfw": "SFW",
+        "sketchy": "Sketchy"
+      },
+      "resolution": {
+        "atleast": "Au moins",
+        "exact": "Exact",
+        "label": "Résolution",
+        "mode": {
+          "label": "Mode"
+        }
+      },
       "search": "Rechercher :",
+      "sorting": {
+        "date_added": "Date d'ajout",
+        "favorites": "Favoris",
+        "label": "Trier par",
+        "random": "Aléatoire",
+        "relevance": "Pertinence",
+        "toplist": "Top liste",
+        "views": "Vues"
+      },
+      "order": {
+        "asc": "Croissant",
+        "desc": "Décroissant",
+        "label": "Ordre"
+      },
+      "wallhaven-settings": {
+        "apply": "Appliquer",
+        "title": "Paramètres Wallhaven"
+      },
+      "source": {
+        "label": "Source",
+        "local": "Local",
+        "wallhaven": "Wallhaven"
+      },
       "title": "Sélecteur de fond d'écran"
     },
     "transitions": {
@@ -2054,7 +2104,12 @@
       "stripes": "Rayures",
       "wipe": "Balayage"
     },
-    "try-different-search": "Essayez une autre requête de recherche."
+    "try-different-search": "Essayez une autre requête de recherche.",
+    "wallhaven": {
+      "loading": "Chargement des fonds d'écran...",
+      "no-results": "Aucun fond d'écran trouvé. Essayez une autre requête de recherche.",
+      "page": "{current} sur {total}"
+    }
   },
   "weather": {
     "clear-sky": "Ciel dégagé",

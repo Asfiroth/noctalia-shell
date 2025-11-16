@@ -580,6 +580,7 @@
     "search-icons": "bijv. noctalia, niri, battery, cloud",
     "search-launcher": "Items zoeken... of gebruik > voor commando's",
     "search-wallpapers": "Typ om achtergronden te filteren...",
+    "search-wallhaven": "Zoek in Wallhaven...",
     "select": "Selecteren",
     "test": "Test"
   },
@@ -1680,6 +1681,11 @@
         "description": "Dim de desktop wanneer panelen of menu's geopend zijn.",
         "label": "Desktop dimmen"
       },
+      "dimmer-opacity": {
+        "description": "Stel het opaciteitsniveau in voor het dimmen van het bureaublad.",
+        "label": "Doorzichtigheid van gedimde desktop",
+        "reset": "Doorzichtigheid van gedimde desktop resetten"
+      },
       "panel-background-opacity": {
         "description": "Stel de achtergronddoorzichtigheid in voor alle panelen (Launcher, Control Center, Instellingen, enz.).",
         "label": "Paneel achtergronddoorzichtigheid"
@@ -1776,11 +1782,6 @@
           "label": "Achtergrondmap",
           "tooltip": "Bladeren naar achtergrondmap"
         },
-        "selector": {
-          "description": "Kies je achtergrond.",
-          "label": "Achtergrondkiezer",
-          "tooltip": "Achtergrondkiezer openen"
-        },
         "hide-wallpaper-filenames": {
           "description": "Verberg de bestandsnamen van de achtergrond in de selector.",
           "label": "Bestandsnamen verbergen"
@@ -1800,6 +1801,11 @@
         },
         "select-folder": "Achtergrondmap selecteren",
         "select-monitor-folder": "Achtergrondmap voor monitor selecteren",
+        "selector": {
+          "description": "Kies je achtergrond.",
+          "label": "Achtergrondkiezer",
+          "tooltip": "Achtergrondkiezer openen"
+        },
         "selector-position": {
           "description": "Kies waar het achtergrondselectiepaneel verschijnt.",
           "label": "Positie"
@@ -2005,6 +2011,7 @@
     "previous-month": "Vorige maand",
     "refresh": "Verversen",
     "refresh-devices": "Apparaten verversen",
+    "refresh-wallhaven": "Wallhaven-resultaten verversen",
     "refresh-wallpaper-list": "Achtergrondlijst verversen",
     "remove-widget": "Widget verwijderen",
     "screen-recorder-not-installed": "Schermrecorder is niet geïnstalleerd",
@@ -2034,7 +2041,50 @@
         "description": "Pas de geselecteerde achtergrond in één keer op alle monitoren toe.",
         "label": "Toepassen op alle monitoren"
       },
+      "categories": {
+        "anime": "Anime",
+        "general": "Algemeen",
+        "label": "Categorieën",
+        "people": "Mensen"
+      },
+      "purity": {
+        "all": "Alles",
+        "label": "Inhoudsfilter",
+        "sfw": "SFW",
+        "sketchy": "Sketchy"
+      },
+      "resolution": {
+        "atleast": "Ten minste",
+        "exact": "Exact",
+        "label": "Resolutie",
+        "mode": {
+          "label": "Modus"
+        }
+      },
       "search": "Zoeken:",
+      "sorting": {
+        "date_added": "Datum toegevoegd",
+        "favorites": "Favorieten",
+        "label": "Sorteren op",
+        "random": "Willekeurig",
+        "relevance": "Relevantie",
+        "toplist": "Toplijst",
+        "views": "Weergaven"
+      },
+      "order": {
+        "asc": "Oplopend",
+        "desc": "Aflopend",
+        "label": "Volgorde"
+      },
+      "wallhaven-settings": {
+        "apply": "Toepassen",
+        "title": "Wallhaven-instellingen"
+      },
+      "source": {
+        "label": "Bron",
+        "local": "Lokaal",
+        "wallhaven": "Wallhaven"
+      },
       "title": "Achtergrondkiezer"
     },
     "transitions": {
@@ -2045,7 +2095,12 @@
       "stripes": "Strepen",
       "wipe": "Vegen"
     },
-    "try-different-search": "Probeer een andere zoekopdracht."
+    "try-different-search": "Probeer een andere zoekopdracht.",
+    "wallhaven": {
+      "loading": "Achtergronden laden...",
+      "no-results": "Geen achtergronden gevonden. Probeer een andere zoekopdracht.",
+      "page": "{current} van {total}"
+    }
   },
   "weather": {
     "clear-sky": "Onbewolkt",

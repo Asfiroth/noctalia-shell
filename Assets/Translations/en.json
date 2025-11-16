@@ -580,6 +580,7 @@
     "search-icons": "e.g., noctalia, niri, battery, cloud",
     "search-launcher": "Search entries... or use > for commands",
     "search-wallpapers": "Type to filter wallpapers...",
+    "search-wallhaven": "Search Wallhaven...",
     "select": "Select",
     "test": "Test"
   },
@@ -1680,6 +1681,11 @@
         "description": "Dim the desktop when panels or menus are open.",
         "label": "Dim desktop"
       },
+      "dimmer-opacity": {
+        "description": "Set the opacity level for desktop dimming.",
+        "label": "Dimmed desktop opacity",
+        "reset": "Reset dimmed desktop opacity"
+      },
       "panel-background-opacity": {
         "description": "Set the background opacity for all panels (Launcher, Control Center, Settings, etc.).",
         "label": "Panel background opacity"
@@ -1780,11 +1786,6 @@
           "label": "Wallpaper folder",
           "tooltip": "Browse for wallpaper folder"
         },
-        "selector": {
-          "description": "Choose your wallpaper.",
-          "label": "Wallpaper selector",
-          "tooltip": "Open wallpaper selector"
-        },
         "hide-wallpaper-filenames": {
           "description": "Hide wallpaper filenames in the selector.",
           "label": "Hide filenames"
@@ -1804,6 +1805,11 @@
         },
         "select-folder": "Select wallpaper folder",
         "select-monitor-folder": "Select monitor wallpaper folder",
+        "selector": {
+          "description": "Choose your wallpaper.",
+          "label": "Wallpaper selector",
+          "tooltip": "Open wallpaper selector"
+        },
         "selector-position": {
           "description": "Choose where the wallpaper selector panel appears.",
           "label": "Position"
@@ -2009,6 +2015,7 @@
     "previous-month": "Previous month",
     "refresh": "Refresh",
     "refresh-devices": "Refresh devices",
+    "refresh-wallhaven": "Refresh Wallhaven results",
     "refresh-wallpaper-list": "Refresh wallpaper list",
     "remove-widget": "Remove widget",
     "screen-recorder-not-installed": "Screen recorder is not installed",
@@ -2040,11 +2047,54 @@
     "no-wallpaper": "No wallpaper found.",
     "panel": {
       "apply-all-monitors": {
-        "description": "Apply selected wallpaper to all monitors at once.",
+        "description": "Apply the selected wallpaper to all monitors.",
         "label": "Apply to all monitors"
       },
-      "search": "Search:",
-      "title": "Wallpaper selector"
+      "categories": {
+        "anime": "Anime",
+        "general": "General",
+        "label": "Categories",
+        "people": "People"
+      },
+      "purity": {
+        "all": "All",
+        "label": "Content filter",
+        "sfw": "SFW",
+        "sketchy": "Sketchy"
+      },
+      "resolution": {
+        "atleast": "At least",
+        "exact": "Exact",
+        "label": "Resolution",
+        "mode": {
+          "label": "Mode"
+        }
+      },
+      "search": "Search",
+      "sorting": {
+        "date_added": "Date added",
+        "favorites": "Favorites",
+        "label": "Sort by",
+        "random": "Random",
+        "relevance": "Relevance",
+        "toplist": "Toplist",
+        "views": "Views"
+      },
+      "order": {
+        "asc": "Ascending",
+        "desc": "Descending",
+        "label": "Order"
+      },
+      "wallhaven-settings": {
+        "apply": "Apply",
+        "title": "Wallhaven Settings"
+      },
+      "source": {
+        "label": "Source",
+        "local": "Local",
+        "wallhaven": "Wallhaven"
+      },
+      "title": "Wallpaper Selector"
     },
     "transitions": {
       "disc": "Disc",
@@ -2054,7 +2104,13 @@
       "stripes": "Stripes",
       "wipe": "Wipe"
     },
-    "try-different-search": "Try a different search query."
+    "try-different-search": "Try a different search query.",
+    "unknown": "Unknown",
+    "wallhaven": {
+      "loading": "Loading wallpapers...",
+      "no-results": "No wallpapers found. Try a different search query.",
+      "page": "{current} of {total}"
+    }
   },
   "weather": {
     "clear-sky": "Clear sky",

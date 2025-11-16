@@ -580,6 +580,7 @@
     "search-icons": "örn., noctalia, niri, battery, cloud",
     "search-launcher": "Girişleri arayın... veya > komutları için kullanın",
     "search-wallpapers": "Duvar kağıtlarını filtrelemek için yazın...",
+    "search-wallhaven": "Wallhaven'da ara...",
     "select": "Seç",
     "test": "Test"
   },
@@ -1680,6 +1681,11 @@
         "description": "Paneller veya menüler açıkken masaüstünü karart.",
         "label": "Masaüstünü karart"
       },
+      "dimmer-opacity": {
+        "description": "Masaüstü karartması için opaklık seviyesini ayarlayın.",
+        "label": "Karartılmış masaüstü opaklığı",
+        "reset": "Karartılmış masaüstü opaklığını sıfırla"
+      },
       "panel-background-opacity": {
         "description": "Tüm paneller için arka plan opaklığını ayarlayın (Launcher, Control Center, Ayarlar vb.).",
         "label": "Panel arka plan opaklığı"
@@ -1776,11 +1782,6 @@
           "label": "Duvar kağıdı klasörü",
           "tooltip": "Duvar kağıdı klasörüne göz atın"
         },
-        "selector": {
-          "description": "Duvar kâğıdınızı seçin.",
-          "label": "Duvar kâğıdı seçici",
-          "tooltip": "Duvar kâğıdı seçiciyi aç"
-        },
         "hide-wallpaper-filenames": {
           "description": "Seçicide duvar kağıdı dosya adlarını gizle.",
           "label": "Dosya adlarını gizle"
@@ -1800,6 +1801,11 @@
         },
         "select-folder": "Duvar kağıdı klasörünü seç",
         "select-monitor-folder": "Ekran duvar kağıdı klasörünü seç",
+        "selector": {
+          "description": "Duvar kâğıdınızı seçin.",
+          "label": "Duvar kâğıdı seçici",
+          "tooltip": "Duvar kâğıdı seçiciyi aç"
+        },
         "selector-position": {
           "description": "Duvar kağıdı seçici panelinin nerede görüneceğini seçin.",
           "label": "Pozisyon"
@@ -2005,6 +2011,7 @@
     "previous-month": "Önceki ay",
     "refresh": "Yenile",
     "refresh-devices": "Cihazları yenile",
+    "refresh-wallhaven": "Wallhaven sonuçlarını yenile",
     "refresh-wallpaper-list": "Duvar kağıdı listesini yenile",
     "remove-widget": "Widget kaldır",
     "screen-recorder-not-installed": "Ekran kaydedici yüklü değil",
@@ -2034,7 +2041,50 @@
         "description": "Seçilen duvar kağıdını tüm monitörlere aynı anda uygulayın.",
         "label": "Tüm monitörler için uygula"
       },
+      "categories": {
+        "anime": "Anime",
+        "general": "Genel",
+        "label": "Kategoriler",
+        "people": "İnsanlar"
+      },
+      "purity": {
+        "all": "Tümü",
+        "label": "İçerik filtresi",
+        "sfw": "SFW",
+        "sketchy": "Sketchy"
+      },
+      "resolution": {
+        "atleast": "En az",
+        "exact": "Tam",
+        "label": "Çözünürlük",
+        "mode": {
+          "label": "Mod"
+        }
+      },
       "search": "Ara:",
+      "sorting": {
+        "date_added": "Eklenme tarihi",
+        "favorites": "Favoriler",
+        "label": "Sırala",
+        "random": "Rastgele",
+        "relevance": "Alaka",
+        "toplist": "En iyi liste",
+        "views": "Görüntülemeler"
+      },
+      "order": {
+        "asc": "Artan",
+        "desc": "Azalan",
+        "label": "Sıra"
+      },
+      "wallhaven-settings": {
+        "apply": "Uygula",
+        "title": "Wallhaven Ayarları"
+      },
+      "source": {
+        "label": "Kaynak",
+        "local": "Yerel",
+        "wallhaven": "Wallhaven"
+      },
       "title": "Duvar kağıdı seçici"
     },
     "transitions": {
@@ -2045,7 +2095,12 @@
       "stripes": "Çizgiler",
       "wipe": "Silme"
     },
-    "try-different-search": "Farklı bir arama sorgusu deneyin."
+    "try-different-search": "Farklı bir arama sorgusu deneyin.",
+    "wallhaven": {
+      "loading": "Duvar kağıtları yükleniyor...",
+      "no-results": "Duvar kağıdı bulunamadı. Farklı bir arama sorgusu deneyin.",
+      "page": "{current} / {total}"
+    }
   },
   "weather": {
     "clear-sky": "Açık hava",
