@@ -202,6 +202,10 @@
           "description": "Albumcover des aktuell abgespielten Tracks anzeigen.",
           "label": "Albumcover anzeigen"
         },
+        "show-artist-first": {
+          "description": "Künstler - Titel anstatt Titel - Künstler anzeigen.",
+          "label": "Künstler zuerst anzeigen"
+        },
         "show-visualizer": {
           "description": "Audio-Visualizer anzeigen, wenn Musik abgespielt wird.",
           "label": "Visualizer anzeigen"
@@ -259,6 +263,10 @@
         "disk-critical-threshold": {
           "label": "Storage Space (Critical)"
         },
+        "disk-path": {
+          "description": "Wählen Sie den Festplatten-Mountpunkt aus, der überwacht werden soll.",
+          "label": "Festplattenpfad"
+        },
         "disk-warning-threshold": {
           "label": "Storage Space (Warning)"
         },
@@ -314,13 +322,9 @@
         }
       },
       "taskbar-grouped": {
-        "show-numbers-only-when-occupied": {
-          "description": "Arbeitsbereichsnummern nur für Arbeitsbereiche mit geöffneten Fenstern anzeigen.",
-          "label": "Nur bei belegten Arbeitsbereichen anzeigen"
-        },
-        "show-workspace-numbers": {
-          "description": "Arbeitsbereichsnummern in der oberen linken Ecke der Task-Gruppen anzeigen.",
-          "label": "Arbeitsbereichsnummern anzeigen"
+        "show-labels-only-when-occupied": {
+          "description": "Zeige nur die Workspace-Bezeichnung für Workspaces an, die offene Fenster haben.",
+          "label": "Zeige Label nur bei Belegung"
         }
       },
       "tray": {
@@ -363,13 +367,6 @@
     "health": "Zustand: {percent}%",
     "idle": "Leerlauf.",
     "no-battery-detected": "Keine Batterie erkannt.",
-    "panel": {
-      "balanced": "Ausgeglichen ({percent}%)",
-      "disabled": "Batteriemanager deaktiviert",
-      "full": "Volle Kapazität ({percent}%)",
-      "lifespan": "Verlängerte Lebensdauer ({percent}%)",
-      "title": "Ladeschwelle"
-    },
     "plugged-in": "Angeschlossen.",
     "time-left": "Verbleibende Zeit: {time}.",
     "time-until-full": "Zeit bis vollständig geladen: {time}."
@@ -398,8 +395,58 @@
       "loading": "Wetter wird geladen…"
     }
   },
+  "changelog": {
+    "panel": {
+      "title": "Was ist neu in {version}",
+      "subtitle": {
+        "fresh": "Danke, dass du Noctalia installiert hast! Das ist in diesem Build enthalten.",
+        "updated": "Aktualisiert von {previousVersion}"
+      },
+      "version": {
+        "new-user": "Neuinstallation"
+      },
+      "highlight-title": "Highlights",
+      "empty": "Es sind noch keine Versionshinweise verfügbar.",
+      "section": {
+        "version": "Version {version}",
+        "released": "Veröffentlicht am {date}"
+      },
+      "buttons": {
+        "discord": "Unserem Discord beitreten",
+        "feedback": "Feedback senden",
+        "dismiss": "Ok"
+      }
+    },
+    "error": {
+      "rate-limit": "GitHub-Limit erreicht. Bitte versuche es in ein paar Minuten erneut."
+    }
+  },
   "clock": {
     "tooltip": "Kalender öffnen"
+  },
+  "context-menu": {
+    "activate-app": "{app} aktivieren",
+    "clear-history": "Verlauf löschen",
+    "close-app": "{app} schließen",
+    "cycle-visualizer": "Zyklus-Visualisierer",
+    "disable-bluetooth": "Bluetooth deaktivieren",
+    "disable-dnd": "Bitte nicht stören deaktivieren",
+    "disable-wifi": "WLAN deaktivieren",
+    "enable-bluetooth": "Bluetooth aktivieren",
+    "enable-dnd": "Nicht stören aktivieren",
+    "enable-wifi": "WLAN aktivieren",
+    "next": "Nächste/r/s",
+    "open-calendar": "Kalender öffnen",
+    "open-display-settings": "Anzeigeeinstellungen",
+    "open-launcher": "Launcher öffnen",
+    "open-mixer": "Audiomischer",
+    "open-settings": "Einstellungen öffnen",
+    "pause": "Pause",
+    "play": "Spielen",
+    "previous": "Vorherige",
+    "random-wallpaper": "Zufälliges Hintergrundbild",
+    "toggle-mute": "Stummschaltung umschalten",
+    "widget-settings": "Widget-Einstellungen"
   },
   "dock": {
     "menu": {
@@ -564,6 +611,7 @@
     },
     "workspace-labels": {
       "index": "Index",
+      "index+name": "Index und Name",
       "name": "Name",
       "none": "Keine"
     }
@@ -579,8 +627,8 @@
     "search": "Suchen...",
     "search-icons": "z.B. noctalia, niri, battery, cloud",
     "search-launcher": "Einträge suchen... oder > für Befehle verwenden",
-    "search-wallpapers": "Zum Filtern von Hintergrundbildern eingeben...",
     "search-wallhaven": "Wallhaven durchsuchen...",
+    "search-wallpapers": "Zum Filtern von Hintergrundbildern eingeben...",
     "select": "Auswählen",
     "test": "Test"
   },
@@ -721,6 +769,11 @@
           "label": "Audio-Geräte"
         }
       },
+      "external-mixer": {
+        "description": "Geben Sie den Befehl oder den Anwendungspfad ein, der beim Aktivieren der externen Audiomixer-Funktion gestartet werden soll.",
+        "label": "Externer Audio-Mixer-Befehl",
+        "placeholder": "pwvucontrol || pavucontrol"
+      },
       "media": {
         "excluded-player": {
           "description": "Stichwörter für Player hinzufügen, die das System ignorieren soll. Jedes Stichwort sollte in einer neuen Zeile stehen.",
@@ -794,6 +847,10 @@
         "background-opacity": {
           "description": "Hintergrund-Transparenz der Statusleiste anpassen.",
           "label": "Hintergrund-Transparenz"
+        },
+        "capsule-opacity": {
+          "description": "Deckkraft der Widget-Hintergründe festlegen, wenn Kapsel angezeigt wird.",
+          "label": "Kapsel-Deckkraft"
         },
         "density": {
           "description": "Innenabstand der Statusleiste für kompaktes oder geräumiges Aussehen anpassen.",
@@ -886,6 +943,41 @@
           "description": "Wechselt zu einem dunkleren Theme für einfachere Betrachtung bei Nacht.",
           "label": "Dunkler Modus"
         }
+      },
+      "delete": {
+        "error": {
+          "description": "Fehler beim Löschen von {scheme}",
+          "title": "Löschen fehlgeschlagen"
+        },
+        "success": {
+          "description": "{scheme} wurde erfolgreich gelöscht",
+          "title": "Farbschema gelöscht"
+        }
+      },
+      "download": {
+        "button": "Mehr herunterladen",
+        "delete": "Löschen",
+        "download": "Herunterladen",
+        "downloading": "Wird heruntergeladen...",
+        "empty": "Keine Farbschemata verfügbar",
+        "error": {
+          "api-error": "API-Fehler: {status}",
+          "description": "Fehler beim Herunterladen von {scheme}",
+          "download-failed": "Download fehlgeschlagen mit Exit-Code: {code}",
+          "invalid-response": "Ungültiges API-Antwortformat",
+          "no-files": "Keine Dateien für Schema gefunden",
+          "parse-failed": "Fehler beim Parsen der API-Antwort: {error}",
+          "rate-limit": "GitHub API-Ratenlimit überschritten",
+          "title": "Download fehlgeschlagen"
+        },
+        "fetching": "Verfügbare Farbschemata werden abgerufen...",
+        "installed": "Installiert",
+        "refresh": "Aktualisieren",
+        "success": {
+          "description": "{scheme} wurde erfolgreich heruntergeladen",
+          "title": "Farbschema heruntergeladen"
+        },
+        "title": "Farbschemata herunterladen"
       },
       "predefined": {
         "generate-templates": {
@@ -1364,6 +1456,10 @@
           "description": "Bevorzugte Temperatureinheit wählen.",
           "label": "Wetter"
         },
+        "show-effects": {
+          "description": "Zeigt zusätzliche visuelle Effekte (wie Regen, Schnee oder Blitze) auf der Wetterkarte an.",
+          "label": "Wettereffekte anzeigen"
+        },
         "show-in-calendar": {
           "description": "Zeige die tägliche Wettervorhersage direkt in deiner Kalenderansicht an.",
           "label": "Wetter im Kalender anzeigen"
@@ -1663,6 +1759,10 @@
       }
     },
     "user-interface": {
+      "allow-panels-without-bar": {
+        "description": "Wenn aktiviert, können sich Panels auf jedem Bildschirm öffnen. Wenn deaktiviert, öffnen sich Panels nur auf Bildschirmen mit einer Leiste, was den Speicherverbrauch reduzieren kann.",
+        "label": "Paneele auf Bildschirmen ohne Leiste zulassen"
+      },
       "animation-disable": {
         "description": "Deaktivieren Sie alle Animationen für eine schnellere und reaktionsfreudigere Erfahrung.",
         "label": "UI-Animationen deaktivieren"
@@ -1874,19 +1974,6 @@
       "low": "Niedriger Batteriestand",
       "low-desc": "Batterie ist bei {percent}%. Bitte schließen Sie das Ladegerät an."
     },
-    "battery-manager": {
-      "initial-setup": "Ersteinrichtung erforderlich",
-      "install-failed": "Installation fehlgeschlagen",
-      "install-missing": "Erforderliche Dateien fehlen",
-      "install-success": "Erfolgreich installiert",
-      "install-unsupported": "System wird nicht unterstützt",
-      "set-failed": "Fehler beim Setzen der Batterieschwelle",
-      "set-success-desc": "Batterieschwelle auf {percent}% gesetzt",
-      "title": "Batterieschwelle",
-      "uninstall-failed": "Deinstallation fehlgeschlagen",
-      "uninstall-setup": "Deinstallation, Authentifizierung erforderlich",
-      "uninstall-success": "Erfolgreich deinstalliert"
-    },
     "bluetooth": {
       "disabled": "Deaktiviert",
       "enabled": "Aktiviert"
@@ -2056,6 +2143,11 @@
         "label": "Kategorien",
         "people": "Personen"
       },
+      "order": {
+        "asc": "Aufsteigend",
+        "desc": "Absteigend",
+        "label": "Reihenfolge"
+      },
       "purity": {
         "all": "Alle",
         "label": "Inhaltsfilter",
@@ -2080,21 +2172,16 @@
         "toplist": "Topliste",
         "views": "Aufrufe"
       },
-      "order": {
-        "asc": "Aufsteigend",
-        "desc": "Absteigend",
-        "label": "Reihenfolge"
-      },
-      "wallhaven-settings": {
-        "apply": "Anwenden",
-        "title": "Wallhaven-Einstellungen"
-      },
       "source": {
         "label": "Quelle",
         "local": "Lokal",
         "wallhaven": "Wallhaven"
       },
-      "title": "Hintergrundbild-Auswahl"
+      "title": "Hintergrundbild-Auswahl",
+      "wallhaven-settings": {
+        "apply": "Anwenden",
+        "title": "Wallhaven-Einstellungen"
+      }
     },
     "transitions": {
       "disc": "Scheibe",
@@ -2105,6 +2192,7 @@
       "wipe": "Wischen"
     },
     "try-different-search": "Versuchen Sie eine andere Suchanfrage.",
+    "unknown": "Unbekannt",
     "wallhaven": {
       "loading": "Hintergrundbilder werden geladen...",
       "no-results": "Keine Hintergrundbilder gefunden. Versuchen Sie eine andere Suchanfrage.",

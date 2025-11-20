@@ -6,15 +6,16 @@ import qs.Widgets
 Text {
   id: root
 
+  property bool richTextEnabled: false
   property string family: Settings.data.ui.fontDefault
   property real pointSize: Style.fontSizeM
   property bool applyUiScale: true
   property real fontScale: {
-    const fontScale = (root.family === Settings.data.ui.fontDefault ? Settings.data.ui.fontDefaultScale : Settings.data.ui.fontFixedScale)
+    const fontScale = (root.family === Settings.data.ui.fontDefault ? Settings.data.ui.fontDefaultScale : Settings.data.ui.fontFixedScale);
     if (applyUiScale) {
-      return fontScale * Style.uiScaleRatio
+      return fontScale * Style.uiScaleRatio;
     }
-    return fontScale
+    return fontScale;
   }
 
   font.family: root.family
@@ -24,4 +25,6 @@ Text {
   elide: Text.ElideRight
   wrapMode: Text.NoWrap
   verticalAlignment: Text.AlignVCenter
+
+  textFormat: richTextEnabled ? Text.RichText : Text.StyledText
 }

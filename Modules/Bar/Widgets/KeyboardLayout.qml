@@ -1,13 +1,14 @@
 import QtQuick
+import QtQuick.Controls
 import QtQuick.Layouts
 import Quickshell
-import Quickshell.Wayland
 import Quickshell.Io
+import Quickshell.Wayland
 import qs.Commons
-import qs.Services.UI
-import qs.Services.Keyboard
-import qs.Widgets
 import qs.Modules.Bar.Extras
+import qs.Services.Keyboard
+import qs.Services.UI
+import qs.Widgets
 
 Item {
   id: root
@@ -23,12 +24,12 @@ Item {
   property var widgetMetadata: BarWidgetRegistry.widgetMetadata[widgetId]
   property var widgetSettings: {
     if (section && sectionWidgetIndex >= 0) {
-      var widgets = Settings.data.bar.widgets[section]
+      var widgets = Settings.data.bar.widgets[section];
       if (widgets && sectionWidgetIndex < widgets.length) {
-        return widgets[sectionWidgetIndex]
+        return widgets[sectionWidgetIndex];
       }
     }
-    return {}
+    return {};
   }
 
   readonly property string displayMode: (widgetSettings.displayMode !== undefined) ? widgetSettings.displayMode : widgetMetadata.displayMode
@@ -39,10 +40,34 @@ Item {
   implicitWidth: pill.width
   implicitHeight: pill.height
 
+  NPopupContextMenu {
+    id: contextMenu
+
+    model: [
+      {
+        "label": I18n.tr("context-menu.widget-settings"),
+        "action": "widget-settings",
+        "icon": "settings"
+      },
+    ]
+
+    onTriggered: action => {
+                   var popupMenuWindow = PanelService.getPopupMenuWindow(screen);
+                   if (popupMenuWindow) {
+                     popupMenuWindow.close();
+                   }
+
+                   if (action === "widget-settings") {
+                     BarService.openWidgetSettings(screen, section, sectionWidgetIndex, widgetId, widgetSettings);
+                   }
+                 }
+  }
+
   BarPill {
     id: pill
-
     anchors.verticalCenter: parent.verticalCenter
+
+    screen: root.screen
     density: Settings.data.bar.density
     oppositeDirection: BarService.getPillDirection(root)
     icon: "keyboard"
@@ -53,9 +78,14 @@ Item {
                          })
     forceOpen: root.displayMode === "forceOpen"
     forceClose: root.displayMode === "alwaysHide"
-    onClicked: {
-
-      // You could open keyboard settings here if needed.
+    onClicked: {}
+    onRightClicked: {
+      var popupMenuWindow = PanelService.getPopupMenuWindow(screen);
+      if (popupMenuWindow) {
+        const pos = BarService.getContextMenuPosition(pill, contextMenu.implicitWidth, contextMenu.implicitHeight);
+        contextMenu.openAtItem(pill, pos.x, pos.y);
+        popupMenuWindow.showContextMenu(contextMenu);
+      }
     }
   }
 }

@@ -202,6 +202,10 @@
           "description": "Toon de albumhoes van het huidige nummer.",
           "label": "Albumhoes tonen"
         },
+        "show-artist-first": {
+          "description": "Toon artiest - titel in plaats van titel - artiest.",
+          "label": "Toon eerst de artiest"
+        },
         "show-visualizer": {
           "description": "Toon een audiovisualizer wanneer muziek wordt afgespeeld.",
           "label": "Visualizer tonen"
@@ -259,6 +263,10 @@
         "disk-critical-threshold": {
           "label": "Opslagruimte (Kritiek)"
         },
+        "disk-path": {
+          "description": "Selecteer welk schijfkoppelpunt u wilt monitoren.",
+          "label": "Schijfpad"
+        },
         "disk-warning-threshold": {
           "label": "Opslagruimte (Waarschuwing)"
         },
@@ -314,13 +322,9 @@
         }
       },
       "taskbar-grouped": {
-        "show-numbers-only-when-occupied": {
-          "description": "Toon werkruimtenummers alleen voor werkruimten met open vensters.",
-          "label": "Nummers alleen tonen wanneer bezet"
-        },
-        "show-workspace-numbers": {
-          "description": "Toon werkruimtenummers in de linkerbovenhoek van taakgroepen.",
-          "label": "Werkruimtenummers tonen"
+        "show-labels-only-when-occupied": {
+          "description": "Toon alleen de werkomgevinglabels voor werkomgevingen met open vensters.",
+          "label": "Label alleen tonen wanneer bezet"
         }
       },
       "tray": {
@@ -363,13 +367,6 @@
     "health": "Gezondheid: {percent}%",
     "idle": "In rust.",
     "no-battery-detected": "Geen batterij gedetecteerd.",
-    "panel": {
-      "balanced": "Gebalanceerd ({percent}%)",
-      "disabled": "Batterijbeheer uitgeschakeld",
-      "full": "Volledige capaciteit ({percent}%)",
-      "lifespan": "Verlengde levensduur ({percent}%)",
-      "title": "Batterijdrempel"
-    },
     "plugged-in": "Op netstroom.",
     "time-left": "Resterende tijd: {time}.",
     "time-until-full": "Tijd tot vol: {time}."
@@ -398,8 +395,58 @@
       "loading": "Weer laden…"
     }
   },
+  "changelog": {
+    "panel": {
+      "title": "Wat is er nieuw in {version}",
+      "subtitle": {
+        "fresh": "Bedankt voor het installeren van Noctalia! Dit zit er in deze build.",
+        "updated": "Bijgewerkt vanaf {previousVersion}"
+      },
+      "version": {
+        "new-user": "Nieuwe installatie"
+      },
+      "highlight-title": "Hoogtepunten",
+      "empty": "Er zijn nog geen release-opmerkingen beschikbaar.",
+      "section": {
+        "version": "Versie {version}",
+        "released": "Uitgebracht op {date}"
+      },
+      "buttons": {
+        "discord": "Word lid van onze Discord",
+        "feedback": "Feedback verzenden",
+        "dismiss": "Ok"
+      }
+    },
+    "error": {
+      "rate-limit": "GitHub-limiet bereikt. Probeer het over enkele minuten opnieuw."
+    }
+  },
   "clock": {
     "tooltip": "Kalender openen"
+  },
+  "context-menu": {
+    "activate-app": "Activeer {app}",
+    "clear-history": "Geschiedenis wissen",
+    "close-app": "Sluit {app}",
+    "cycle-visualizer": "Cyclusvisualisatie",
+    "disable-bluetooth": "Bluetooth uitschakelen",
+    "disable-dnd": "Niet Storen uitschakelen",
+    "disable-wifi": "Wi-Fi uitschakelen",
+    "enable-bluetooth": "Bluetooth inschakelen",
+    "enable-dnd": "Niet Storen inschakelen",
+    "enable-wifi": "Wi-Fi inschakelen",
+    "next": "Volgende",
+    "open-calendar": "Open agenda",
+    "open-display-settings": "Beeldscherminstellingen",
+    "open-launcher": "Launcher openen",
+    "open-mixer": "Audiomixer",
+    "open-settings": "Instellingen openen",
+    "pause": "Pauze",
+    "play": "Spelen",
+    "previous": "Vorige",
+    "random-wallpaper": "Willekeurige achtergrond",
+    "toggle-mute": "Dempen aan/uit",
+    "widget-settings": "Widgetinstellingen"
   },
   "dock": {
     "menu": {
@@ -564,6 +611,7 @@
     },
     "workspace-labels": {
       "index": "Index",
+      "index+name": "Index en Naam",
       "name": "Naam",
       "none": "Geen"
     }
@@ -579,8 +627,8 @@
     "search": "Zoeken...",
     "search-icons": "bijv. noctalia, niri, battery, cloud",
     "search-launcher": "Items zoeken... of gebruik > voor commando's",
-    "search-wallpapers": "Typ om achtergronden te filteren...",
     "search-wallhaven": "Zoek in Wallhaven...",
+    "search-wallpapers": "Typ om achtergronden te filteren...",
     "select": "Selecteren",
     "test": "Test"
   },
@@ -721,6 +769,11 @@
           "label": "Audio-apparaten"
         }
       },
+      "external-mixer": {
+        "description": "Voer het commando of het applicatiepad in om te starten bij het activeren van de externe audiomixerfunctie.",
+        "label": "Extern audio mixer commando",
+        "placeholder": "pwvucontrol || pavucontrol"
+      },
       "media": {
         "excluded-player": {
           "description": "Voeg trefwoorden toe voor spelers die het systeem moet negeren. Elk trefwoord moet op een nieuwe regel staan.",
@@ -794,6 +847,10 @@
         "background-opacity": {
           "description": "Pas de achtergronddekking van de balk aan.",
           "label": "Achtergronddekking"
+        },
+        "capsule-opacity": {
+          "description": "Stel het doorzichtigheidsniveau in voor widget-achtergronden wanneer capsule wordt getoond.",
+          "label": "Capsule-doorzichtigheid"
         },
         "density": {
           "description": "Pas de opvulling van de balk aan voor een compacte of ruime uitstraling.",
@@ -886,6 +943,41 @@
           "description": "Schakelt over naar een donkerder thema voor comfortabeler kijken 's nachts.",
           "label": "Donkere modus"
         }
+      },
+      "delete": {
+        "error": {
+          "description": "Verwijderen van {scheme} mislukt",
+          "title": "Verwijderen mislukt"
+        },
+        "success": {
+          "description": "{scheme} succesvol verwijderd",
+          "title": "Kleurenschema verwijderd"
+        }
+      },
+      "download": {
+        "button": "Meer downloaden",
+        "delete": "Verwijderen",
+        "download": "Downloaden",
+        "downloading": "Downloaden...",
+        "empty": "Geen kleurenschema's beschikbaar",
+        "error": {
+          "api-error": "API-fout: {status}",
+          "description": "Download van {scheme} mislukt",
+          "download-failed": "Download mislukt met afsluitcode: {code}",
+          "invalid-response": "Ongeldig API-antwoordformaat",
+          "no-files": "Geen bestanden gevonden voor schema",
+          "parse-failed": "Fout bij parseren van API-antwoord: {error}",
+          "rate-limit": "GitHub API-snelheidslimiet overschreden",
+          "title": "Download mislukt"
+        },
+        "fetching": "Beschikbare kleurenschema's ophalen...",
+        "installed": "Geïnstalleerd",
+        "refresh": "Vernieuwen",
+        "success": {
+          "description": "{scheme} succesvol gedownload",
+          "title": "Kleurenschema gedownload"
+        },
+        "title": "Kleurenschema's downloaden"
       },
       "predefined": {
         "generate-templates": {
@@ -1364,6 +1456,10 @@
           "description": "Kies je voorkeurseenheid voor temperatuur.",
           "label": "Weer"
         },
+        "show-effects": {
+          "description": "Toont extra visuele effecten (zoals regen, sneeuw of bliksem) op de weerkaart.",
+          "label": "Weerseffecten weergeven"
+        },
         "show-in-calendar": {
           "description": "Toon de dagelijkse weersverwachting direct in je kalenderview.",
           "label": "Weer in kalender weergeven"
@@ -1663,6 +1759,10 @@
       }
     },
     "user-interface": {
+      "allow-panels-without-bar": {
+        "description": "Indien ingeschakeld, kunnen panelen op elk scherm worden geopend. Indien uitgeschakeld, worden panelen alleen geopend op schermen met een balk, wat het geheugengebruik kan verminderen.",
+        "label": "Sta panelen toe op schermen zonder balk."
+      },
       "animation-disable": {
         "description": "Schakel alle animaties uit voor een snellere, responsievere ervaring.",
         "label": "UI-animaties uitschakelen"
@@ -1870,19 +1970,6 @@
       "low": "Batterij bijna leeg",
       "low-desc": "De batterij is op {percent}%. Sluit de oplader aan."
     },
-    "battery-manager": {
-      "initial-setup": "Initiële configuratie vereist",
-      "install-failed": "Installatie mislukt",
-      "install-missing": "Vereiste bestanden ontbreken",
-      "install-success": "Succesvol geïnstalleerd",
-      "install-unsupported": "Systeem wordt niet ondersteund",
-      "set-failed": "Instellen van batterijdrempel mislukt",
-      "set-success-desc": "Batterijdrempel ingesteld op {percent}%",
-      "title": "Batterijdrempel",
-      "uninstall-failed": "Deïnstallatie mislukt",
-      "uninstall-setup": "Verwijderen, authenticatie vereist",
-      "uninstall-success": "Succesvol verwijderd"
-    },
     "bluetooth": {
       "disabled": "Uitgeschakeld",
       "enabled": "Ingeschakeld"
@@ -2047,6 +2134,11 @@
         "label": "Categorieën",
         "people": "Mensen"
       },
+      "order": {
+        "asc": "Oplopend",
+        "desc": "Aflopend",
+        "label": "Volgorde"
+      },
       "purity": {
         "all": "Alles",
         "label": "Inhoudsfilter",
@@ -2071,21 +2163,16 @@
         "toplist": "Toplijst",
         "views": "Weergaven"
       },
-      "order": {
-        "asc": "Oplopend",
-        "desc": "Aflopend",
-        "label": "Volgorde"
-      },
-      "wallhaven-settings": {
-        "apply": "Toepassen",
-        "title": "Wallhaven-instellingen"
-      },
       "source": {
         "label": "Bron",
         "local": "Lokaal",
         "wallhaven": "Wallhaven"
       },
-      "title": "Achtergrondkiezer"
+      "title": "Achtergrondkiezer",
+      "wallhaven-settings": {
+        "apply": "Toepassen",
+        "title": "Wallhaven-instellingen"
+      }
     },
     "transitions": {
       "disc": "Schijf",
@@ -2096,6 +2183,7 @@
       "wipe": "Vegen"
     },
     "try-different-search": "Probeer een andere zoekopdracht.",
+    "unknown": "Onbekend",
     "wallhaven": {
       "loading": "Achtergronden laden...",
       "no-results": "Geen achtergronden gevonden. Probeer een andere zoekopdracht.",

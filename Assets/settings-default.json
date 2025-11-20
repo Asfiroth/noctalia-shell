@@ -7,6 +7,7 @@
     "monitors": [],
     "density": "default",
     "showCapsule": true,
+    "capsuleOpacity": 1,
     "floating": false,
     "marginVertical": 0.25,
     "marginHorizontal": 0.25,
@@ -59,7 +60,7 @@
   },
   "general": {
     "avatarImage": "",
-    "dimmerOpacity": 0.8,
+    "dimmerOpacity": 0.6,
     "showScreenCorners": false,
     "forceBlackScreenCorners": false,
     "scaleRatio": 1,
@@ -73,7 +74,8 @@
     "shadowDirection": "bottom_right",
     "shadowOffsetX": 2,
     "shadowOffsetY": 3,
-    "language": ""
+    "language": "",
+    "allowPanelsOnScreenWithoutBar": true
   },
   "ui": {
     "fontDefault": "Roboto",
@@ -85,9 +87,13 @@
     "panelsAttachedToBar": true,
     "settingsPanelAttachToBar": false
   },
+  "changelog": {
+    "lastSeenVersion": ""
+  },
   "location": {
     "name": "Tokyo",
     "weatherEnabled": true,
+    "weatherShowEffects": true,
     "useFahrenheit": false,
     "use12hourFormat": false,
     "showWeekNumberInCalendar": false,
@@ -128,7 +134,7 @@
     "hideWallpaperFilenames": false,
     "useWallhaven": false,
     "wallhavenQuery": "",
-    "wallhavenSorting": "date_added",
+    "wallhavenSorting": "relevance",
     "wallhavenOrder": "desc",
     "wallhavenCategories": "111",
     "wallhavenPurity": "100",
@@ -335,8 +341,5 @@
     "enabled": false,
     "wallpaperChange": "",
     "darkModeChange": ""
-  },
-  "battery": {
-    "chargingMode": 0
   }
 }

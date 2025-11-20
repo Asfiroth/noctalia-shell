@@ -3,17 +3,16 @@ import QtQuick.Shapes
 import qs.Commons
 import qs.Widgets
 
-
 /**
- * AllBackgrounds - Unified Shape container for all bar and panel backgrounds
- *
- * Unified shadow system. This component contains a single Shape
- * with multiple ShapePath children (one for bar, one for each panel type).
- *
- * Benefits:
- * - Single GPU-accelerated rendering pass for all backgrounds
- * - Unified shadow system (one MultiEffect for everything)
- */
+* AllBackgrounds - Unified Shape container for all bar and panel backgrounds
+*
+* Unified shadow system. This component contains a single Shape
+* with multiple ShapePath children (one for bar, one for each panel type).
+*
+* Benefits:
+* - Single GPU-accelerated rendering pass for all backgrounds
+* - Unified shadow system (one MultiEffect for everything)
+*/
 Item {
   id: root
 
@@ -46,15 +45,12 @@ Item {
       enabled: false // Disable mouse input on the Shape itself
 
       Component.onCompleted: {
-        Logger.d("AllBackgrounds", "AllBackgrounds initialized")
-        Logger.d("AllBackgrounds", "  bar:", root.bar)
-        Logger.d("AllBackgrounds", "  windowRoot:", root.windowRoot)
+        Logger.d("AllBackgrounds", "AllBackgrounds initialized");
       }
 
-
       /**
-     *  Bar
-     */
+      *  Bar
+      */
       BarBackground {
         bar: root.bar
         shapeContainer: backgroundsShape
@@ -62,21 +58,13 @@ Item {
         backgroundColor: Qt.alpha(Color.mSurface, Settings.data.bar.backgroundOpacity)
       }
 
-
       /**
-     *  Panels
-     */
+      *  Panels
+      */
 
       // Audio
       PanelBackground {
         panel: root.windowRoot.audioPanelPlaceholder
-        shapeContainer: backgroundsShape
-        backgroundColor: panelBackgroundColor
-      }
-
-      // Battery
-      PanelBackground {
-        panel: root.windowRoot.batteryPanelPlaceholder
         shapeContainer: backgroundsShape
         backgroundColor: panelBackgroundColor
       }
@@ -98,6 +86,13 @@ Item {
       // Control Center
       PanelBackground {
         panel: root.windowRoot.controlCenterPanelPlaceholder
+        shapeContainer: backgroundsShape
+        backgroundColor: panelBackgroundColor
+      }
+
+      // Changelog
+      PanelBackground {
+        panel: root.windowRoot.changelogPanelPlaceholder
         shapeContainer: backgroundsShape
         backgroundColor: panelBackgroundColor
       }
@@ -160,7 +155,7 @@ Item {
     }
 
     // Apply shadow to the cached layer
-    NDropShadows {
+    NDropShadow {
       anchors.fill: parent
       source: backgroundsShape
     }

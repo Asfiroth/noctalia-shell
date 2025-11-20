@@ -1,21 +1,21 @@
 import QtQuick
-import QtQuick.Layouts
 import QtQuick.Controls
 import QtQuick.Effects
+import QtQuick.Layouts
 import Quickshell
-import Quickshell.Wayland
+import Quickshell.Io
 import Quickshell.Services.Pam
 import Quickshell.Services.UPower
-import Quickshell.Io
+import Quickshell.Wayland
 import Quickshell.Widgets
 import qs.Commons
+import qs.Services.Compositor
 import qs.Services.Hardware
 import qs.Services.Keyboard
 import qs.Services.Location
 import qs.Services.Media
-import qs.Services.Compositor
-import qs.Services.UI
 import qs.Services.System
+import qs.Services.UI
 import qs.Widgets
 import qs.Widgets.AudioSpectrum
 
@@ -31,14 +31,14 @@ Loader {
     interval: 250
     repeat: false
     onTriggered: {
-      lockScreen.active = false
+      lockScreen.active = false;
       // Reset the deprecation flag when unlocking
-      lockScreen.triggeredViaDeprecatedCall = false
+      lockScreen.triggeredViaDeprecatedCall = false;
     }
   }
 
   function scheduleUnloadAfterUnlock() {
-    unloadAfterUnlockTimer.start()
+    unloadAfterUnlockTimer.start();
   }
 
   sourceComponent: Component {
@@ -48,12 +48,12 @@ Loader {
       LockContext {
         id: lockContext
         onUnlocked: {
-          lockSession.locked = false
-          lockScreen.scheduleUnloadAfterUnlock()
-          lockContext.currentText = ""
+          lockSession.locked = false;
+          lockScreen.scheduleUnloadAfterUnlock();
+          lockContext.currentText = "";
         }
         onFailed: {
-          lockContext.currentText = ""
+          lockContext.currentText = "";
         }
       }
 
@@ -130,21 +130,20 @@ Loader {
               smooth: false
 
               onPaint: {
-                const ctx = getContext("2d")
+                const ctx = getContext("2d");
                 if (!ctx)
-                  return
+                  return;
+                ctx.reset();
+                ctx.clearRect(0, 0, width, height);
 
-                ctx.reset()
-                ctx.clearRect(0, 0, width, height)
+                ctx.fillStyle = parent.cornerColor;
+                ctx.fillRect(0, 0, width, height);
 
-                ctx.fillStyle = parent.cornerColor
-                ctx.fillRect(0, 0, width, height)
-
-                ctx.globalCompositeOperation = "destination-out"
-                ctx.fillStyle = "#ffffff"
-                ctx.beginPath()
-                ctx.arc(width, height, parent.cornerRadius, 0, 2 * Math.PI)
-                ctx.fill()
+                ctx.globalCompositeOperation = "destination-out";
+                ctx.fillStyle = "#ffffff";
+                ctx.beginPath();
+                ctx.arc(width, height, parent.cornerRadius, 0, 2 * Math.PI);
+                ctx.fill();
               }
 
               onWidthChanged: if (available)
@@ -164,21 +163,20 @@ Loader {
               smooth: true
 
               onPaint: {
-                const ctx = getContext("2d")
+                const ctx = getContext("2d");
                 if (!ctx)
-                  return
+                  return;
+                ctx.reset();
+                ctx.clearRect(0, 0, width, height);
 
-                ctx.reset()
-                ctx.clearRect(0, 0, width, height)
+                ctx.fillStyle = parent.cornerColor;
+                ctx.fillRect(0, 0, width, height);
 
-                ctx.fillStyle = parent.cornerColor
-                ctx.fillRect(0, 0, width, height)
-
-                ctx.globalCompositeOperation = "destination-out"
-                ctx.fillStyle = "#ffffff"
-                ctx.beginPath()
-                ctx.arc(0, height, parent.cornerRadius, 0, 2 * Math.PI)
-                ctx.fill()
+                ctx.globalCompositeOperation = "destination-out";
+                ctx.fillStyle = "#ffffff";
+                ctx.beginPath();
+                ctx.arc(0, height, parent.cornerRadius, 0, 2 * Math.PI);
+                ctx.fill();
               }
 
               onWidthChanged: if (available)
@@ -198,21 +196,20 @@ Loader {
               smooth: true
 
               onPaint: {
-                const ctx = getContext("2d")
+                const ctx = getContext("2d");
                 if (!ctx)
-                  return
+                  return;
+                ctx.reset();
+                ctx.clearRect(0, 0, width, height);
 
-                ctx.reset()
-                ctx.clearRect(0, 0, width, height)
+                ctx.fillStyle = parent.cornerColor;
+                ctx.fillRect(0, 0, width, height);
 
-                ctx.fillStyle = parent.cornerColor
-                ctx.fillRect(0, 0, width, height)
-
-                ctx.globalCompositeOperation = "destination-out"
-                ctx.fillStyle = "#ffffff"
-                ctx.beginPath()
-                ctx.arc(width, 0, parent.cornerRadius, 0, 2 * Math.PI)
-                ctx.fill()
+                ctx.globalCompositeOperation = "destination-out";
+                ctx.fillStyle = "#ffffff";
+                ctx.beginPath();
+                ctx.arc(width, 0, parent.cornerRadius, 0, 2 * Math.PI);
+                ctx.fill();
               }
 
               onWidthChanged: if (available)
@@ -232,21 +229,20 @@ Loader {
               smooth: true
 
               onPaint: {
-                const ctx = getContext("2d")
+                const ctx = getContext("2d");
                 if (!ctx)
-                  return
+                  return;
+                ctx.reset();
+                ctx.clearRect(0, 0, width, height);
 
-                ctx.reset()
-                ctx.clearRect(0, 0, width, height)
+                ctx.fillStyle = parent.cornerColor;
+                ctx.fillRect(0, 0, width, height);
 
-                ctx.fillStyle = parent.cornerColor
-                ctx.fillRect(0, 0, width, height)
-
-                ctx.globalCompositeOperation = "destination-out"
-                ctx.fillStyle = "#ffffff"
-                ctx.beginPath()
-                ctx.arc(0, 0, parent.cornerRadius, 0, 2 * Math.PI)
-                ctx.fill()
+                ctx.globalCompositeOperation = "destination-out";
+                ctx.fillStyle = "#ffffff";
+                ctx.beginPath();
+                ctx.arc(0, 0, parent.cornerRadius, 0, 2 * Math.PI);
+                ctx.fill();
               }
 
               onWidthChanged: if (available)
@@ -347,7 +343,7 @@ Loader {
                   // Date below
                   NText {
                     text: {
-                      var lang = I18n.locale.name.split("_")[0]
+                      var lang = I18n.locale.name.split("_")[0];
                       var formats = {
                         "de": "dddd, d. MMMM",
                         "es": "dddd, d 'de' MMMM",
@@ -356,8 +352,8 @@ Loader {
                         "zh": "yyyy年M月d日 dddd",
                         "uk": "dddd, d MMMM",
                         "tr": "dddd, d MMMM"
-                      }
-                      return I18n.locale.toString(Time.now, formats[lang] || "dddd, MMMM d")
+                      };
+                      return I18n.locale.toString(Time.now, formats[lang] || "dddd, MMMM d");
                     }
                     pointSize: Style.fontSizeXL
                     font.weight: Font.Medium
@@ -381,6 +377,8 @@ Loader {
                   backgroundColor: Color.mSurface
                   clockColor: Color.mOnSurface
                   secondHandColor: Color.mPrimary
+                  hoursFontSize: Style.fontSizeL
+                  minutesFontSize: Style.fontSizeL
                 }
               }
             }
@@ -487,15 +485,15 @@ Loader {
             // Compact status indicators container (compact mode only)
             Rectangle {
               width: {
-                var hasBattery = UPower.displayDevice && UPower.displayDevice.ready && UPower.displayDevice.isPresent
-                var hasKeyboard = keyboardLayout.currentLayout !== "Unknown"
+                var hasBattery = UPower.displayDevice && UPower.displayDevice.ready && UPower.displayDevice.isPresent;
+                var hasKeyboard = keyboardLayout.currentLayout !== "Unknown";
 
                 if (hasBattery && hasKeyboard) {
-                  return 200
+                  return 200;
                 } else if (hasBattery || hasKeyboard) {
-                  return 120
+                  return 120;
                 } else {
-                  return 0
+                  return 0;
                 }
               }
               height: 40
@@ -554,13 +552,73 @@ Loader {
 
             // Bottom container with weather, password input and controls
             Rectangle {
-              width: 750
+              id: bottomContainer
               height: Settings.data.general.compactLockScreen ? 120 : 220
               anchors.horizontalCenter: parent.horizontalCenter
               anchors.bottom: parent.bottom
               anchors.bottomMargin: 100
               radius: Style.radiusL
               color: Color.mSurface
+
+              // Measure text widths to determine minimum button width (for container width calculation)
+              Item {
+                id: buttonRowTextMeasurer
+                visible: false
+                property real iconSize: Settings.data.general.compactLockScreen ? Style.fontSizeM : Style.fontSizeL
+                property real fontSize: Settings.data.general.compactLockScreen ? Style.fontSizeS : Style.fontSizeM
+                property real spacing: 6
+                property real padding: 18 // Approximate horizontal padding per button
+
+                // Measure all button text widths
+                Text {
+                  id: logoutText
+                  text: I18n.tr("session-menu.logout")
+                  font.pointSize: buttonRowTextMeasurer.fontSize
+                  font.weight: Font.Medium
+                }
+                Text {
+                  id: suspendText
+                  text: I18n.tr("session-menu.suspend")
+                  font.pointSize: buttonRowTextMeasurer.fontSize
+                  font.weight: Font.Medium
+                }
+                Text {
+                  id: hibernateText
+                  text: I18n.tr("session-menu.hibernate")
+                  font.pointSize: buttonRowTextMeasurer.fontSize
+                  font.weight: Font.Medium
+                }
+                Text {
+                  id: rebootText
+                  text: I18n.tr("session-menu.reboot")
+                  font.pointSize: buttonRowTextMeasurer.fontSize
+                  font.weight: Font.Medium
+                }
+                Text {
+                  id: shutdownText
+                  text: I18n.tr("session-menu.shutdown")
+                  font.pointSize: buttonRowTextMeasurer.fontSize
+                  font.weight: Font.Medium
+                }
+
+                // Calculate maximum width needed
+                property real maxTextWidth: Math.max(
+                  logoutText.implicitWidth,
+                  Math.max(suspendText.implicitWidth,
+                  Math.max(hibernateText.implicitWidth,
+                  Math.max(rebootText.implicitWidth,
+                  shutdownText.implicitWidth))))
+                property real minButtonWidth: maxTextWidth + iconSize + spacing + padding
+              }
+
+              // Calculate minimum width based on button requirements
+              // Button row needs: margins + 5 buttons + 4 spacings + margins
+              // Plus ColumnLayout margins (14 on each side = 28 total)
+              // Add extra buffer to ensure password input has proper padding
+              property real minButtonRowWidth: buttonRowTextMeasurer.minButtonWidth > 0 
+                ? (5 * buttonRowTextMeasurer.minButtonWidth) + 40 + (2 * Style.marginM) + 28 + (2 * Style.marginM)
+                : 750
+              width: Math.max(750, minButtonRowWidth)
 
               ColumnLayout {
                 anchors.fill: parent
@@ -708,14 +766,14 @@ Loader {
 
                         NText {
                           text: {
-                            var temp = LocationService.data.weather.current_weather.temperature
-                            var suffix = "C"
+                            var temp = LocationService.data.weather.current_weather.temperature;
+                            var suffix = "C";
                             if (Settings.data.location.useFahrenheit) {
-                              temp = LocationService.celsiusToFahrenheit(temp)
-                              suffix = "F"
+                              temp = LocationService.celsiusToFahrenheit(temp);
+                              suffix = "F";
                             }
-                            temp = Math.round(temp)
-                            return temp + "°" + suffix
+                            temp = Math.round(temp);
+                            return temp + "°" + suffix;
                           }
                           pointSize: Style.fontSizeXL
                           font.weight: Style.fontWeightBold
@@ -724,14 +782,14 @@ Loader {
 
                         NText {
                           text: {
-                            var wind = LocationService.data.weather.current_weather.windspeed
-                            var unit = "km/h"
+                            var wind = LocationService.data.weather.current_weather.windspeed;
+                            var unit = "km/h";
                             if (Settings.data.location.useFahrenheit) {
-                              wind = wind * 0.621371 // Convert km/h to mph
-                              unit = "mph"
+                              wind = wind * 0.621371; // Convert km/h to mph
+                              unit = "mph";
                             }
-                            wind = Math.round(wind)
-                            return wind + " " + unit
+                            wind = Math.round(wind);
+                            return wind + " " + unit;
                           }
                           pointSize: Style.fontSizeM
                           color: Color.mOnSurfaceVariant
@@ -773,8 +831,8 @@ Loader {
 
                         NText {
                           text: {
-                            var weatherDate = new Date(LocationService.data.weather.daily.time[index].replace(/-/g, "/"))
-                            return I18n.locale.toString(weatherDate, "ddd")
+                            var weatherDate = new Date(LocationService.data.weather.daily.time[index].replace(/-/g, "/"));
+                            return I18n.locale.toString(weatherDate, "ddd");
                           }
                           pointSize: Style.fontSizeM
                           color: Color.mOnSurfaceVariant
@@ -791,15 +849,15 @@ Loader {
 
                         NText {
                           text: {
-                            var max = LocationService.data.weather.daily.temperature_2m_max[index]
-                            var min = LocationService.data.weather.daily.temperature_2m_min[index]
+                            var max = LocationService.data.weather.daily.temperature_2m_max[index];
+                            var min = LocationService.data.weather.daily.temperature_2m_min[index];
                             if (Settings.data.location.useFahrenheit) {
-                              max = LocationService.celsiusToFahrenheit(max)
-                              min = LocationService.celsiusToFahrenheit(min)
+                              max = LocationService.celsiusToFahrenheit(max);
+                              min = LocationService.celsiusToFahrenheit(min);
                             }
-                            max = Math.round(max)
-                            min = Math.round(min)
-                            return max + "°/" + min + "°"
+                            max = Math.round(max);
+                            min = Math.round(min);
+                            return max + "°/" + min + "°";
                           }
                           pointSize: Style.fontSizeM
                           font.weight: Style.fontWeightMedium
@@ -916,7 +974,7 @@ Loader {
 
                         Keys.onPressed: function (event) {
                           if (event.key === Qt.Key_Return || event.key === Qt.Key_Enter) {
-                            lockContext.tryUnlock()
+                            lockContext.tryUnlock();
                           }
                         }
 
@@ -1095,6 +1153,7 @@ Loader {
 
                   Rectangle {
                     Layout.fillWidth: true
+                    Layout.minimumWidth: buttonRowTextMeasurer.minButtonWidth
                     Layout.preferredHeight: Settings.data.general.compactLockScreen ? 36 : 48
                     radius: Settings.data.general.compactLockScreen ? 18 : 24
                     color: logoutButtonArea.containsMouse ? Color.mHover : "transparent"
@@ -1143,6 +1202,7 @@ Loader {
 
                   Rectangle {
                     Layout.fillWidth: true
+                    Layout.minimumWidth: buttonRowTextMeasurer.minButtonWidth
                     Layout.preferredHeight: Settings.data.general.compactLockScreen ? 36 : 48
                     radius: Settings.data.general.compactLockScreen ? 18 : 24
                     color: suspendButtonArea.containsMouse ? Color.mHover : "transparent"
@@ -1191,6 +1251,7 @@ Loader {
 
                   Rectangle {
                     Layout.fillWidth: true
+                    Layout.minimumWidth: buttonRowTextMeasurer.minButtonWidth
                     Layout.preferredHeight: Settings.data.general.compactLockScreen ? 36 : 48
                     radius: Settings.data.general.compactLockScreen ? 18 : 24
                     color: hibernateButtonArea.containsMouse ? Color.mHover : "transparent"
@@ -1239,6 +1300,7 @@ Loader {
 
                   Rectangle {
                     Layout.fillWidth: true
+                    Layout.minimumWidth: buttonRowTextMeasurer.minButtonWidth
                     Layout.preferredHeight: Settings.data.general.compactLockScreen ? 36 : 48
                     radius: Settings.data.general.compactLockScreen ? 18 : 24
                     color: rebootButtonArea.containsMouse ? Color.mHover : "transparent"
@@ -1287,6 +1349,7 @@ Loader {
 
                   Rectangle {
                     Layout.fillWidth: true
+                    Layout.minimumWidth: buttonRowTextMeasurer.minButtonWidth
                     Layout.preferredHeight: Settings.data.general.compactLockScreen ? 36 : 48
                     radius: Settings.data.general.compactLockScreen ? 18 : 24
                     color: shutdownButtonArea.containsMouse ? Color.mError : "transparent"

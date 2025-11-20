@@ -16,7 +16,10 @@ Item {
 
   signal hidden
 
-  width: Math.round(420 * Style.uiScaleRatio + Style.marginM * 1.5 * 2)
+  readonly property int notificationWidth: Math.round(400 * Style.uiScaleRatio)
+
+  // Use exact notification width to match notifications precisely
+  width: notificationWidth
   height: Math.round(contentLayout.implicitHeight + Style.marginM * 3 * 2)
   visible: true
   opacity: 0
@@ -26,25 +29,30 @@ Item {
   Rectangle {
     id: background
     anchors.fill: parent
-    anchors.margins: Style.marginM * 1.5
+    anchors.margins: Style.marginM
     radius: Style.radiusL
-    color: Color.mSurface
+    color: Qt.alpha(Color.mSurface, Settings.data.notifications.backgroundOpacity || 1.0)
 
     // Colored border based on type
     border.width: Math.max(2, Style.borderM)
     border.color: {
+      var baseColor;
       switch (root.type) {
       case "warning":
-        return Color.mPrimary
+        baseColor = Color.mPrimary;
+        break;
       case "error":
-        return Color.mError
+        baseColor = Color.mError;
+        break;
       default:
-        return Color.mOutline
+        baseColor = Color.mOutline;
+        break;
       }
+      return Qt.alpha(baseColor, Settings.data.notifications.backgroundOpacity || 1.0);
     }
   }
 
-  NDropShadows {
+  NDropShadow {
     anchors.fill: background
     source: background
     autoPaddingEnabled: true
@@ -74,45 +82,48 @@ Item {
     id: hideAnimation
     interval: Style.animationFast
     onTriggered: {
-      root.visible = false
-      root.hidden()
+      root.visible = false;
+      root.hidden();
     }
   }
 
   // Cleanup on destruction
   Component.onDestruction: {
-    hideTimer.stop()
-    hideAnimation.stop()
+    hideTimer.stop();
+    hideAnimation.stop();
   }
 
   RowLayout {
     id: contentLayout
-    anchors.fill: parent
-    anchors.topMargin: Style.marginL
-    anchors.bottomMargin: Style.marginL
-    anchors.leftMargin: Style.marginL * 2
-    anchors.rightMargin: Style.marginL * 2
+    anchors.top: parent.top
+    anchors.topMargin: Style.marginM
+    anchors.bottom: parent.bottom
+    anchors.bottomMargin: Style.marginM
+    anchors.left: parent.left
+    anchors.leftMargin: Style.marginM * 2
+    anchors.right: parent.right
+    anchors.rightMargin: Style.marginM * 2
     spacing: Style.marginL
 
     // Icon
     NIcon {
       icon: if (root.icon !== "") {
-              return root.icon
+              return root.icon;
             } else if (type === "warning") {
-              return "toast-warning"
+              return "toast-warning";
             } else if (type === "error") {
-              return "toast-error"
+              return "toast-error";
             } else {
-              return "toast-notice"
+              return "toast-notice";
             }
       color: {
         switch (type) {
         case "warning":
-          return Color.mPrimary
+          return Color.mPrimary;
         case "error":
-          return Color.mError
+          return Color.mError;
         default:
-          return Color.mOnSurface
+          return Color.mOnSurface;
         }
       }
       pointSize: Style.fontSizeXXL * 1.5
@@ -156,35 +167,35 @@ Item {
 
   function show(msg, desc, msgIcon, msgType, msgDuration) {
     // Stop all timers first
-    hideTimer.stop()
-    hideAnimation.stop()
+    hideTimer.stop();
+    hideAnimation.stop();
 
-    message = msg
-    description = desc || ""
-    icon = msgIcon || ""
-    type = msgType || "notice"
-    duration = msgDuration || 3000
+    message = msg;
+    description = desc || "";
+    icon = msgIcon || "";
+    type = msgType || "notice";
+    duration = msgDuration || 3000;
 
-    visible = true
-    opacity = 1
-    scale = 1.0
+    visible = true;
+    opacity = 1;
+    scale = 1.0;
 
-    hideTimer.restart()
+    hideTimer.restart();
   }
 
   function hide() {
-    hideTimer.stop()
-    opacity = 0
-    scale = initialScale
-    hideAnimation.restart()
+    hideTimer.stop();
+    opacity = 0;
+    scale = initialScale;
+    hideAnimation.restart();
   }
 
   function hideImmediately() {
-    hideTimer.stop()
-    hideAnimation.stop()
-    opacity = 0
-    scale = initialScale
-    root.visible = false
-    root.hidden()
+    hideTimer.stop();
+    hideAnimation.stop();
+    opacity = 0;
+    scale = initialScale;
+    root.visible = false;
+    root.hidden();
   }
 }

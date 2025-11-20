@@ -202,6 +202,10 @@
           "description": "Şu anda çalan parçanın albüm kapak sanatını göster.",
           "label": "Albüm kapağını göster"
         },
+        "show-artist-first": {
+          "description": "Sanatçı - başlık yerine başlık - sanatçı olarak göster.",
+          "label": "Önce sanatçıyı göster"
+        },
         "show-visualizer": {
           "description": "Müzik çalarken bir ses görselleştirici göster.",
           "label": "Görselleştiriciyi göster"
@@ -259,6 +263,10 @@
         "disk-critical-threshold": {
           "label": "Depolama Alanı (Kritik)"
         },
+        "disk-path": {
+          "description": "İzlenecek disk bağlama noktasını seçin.",
+          "label": "Disk yolu"
+        },
         "disk-warning-threshold": {
           "label": "Depolama Alanı (Uyarı)"
         },
@@ -314,13 +322,9 @@
         }
       },
       "taskbar-grouped": {
-        "show-numbers-only-when-occupied": {
-          "description": "Çalışma alanı numaralarını yalnızca açık pencereleri olan çalışma alanları için göster.",
-          "label": "Yalnızca dolu olduğunda numaraları göster"
-        },
-        "show-workspace-numbers": {
-          "description": "Görev gruplarının sol üst köşesinde çalışma alanı numaralarını göster.",
-          "label": "Çalışma alanı numaralarını göster"
+        "show-labels-only-when-occupied": {
+          "description": "Sadece açık pencereleri olan çalışma alanları için çalışma alanı etiketini göster.",
+          "label": "Sadece dolu olduğunda etiketi göster."
         }
       },
       "tray": {
@@ -363,13 +367,6 @@
     "health": "Sağlık: {percent}%",
     "idle": "Boşta.",
     "no-battery-detected": "Pil tespit edilmedi.",
-    "panel": {
-      "balanced": "Dengeli ({percent}%)",
-      "disabled": "Pil yöneticisi devre dışı",
-      "full": "Tam kapasite ({percent}%)",
-      "lifespan": "Uzatılmış ömür ({percent}%)",
-      "title": "Şarj eşiği"
-    },
     "plugged-in": "Prize takılı.",
     "time-left": "Kalan süre: {time}.",
     "time-until-full": "Dolma süresi: {time}."
@@ -398,8 +395,58 @@
       "loading": "Hava durumu yükleniyor..."
     }
   },
+  "changelog": {
+    "panel": {
+      "title": "{version} sürümünde neler yeni",
+      "subtitle": {
+        "fresh": "Noctalia’yı kurduğun için teşekkürler! Bu sürümde gelenler bunlar.",
+        "updated": "{previousVersion} sürümünden güncellendi"
+      },
+      "version": {
+        "new-user": "Yeni kurulum"
+      },
+      "highlight-title": "Öne çıkanlar",
+      "empty": "Sürüm notları henüz hazır değil.",
+      "section": {
+        "version": "Sürüm {version}",
+        "released": "{date} tarihinde yayımlandı"
+      },
+      "buttons": {
+        "discord": "Discord sunucumuza katıl",
+        "feedback": "Geri bildirim gönder",
+        "dismiss": "Tamam"
+      }
+    },
+    "error": {
+      "rate-limit": "GitHub sınırına ulaşıldı. Lütfen birkaç dakika sonra tekrar dene."
+    }
+  },
   "clock": {
     "tooltip": "Takvimi aç"
+  },
+  "context-menu": {
+    "activate-app": "{app}'i etkinleştir",
+    "clear-history": "Geçmişi temizle",
+    "close-app": "{app}'i kapat",
+    "cycle-visualizer": "Döngü görselleştirici",
+    "disable-bluetooth": "Bluetooth'u kapat",
+    "disable-dnd": "Rahatsız Etmeyin'i Kapat",
+    "disable-wifi": "Wi-Fi'ı kapat",
+    "enable-bluetooth": "Bluetooth'u etkinleştir",
+    "enable-dnd": "Rahatsız Etmeyin'i Etkinleştir",
+    "enable-wifi": "Wi-Fi'ı etkinleştir",
+    "next": "Sonraki",
+    "open-calendar": "Takvimi aç",
+    "open-display-settings": "Ekran ayarları",
+    "open-launcher": "Başlatıcıyı aç",
+    "open-mixer": "Ses mikseri",
+    "open-settings": "Ayarları aç",
+    "pause": "Duraklat",
+    "play": "Oyna",
+    "previous": "Önceki",
+    "random-wallpaper": "Rastgele duvar kağıdı",
+    "toggle-mute": "Sesi kapat/aç",
+    "widget-settings": "Araç ayarları"
   },
   "dock": {
     "menu": {
@@ -564,6 +611,7 @@
     },
     "workspace-labels": {
       "index": "İndeks",
+      "index+name": "Dizin ve Ad",
       "name": "İsim",
       "none": "Hiçbiri"
     }
@@ -579,8 +627,8 @@
     "search": "Ara...",
     "search-icons": "örn., noctalia, niri, battery, cloud",
     "search-launcher": "Girişleri arayın... veya > komutları için kullanın",
-    "search-wallpapers": "Duvar kağıtlarını filtrelemek için yazın...",
     "search-wallhaven": "Wallhaven'da ara...",
+    "search-wallpapers": "Duvar kağıtlarını filtrelemek için yazın...",
     "select": "Seç",
     "test": "Test"
   },
@@ -721,6 +769,11 @@
           "label": "Ses cihazları"
         }
       },
+      "external-mixer": {
+        "description": "Harici ses mikseri özelliği etkinleştirilirken başlatılacak komutu veya uygulama yolunu girin.",
+        "label": "Harici Ses Mikseri Komutu",
+        "placeholder": "pwvucontrol || pavucontrol"
+      },
       "media": {
         "excluded-player": {
           "description": "Sistemin yoksaymasını istediğiniz oynatıcılar için anahtar kelimeler ekleyin. Her anahtar kelime ayrı bir satırda olmalıdır.",
@@ -794,6 +847,10 @@
         "background-opacity": {
           "description": "Barın arka plan opaklığını ayarlayın.",
           "label": "Arka plan opaklığı"
+        },
+        "capsule-opacity": {
+          "description": "Kapsül gösterildiğinde widget arka planlarının saydamlık seviyesini ayarla.",
+          "label": "Kapsül saydamlığı"
         },
         "density": {
           "description": "Sıkı veya geniş bir görünüm için barın dolgusunu ayarlayın.",
@@ -886,6 +943,41 @@
           "description": "Gece daha kolay görüntülemek için daha koyu bir tema geçiş yapar.",
           "label": "Koyu mod"
         }
+      },
+      "delete": {
+        "error": {
+          "description": "{scheme} silinemedi",
+          "title": "Silme başarısız"
+        },
+        "success": {
+          "description": "{scheme} başarıyla silindi",
+          "title": "Renk şeması silindi"
+        }
+      },
+      "download": {
+        "button": "Daha fazla indir",
+        "delete": "Sil",
+        "download": "İndir",
+        "downloading": "İndiriliyor...",
+        "empty": "Mevcut renk şeması yok",
+        "error": {
+          "api-error": "API hatası: {status}",
+          "description": "{scheme} indirilemedi",
+          "download-failed": "İndirme başarısız, çıkış kodu: {code}",
+          "invalid-response": "Geçersiz API yanıt formatı",
+          "no-files": "Şema için dosya bulunamadı",
+          "parse-failed": "API yanıtı ayrıştırılamadı: {error}",
+          "rate-limit": "GitHub API hız sınırı aşıldı",
+          "title": "İndirme başarısız"
+        },
+        "fetching": "Mevcut renk şemaları alınıyor...",
+        "installed": "Yüklü",
+        "refresh": "Yenile",
+        "success": {
+          "description": "{scheme} başarıyla indirildi",
+          "title": "Renk şeması indirildi"
+        },
+        "title": "Renk şemalarını indir"
       },
       "predefined": {
         "generate-templates": {
@@ -1364,6 +1456,10 @@
           "description": "Tercih ettiğiniz sıcaklık birimini seçin.",
           "label": "Hava durumu"
         },
+        "show-effects": {
+          "description": "Hava durumu kartında ek görsel efektler (yağmur, kar veya şimşek gibi) gösterir.",
+          "label": "Hava efektlerini göster"
+        },
         "show-in-calendar": {
           "description": "Günlük hava durumu tahminini doğrudan takvim görünümünüzde gösterin.",
           "label": "Takvimde hava durumunu göster"
@@ -1663,6 +1759,10 @@
       }
     },
     "user-interface": {
+      "allow-panels-without-bar": {
+        "description": "Etkinleştirildiğinde, paneller herhangi bir ekranda açılabilir. Devre dışı bırakıldığında, paneller yalnızca bir çubuğu olan ekranlarda açılır, bu da bellek kullanımını azaltabilir.",
+        "label": "Çubuksuz ekranlardaki panellere izin ver."
+      },
       "animation-disable": {
         "description": "Daha hızlı ve daha duyarlı bir deneyim için tüm animasyonları devre dışı bırakın.",
         "label": "UI Animasyonlarını Devre Dışı Bırak"
@@ -1870,19 +1970,6 @@
       "low": "Düşük batarya",
       "low-desc": "Batarya % {percent}. Lütfen şarj bağlantısını yapın."
     },
-    "battery-manager": {
-      "initial-setup": "Başlangıç kurulumu gerekli",
-      "install-failed": "Kurulum başarısız oldu",
-      "install-missing": "Gerekli dosyalar eksik",
-      "install-success": "Başarıyla kuruldu",
-      "install-unsupported": "Sistem desteklenmiyor",
-      "set-failed": "Batarya eşiği ayarlanamadı",
-      "set-success-desc": "Batarya eşiği % {percent} olarak ayarlandı",
-      "title": "Batarya eşiği",
-      "uninstall-failed": "Kaldırma başarısız oldu",
-      "uninstall-setup": "Kaldırılıyor, kimlik doğrulama gerekli",
-      "uninstall-success": "Başarıyla kaldırıldı"
-    },
     "bluetooth": {
       "disabled": "Devre dışı",
       "enabled": "Etkin"
@@ -2047,6 +2134,11 @@
         "label": "Kategoriler",
         "people": "İnsanlar"
       },
+      "order": {
+        "asc": "Artan",
+        "desc": "Azalan",
+        "label": "Sıra"
+      },
       "purity": {
         "all": "Tümü",
         "label": "İçerik filtresi",
@@ -2071,21 +2163,16 @@
         "toplist": "En iyi liste",
         "views": "Görüntülemeler"
       },
-      "order": {
-        "asc": "Artan",
-        "desc": "Azalan",
-        "label": "Sıra"
-      },
-      "wallhaven-settings": {
-        "apply": "Uygula",
-        "title": "Wallhaven Ayarları"
-      },
       "source": {
         "label": "Kaynak",
         "local": "Yerel",
         "wallhaven": "Wallhaven"
       },
-      "title": "Duvar kağıdı seçici"
+      "title": "Duvar kağıdı seçici",
+      "wallhaven-settings": {
+        "apply": "Uygula",
+        "title": "Wallhaven Ayarları"
+      }
     },
     "transitions": {
       "disc": "Disk",
@@ -2096,6 +2183,7 @@
       "wipe": "Silme"
     },
     "try-different-search": "Farklı bir arama sorgusu deneyin.",
+    "unknown": "Bilinmiyor",
     "wallhaven": {
       "loading": "Duvar kağıtları yükleniyor...",
       "no-results": "Duvar kağıdı bulunamadı. Farklı bir arama sorgusu deneyin.",

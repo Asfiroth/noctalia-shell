@@ -1,4 +1,5 @@
 import QtQuick
+import QtQuick.Controls
 import Quickshell
 import Quickshell.Io
 import Quickshell.Services.Pipewire
@@ -23,12 +24,12 @@ Item {
   property var widgetMetadata: BarWidgetRegistry.widgetMetadata[widgetId]
   property var widgetSettings: {
     if (section && sectionWidgetIndex >= 0) {
-      var widgets = Settings.data.bar.widgets[section]
+      var widgets = Settings.data.bar.widgets[section];
       if (widgets && sectionWidgetIndex < widgets.length) {
-        return widgets[sectionWidgetIndex]
+        return widgets[sectionWidgetIndex];
       }
     }
-    return {}
+    return {};
   }
 
   readonly property bool isBarVertical: Settings.data.bar.position === "left" || Settings.data.bar.position === "right"
@@ -48,13 +49,13 @@ Item {
       // Logger.i("Bar:Microphone", "onInputVolumeChanged")
       if (!firstInputVolumeReceived) {
         // Ignore the first volume change
-        firstInputVolumeReceived = true
+        firstInputVolumeReceived = true;
       } else {
         // If a tooltip is visible while we show the pill
         // hide it so it doesn't overlap the volume slider.
-        TooltipService.hide()
-        pill.show()
-        externalHideTimer.restart()
+        TooltipService.hide();
+        pill.show();
+        externalHideTimer.restart();
       }
     }
   }
@@ -66,11 +67,11 @@ Item {
       // Logger.i("Bar:Microphone", "onInputMutedChanged")
       if (!firstInputVolumeReceived) {
         // Ignore the first mute change
-        firstInputVolumeReceived = true
+        firstInputVolumeReceived = true;
       } else {
-        TooltipService.hide()
-        pill.show()
-        externalHideTimer.restart()
+        TooltipService.hide();
+        pill.show();
+        externalHideTimer.restart();
       }
     }
   }
@@ -80,46 +81,99 @@ Item {
     running: false
     interval: 1500
     onTriggered: {
-      pill.hide()
+      pill.hide();
     }
+  }
+
+  function openExternalMixer() {
+    Quickshell.execDetached(["sh", "-c", Settings.data.audio.externalMixer]);
+  }
+
+  NPopupContextMenu {
+    id: contextMenu
+
+    model: [
+      {
+        "label": I18n.tr("context-menu.toggle-mute"),
+        "action": "toggle-mute",
+        "icon": AudioService.inputMuted ? "microphone-off" : "microphone"
+      },
+      {
+        "label": I18n.tr("context-menu.open-mixer"),
+        "action": "open-mixer",
+        "icon": "adjustments"
+      },
+      {
+        "label": I18n.tr("context-menu.widget-settings"),
+        "action": "widget-settings",
+        "icon": "settings"
+      },
+    ]
+
+    onTriggered: action => {
+                   var popupMenuWindow = PanelService.getPopupMenuWindow(screen);
+                   if (popupMenuWindow) {
+                     popupMenuWindow.close();
+                   }
+
+                   if (action === "toggle-mute") {
+                     AudioService.setInputMuted(!AudioService.inputMuted);
+                   } else if (action === "open-mixer") {
+                     root.openExternalMixer();
+                   } else if (action === "widget-settings") {
+                     BarService.openWidgetSettings(screen, section, sectionWidgetIndex, widgetId, widgetSettings);
+                   }
+                 }
   }
 
   BarPill {
     id: pill
 
+    screen: root.screen
     oppositeDirection: BarService.getPillDirection(root)
     icon: AudioService.getInputIcon()
     density: Settings.data.bar.density
     autoHide: false // Important to be false so we can hover as long as we want
-    text: Math.round(AudioService.inputVolume * 100)
+    text: {
+      const maxVolume = Settings.data.audio.volumeOverdrive ? 1.5 : 1.0;
+      const displayVolume = Math.min(maxVolume, AudioService.inputVolume);
+      return Math.round(displayVolume * 100);
+    }
     suffix: "%"
     forceOpen: displayMode === "alwaysShow"
     forceClose: displayMode === "alwaysHide"
     tooltipText: I18n.tr("tooltips.microphone-volume-at", {
-                           "volume": Math.round(AudioService.inputVolume * 100)
+                           "volume": (() => {
+                             const maxVolume = Settings.data.audio.volumeOverdrive ? 1.5 : 1.0;
+                             const displayVolume = Math.min(maxVolume, AudioService.inputVolume);
+                             return Math.round(displayVolume * 100);
+                           })()
                          })
 
     onWheel: function (delta) {
       // As soon as we start scrolling to adjust volume, hide the tooltip
-      TooltipService.hide()
+      TooltipService.hide();
 
-      wheelAccumulator += delta
+      wheelAccumulator += delta;
       if (wheelAccumulator >= 120) {
-        wheelAccumulator = 0
-        AudioService.setInputVolume(AudioService.inputVolume + AudioService.stepVolume)
+        wheelAccumulator = 0;
+        AudioService.setInputVolume(AudioService.inputVolume + AudioService.stepVolume);
       } else if (wheelAccumulator <= -120) {
-        wheelAccumulator = 0
-        AudioService.setInputVolume(AudioService.inputVolume - AudioService.stepVolume)
+        wheelAccumulator = 0;
+        AudioService.setInputVolume(AudioService.inputVolume - AudioService.stepVolume);
       }
     }
     onClicked: {
-      PanelService.getPanel("audioPanel", screen)?.toggle(this)
+      PanelService.getPanel("audioPanel", screen)?.toggle(this);
     }
     onRightClicked: {
-      AudioService.setInputMuted(!AudioService.inputMuted)
+      var popupMenuWindow = PanelService.getPopupMenuWindow(screen);
+      if (popupMenuWindow) {
+        const pos = BarService.getContextMenuPosition(pill, contextMenu.implicitWidth, contextMenu.implicitHeight);
+        contextMenu.openAtItem(pill, pos.x, pos.y);
+        popupMenuWindow.showContextMenu(contextMenu);
+      }
     }
-    onMiddleClicked: {
-      Quickshell.execDetached(["pwvucontrol"])
-    }
+    onMiddleClicked: root.openExternalMixer()
   }
 }

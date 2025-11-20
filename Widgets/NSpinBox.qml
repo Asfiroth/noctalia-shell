@@ -24,10 +24,56 @@ RowLayout {
   property alias minimum: root.from
   property alias maximum: root.to
 
+  // Properties for repeating
+  property int initialRepeatDelay: 400   // The "pause" after the first click (in ms)
+  property int repeatInterval: 80        // How often to step up after fist pause (ms)
+  property int rampFactor: 4             // How many ticks to wait before increasing the step multiplier
+  property int maxStepMultiplier: 10     // The max step (e.g., 10 * stepSize)
+  property int _holdTicks: 0             // Internal counter for hold duration
+  property int _repeatDirection: 0       // -1 for decrease, 1 for increase
+
   signal entered
   signal exited
 
   Layout.fillWidth: true
+
+  Timer {
+    id: repeatTimer
+    repeat: true
+    interval: root.initialRepeatDelay
+
+    onTriggered: {
+      if (repeatTimer.interval === root.initialRepeatDelay) {
+        repeatTimer.interval = root.repeatInterval;
+        root._holdTicks = 0;
+      }
+      root._holdTicks++;
+      var stepMultiplier = Math.min(root.maxStepMultiplier, 1 + Math.floor(root._holdTicks / root.rampFactor));
+      changeValue(root._repeatDirection, root.stepSize * stepMultiplier);
+    }
+  }
+
+  function changeValue(direction, step) {
+    var currentStep = step || root.stepSize;
+
+    if (direction === 1 && root.value < root.to) {
+      root.value = Math.min(root.to, root.value + currentStep);
+    } else if (direction === -1 && root.value > root.from) {
+      root.value = Math.max(root.from, root.value - currentStep);
+    } else {
+      return;
+    }
+
+    if (root.value === root.to || root.value === root.from) {
+      stopRepeat();
+    }
+  }
+
+  function stopRepeat() {
+    root._repeatDirection = 0;
+    repeatTimer.stop();
+    repeatTimer.interval = root.initialRepeatDelay;
+  }
 
   NLabel {
     label: root.label
@@ -38,11 +84,11 @@ RowLayout {
   Rectangle {
     id: spinBoxContainer
     implicitWidth: 120
-    implicitHeight: (root.baseSize - 4)
+    implicitHeight: Math.round((root.baseSize - 4) / 2) * 2
     radius: height * 0.5
     color: Color.mSurfaceVariant
     border.color: (root.hovering || decreaseArea.containsMouse || increaseArea.containsMouse) ? Color.mHover : Color.mOutline
-    border.width: 1
+    border.width: Style.borderS
 
     Behavior on border.color {
       ColorAnimation {
@@ -56,20 +102,20 @@ RowLayout {
       acceptedButtons: Qt.NoButton
       hoverEnabled: true
       onEntered: {
-        root.hovering = true
-        root.entered()
+        root.hovering = true;
+        root.entered();
       }
       onExited: {
-        root.hovering = false
-        root.exited()
+        root.hovering = false;
+        root.exited();
       }
       onWheel: wheel => {
                  if (wheel.angleDelta.y > 0 && root.value < root.to) {
-                   let newValue = Math.min(root.to, root.value + root.stepSize)
-                   root.value = newValue
+                   let newValue = Math.min(root.to, root.value + root.stepSize);
+                   root.value = newValue;
                  } else if (wheel.angleDelta.y < 0 && root.value > root.from) {
-                   let newValue = Math.max(root.from, root.value - root.stepSize)
-                   root.value = newValue
+                   let newValue = Math.max(root.from, root.value - root.stepSize);
+                   root.value = newValue;
                  }
                }
     }
@@ -82,7 +128,8 @@ RowLayout {
       anchors.top: parent.top
       anchors.bottom: parent.bottom
       anchors.left: parent.left
-      opacity: root.enabled && root.value > root.from ? 1.0 : 0.3
+      opacity: (root.enabled && root.value > root.from) || decreaseArea.containsMouse ? 1.0 : 0.3
+      clip: true
 
       Item {
         id: leftSemicircle
@@ -93,7 +140,7 @@ RowLayout {
         Rectangle {
           width: Math.round(parent.height)
           height: parent.height
-          radius: width / 2
+          radius: Math.round(width / 2)
           anchors.left: parent.left
           color: decreaseArea.containsMouse ? Color.mHover : Color.transparent
           Behavior on color {
@@ -162,10 +209,13 @@ RowLayout {
         hoverEnabled: true
         cursorShape: Qt.PointingHandCursor
         enabled: root.enabled && root.value > root.from
-        onClicked: {
-          let newValue = Math.max(root.from, root.value - root.stepSize)
-          root.value = newValue
+        onPressed: {
+          root._repeatDirection = -1;
+          changeValue(root._repeatDirection, root.stepSize);
+          repeatTimer.start();
         }
+        onReleased: stopRepeat()
+        onExited: stopRepeat()
       }
     }
 
@@ -177,7 +227,8 @@ RowLayout {
       anchors.top: parent.top
       anchors.bottom: parent.bottom
       anchors.right: parent.right
-      opacity: root.enabled && root.value < root.to ? 1.0 : 0.3
+      opacity: (root.enabled && root.value < root.to) || increaseArea.containsMouse ? 1.0 : 0.3
+      clip: true
 
       Item {
         id: rightSemicircle
@@ -188,7 +239,7 @@ RowLayout {
         Rectangle {
           width: Math.round(parent.height)
           height: parent.height
-          radius: width / 2
+          radius: Math.round(width / 2)
           anchors.right: parent.right
           color: increaseArea.containsMouse ? Color.mHover : Color.transparent
           Behavior on color {
@@ -257,10 +308,13 @@ RowLayout {
         hoverEnabled: true
         cursorShape: Qt.PointingHandCursor
         enabled: root.enabled && root.value < root.to
-        onClicked: {
-          let newValue = Math.min(root.to, root.value + root.stepSize)
-          root.value = newValue
+        onPressed: {
+          root._repeatDirection = 1;
+          changeValue(root._repeatDirection, root.stepSize);
+          repeatTimer.start();
         }
+        onReleased: stopRepeat()
+        onExited: stopRepeat()
       }
     }
 
@@ -310,29 +364,29 @@ RowLayout {
           }
 
           Keys.onReturnPressed: {
-            applyValue()
-            focus = false
+            applyValue();
+            focus = false;
           }
 
           Keys.onEscapePressed: {
-            text = root.value.toString()
-            focus = false
+            text = root.value.toString();
+            focus = false;
           }
 
           onFocusChanged: {
             if (focus) {
-              selectAll()
+              selectAll();
             } else {
-              applyValue()
+              applyValue();
             }
           }
 
           function applyValue() {
-            let newValue = parseInt(text)
+            let newValue = parseInt(text);
             if (!isNaN(newValue)) {
               // Don't manually set text here - let the binding handle it
-              newValue = Math.max(root.from, Math.min(root.to, newValue))
-              root.value = newValue
+              newValue = Math.max(root.from, Math.min(root.to, newValue));
+              root.value = newValue;
             }
           }
         }

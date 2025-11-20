@@ -147,6 +147,7 @@ Singleton {
                                     "useFixedWidth": false,
                                     "hideWhenIdle": false,
                                     "showAlbumArt": false,
+                                    "showArtistFirst": true,
                                     "showVisualizer": false,
                                     "visualizerType": "linear"
                                   },
@@ -175,7 +176,8 @@ Singleton {
                                     "showMemoryUsage": true,
                                     "showMemoryAsPercent": false,
                                     "showNetworkStats": false,
-                                    "showDiskUsage": false
+                                    "showDiskUsage": false,
+                                    "diskPath": "/"
                                   },
                                   "Taskbar": {
                                     "allowUserSettings": true,
@@ -306,27 +308,27 @@ Singleton {
   }
 
   function init() {
-    Logger.i("BarWidgetRegistry", "Service started")
+    Logger.i("BarWidgetRegistry", "Service started");
   }
 
   // ------------------------------
   // Helper function to get widget component by name
   function getWidget(id) {
-    return widgets[id] || null
+    return widgets[id] || null;
   }
 
   // Helper function to check if widget exists
   function hasWidget(id) {
-    return id in widgets
+    return id in widgets;
   }
 
   // Get list of available widget id
   function getAvailableWidgets() {
-    return Object.keys(widgets)
+    return Object.keys(widgets);
   }
 
   // Helper function to check if widget has user settings
   function widgetHasUserSettings(id) {
-    return (widgetMetadata[id] !== undefined) && (widgetMetadata[id].allowUserSettings === true)
+    return (widgetMetadata[id] !== undefined) && (widgetMetadata[id].allowUserSettings === true);
   }
 }

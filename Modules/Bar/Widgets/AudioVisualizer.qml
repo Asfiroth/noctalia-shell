@@ -1,8 +1,10 @@
 import QtQuick
+import QtQuick.Controls
 import Quickshell
 import qs.Commons
-import qs.Services.UI
+import qs.Modules.Bar.Extras
 import qs.Services.Media
+import qs.Services.UI
 import qs.Widgets
 import qs.Widgets.AudioSpectrum
 
@@ -22,12 +24,12 @@ Item {
   property var widgetMetadata: BarWidgetRegistry.widgetMetadata[widgetId]
   property var widgetSettings: {
     if (section && sectionWidgetIndex >= 0) {
-      var widgets = Settings.data.bar.widgets[section]
+      var widgets = Settings.data.bar.widgets[section];
       if (widgets && sectionWidgetIndex < widgets.length) {
-        return widgets[sectionWidgetIndex]
+        return widgets[sectionWidgetIndex];
       }
     }
-    return {}
+    return {};
   }
 
   // Resolve settings: try user settings or defaults from BarWidgetRegistry
@@ -38,16 +40,16 @@ Item {
   readonly property color fillColor: {
     switch (colorName) {
     case "primary":
-      return Color.mPrimary
+      return Color.mPrimary;
     case "secondary":
-      return Color.mSecondary
+      return Color.mSecondary;
     case "tertiary":
-      return Color.mTertiary
+      return Color.mTertiary;
     case "error":
-      return Color.mError
+      return Color.mError;
     case "onSurface":
     default:
-      return Color.mOnSurface
+      return Color.mOnSurface;
     }
   }
 
@@ -74,7 +76,7 @@ Item {
     id: background
     anchors.fill: parent
     radius: Style.radiusS
-    color: Settings.data.bar.showCapsule ? Color.mSurfaceVariant : Color.transparent
+    color: Style.capsuleColor
   }
 
   // Store visualizer type to force re-evaluation
@@ -92,15 +94,48 @@ Item {
     sourceComponent: {
       switch (currentVisualizerType) {
       case "linear":
-        return linearComponent
+        return linearComponent;
       case "mirrored":
-        return mirroredComponent
+        return mirroredComponent;
       case "wave":
-        return waveComponent
+        return waveComponent;
       default:
-        return null
+        return null;
       }
     }
+  }
+
+  NPopupContextMenu {
+    id: contextMenu
+
+    model: [
+      {
+        "label": I18n.tr("context-menu.cycle-visualizer"),
+        "action": "cycle-visualizer",
+        "icon": "chart-column"
+      },
+      {
+        "label": I18n.tr("context-menu.widget-settings"),
+        "action": "widget-settings",
+        "icon": "settings"
+      },
+    ]
+
+    onTriggered: action => {
+                   var popupMenuWindow = PanelService.getPopupMenuWindow(screen);
+                   if (popupMenuWindow) {
+                     popupMenuWindow.close();
+                   }
+
+                   if (action === "cycle-visualizer") {
+                     const types = ["linear", "mirrored", "wave"];
+                     const currentIndex = types.indexOf(currentVisualizerType);
+                     const nextIndex = (currentIndex + 1) % types.length;
+                     Settings.data.audio.visualizerType = types[nextIndex];
+                   } else if (action === "widget-settings") {
+                     BarService.openWidgetSettings(screen, section, sectionWidgetIndex, widgetId, widgetSettings);
+                   }
+                 }
   }
 
   // Click to cycle through visualizer types
@@ -109,16 +144,22 @@ Item {
     anchors.fill: parent
     cursorShape: Qt.PointingHandCursor
     hoverEnabled: true
-    acceptedButtons: Qt.LeftButton
+    acceptedButtons: Qt.LeftButton | Qt.RightButton
 
     onClicked: mouse => {
-                 const types = ["linear", "mirrored", "wave"]
-                 const currentIndex = types.indexOf(currentVisualizerType)
-                 const nextIndex = (currentIndex + 1) % types.length
-                 const newType = types[nextIndex]
-
-                 // Update settings directly, maybe this should be a widget setting...
-                 Settings.data.audio.visualizerType = newType
+                 if (mouse.button === Qt.RightButton) {
+                   var popupMenuWindow = PanelService.getPopupMenuWindow(screen);
+                   if (popupMenuWindow) {
+                     const pos = BarService.getContextMenuPosition(root, contextMenu.implicitWidth, contextMenu.implicitHeight);
+                     contextMenu.openAtItem(root, pos.x, pos.y);
+                     popupMenuWindow.showContextMenu(contextMenu);
+                   }
+                 } else {
+                   const types = ["linear", "mirrored", "wave"];
+                   const currentIndex = types.indexOf(currentVisualizerType);
+                   const nextIndex = (currentIndex + 1) % types.length;
+                   Settings.data.audio.visualizerType = types[nextIndex];
+                 }
                }
   }
 

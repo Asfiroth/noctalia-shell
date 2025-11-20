@@ -2,8 +2,8 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 import Quickshell
-import Quickshell.Widgets
 import Quickshell.Wayland
+import Quickshell.Widgets
 import qs.Commons
 import qs.Services.Compositor
 import qs.Services.UI
@@ -27,12 +27,12 @@ Rectangle {
   property var widgetMetadata: BarWidgetRegistry.widgetMetadata[widgetId]
   property var widgetSettings: {
     if (section && sectionWidgetIndex >= 0) {
-      var widgets = Settings.data.bar.widgets[section]
+      var widgets = Settings.data.bar.widgets[section];
       if (widgets && sectionWidgetIndex < widgets.length) {
-        return widgets[sectionWidgetIndex]
+        return widgets[sectionWidgetIndex];
       }
     }
-    return {}
+    return {};
   }
 
   property bool hasWindow: false
@@ -40,37 +40,81 @@ Rectangle {
   readonly property bool onlySameOutput: (widgetSettings.onlySameOutput !== undefined) ? widgetSettings.onlySameOutput : widgetMetadata.onlySameOutput
   readonly property bool onlyActiveWorkspaces: (widgetSettings.onlyActiveWorkspaces !== undefined) ? widgetSettings.onlyActiveWorkspaces : widgetMetadata.onlyActiveWorkspaces
 
+  // Context menu state
+  property var selectedWindow: null
+  property string selectedAppName: ""
+
+  NPopupContextMenu {
+    id: contextMenu
+    model: {
+      var items = [];
+      if (selectedWindow) {
+        items.push({
+                     "label": I18n.tr("context-menu.activate-app", {
+                                        "app": selectedAppName
+                                      }),
+                     "action": "activate",
+                     "icon": "focus"
+                   });
+        items.push({
+                     "label": I18n.tr("context-menu.close-app", {
+                                        "app": selectedAppName
+                                      }),
+                     "action": "close",
+                     "icon": "x"
+                   });
+      }
+      items.push({
+                   "label": I18n.tr("context-menu.widget-settings"),
+                   "action": "widget-settings",
+                   "icon": "settings"
+                 });
+      return items;
+    }
+    onTriggered: action => {
+                   if (action === "activate" && selectedWindow) {
+                     CompositorService.focusWindow(selectedWindow);
+                   } else if (action === "close" && selectedWindow) {
+                     CompositorService.closeWindow(selectedWindow);
+                   } else if (action === "widget-settings") {
+                     BarService.openWidgetSettings(screen, section, sectionWidgetIndex, widgetId, widgetSettings);
+                   }
+                   selectedWindow = null;
+                   selectedAppName = "";
+                 }
+  }
+
   function updateHasWindow() {
     try {
-      var total = CompositorService.windows.count || 0
+      var total = CompositorService.windows.count || 0;
       var activeIds = CompositorService.getActiveWorkspaces().map(function (ws) {
-        return ws.id
-      })
-      var found = false
+        return ws.id;
+      });
+      var found = false;
       for (var i = 0; i < total; i++) {
-        var w = CompositorService.windows.get(i)
+        var w = CompositorService.windows.get(i);
         if (!w)
-          continue
-        var passOutput = (!onlySameOutput) || (w.output == screen.name)
-        var passWorkspace = (!onlyActiveWorkspaces) || (activeIds.includes(w.workspaceId))
+          continue;
+        var passOutput = (!onlySameOutput) || (w.output == screen.name);
+        var passWorkspace = (!onlyActiveWorkspaces) || (activeIds.includes(w.workspaceId));
         if (passOutput && passWorkspace) {
-          found = true
-          break
+          found = true;
+          break;
         }
       }
-      hasWindow = found
+      hasWindow = found;
     } catch (e) {
-      hasWindow = false
+      hasWindow = false;
     }
   }
 
   Connections {
     target: CompositorService
     function onWindowListChanged() {
-      updateHasWindow()
+      updateHasWindow();
     }
     function onWorkspaceChanged() {
-      updateHasWindow()
+      updateHasWindow();
     }
   }
 
@@ -90,7 +134,7 @@ Rectangle {
   implicitWidth: visible ? (isVerticalBar ? Style.capsuleHeight : Math.round(taskbarLayout.implicitWidth + Style.marginM * 2)) : 0
   implicitHeight: visible ? (isVerticalBar ? Math.round(taskbarLayout.implicitHeight + Style.marginM * 2) : Style.capsuleHeight) : 0
   radius: Style.radiusM
-  color: Settings.data.bar.showCapsule ? Color.mSurfaceVariant : Color.transparent
+  color: Style.capsuleColor
 
   GridLayout {
     id: taskbarLayout
@@ -117,7 +161,7 @@ Rectangle {
         property ShellScreen screen: root.screen
 
         visible: (!onlySameOutput || modelData.output == screen.name) && (!onlyActiveWorkspaces || CompositorService.getActiveWorkspaces().map(function (ws) {
-          return ws.id
+          return ws.id;
         }).includes(modelData.workspaceId))
 
         Layout.preferredWidth: root.itemSize
@@ -125,7 +169,6 @@ Rectangle {
         Layout.alignment: Qt.AlignCenter
 
         IconImage {
-
           id: appIcon
           width: parent.width
           height: parent.height
@@ -144,10 +187,10 @@ Rectangle {
           }
 
           Rectangle {
+            id: iconBackground
             anchors.bottomMargin: -2
             anchors.bottom: parent.bottom
             anchors.horizontalCenter: parent.horizontalCenter
-            id: iconBackground
             width: 4
             height: 4
             color: modelData.isFocused ? Color.mPrimary : Color.transparent
@@ -163,23 +206,26 @@ Rectangle {
 
           onPressed: function (mouse) {
             if (!taskbarItem.modelData)
-              return
-
+              return;
             if (mouse.button === Qt.LeftButton) {
               try {
-                CompositorService.focusWindow(taskbarItem.modelData)
+                CompositorService.focusWindow(taskbarItem.modelData);
               } catch (error) {
-                Logger.e("Taskbar", "Failed to activate toplevel: " + error)
+                Logger.e("Taskbar", "Failed to activate toplevel: " + error);
               }
             } else if (mouse.button === Qt.RightButton) {
-              try {
-                CompositorService.closeWindow(taskbarItem.modelData)
-              } catch (error) {
-                Logger.e("Taskbar", "Failed to close toplevel: " + error)
+              TooltipService.hide();
+              root.selectedWindow = taskbarItem.modelData;
+              root.selectedAppName = CompositorService.getCleanAppName(taskbarItem.modelData.appId, taskbarItem.modelData.title);
+              var popupMenuWindow = PanelService.getPopupMenuWindow(screen);
+              if (popupMenuWindow) {
+                const pos = BarService.getContextMenuPosition(taskbarItem, contextMenu.implicitWidth, contextMenu.implicitHeight);
+                contextMenu.openAtItem(taskbarItem, pos.x, pos.y);
+                popupMenuWindow.showContextMenu(contextMenu);
               }
             }
           }
-          onEntered: TooltipService.show(Screen, taskbarItem, taskbarItem.modelData.title || taskbarItem.modelData.appId || "Unknown app.", BarService.getTooltipDirection())
+          onEntered: TooltipService.show(taskbarItem, taskbarItem.modelData.title || taskbarItem.modelData.appId || "Unknown app.", BarService.getTooltipDirection())
           onExited: TooltipService.hide()
         }
       }

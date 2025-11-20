@@ -202,6 +202,10 @@
           "description": "Display the album artwork for the currently playing track.",
           "label": "Show album art"
         },
+        "show-artist-first": {
+          "description": "Display artist - title instead of title - artist.",
+          "label": "Show artist first"
+        },
         "show-visualizer": {
           "description": "Display an audio visualizer when music is playing.",
           "label": "Show visualizer"
@@ -259,6 +263,10 @@
         "disk-critical-threshold": {
           "label": "Storage Space (Critical)"
         },
+        "disk-path": {
+          "description": "Select which disk mount point to monitor.",
+          "label": "Disk path"
+        },
         "disk-warning-threshold": {
           "label": "Storage Space (Warning)"
         },
@@ -314,13 +322,9 @@
         }
       },
       "taskbar-grouped": {
-        "show-numbers-only-when-occupied": {
-          "description": "Only show workspace numbers for workspaces that have open windows.",
-          "label": "Show numbers only when occupied"
-        },
-        "show-workspace-numbers": {
-          "description": "Display workspace numbers in the top-left corner of task groups.",
-          "label": "Show workspace numbers"
+        "show-labels-only-when-occupied": {
+          "description": "Only show workspace label for workspaces that have open windows.",
+          "label": "Show label only when occupied"
         }
       },
       "tray": {
@@ -356,23 +360,16 @@
     }
   },
   "battery": {
-    "charging": "Charging.",
-    "charging-rate": "Charging rate: {rate} W.",
-    "discharging": "Discharging.",
-    "discharging-rate": "Discharging rate: {rate} W.",
+    "charging": "Charging",
+    "charging-rate": "Charging rate: {rate} W",
+    "discharging": "Discharging",
+    "discharging-rate": "Discharging rate: {rate} W",
     "health": "Health: {percent}%",
-    "idle": "Idle.",
-    "no-battery-detected": "No battery detected.",
-    "panel": {
-      "balanced": "Balanced ({percent}%)",
-      "disabled": "Battery manager disabled",
-      "full": "Full capacity ({percent}%)",
-      "lifespan": "Extended lifespan ({percent}%)",
-      "title": "Charge threshold"
-    },
-    "plugged-in": "Plugged in.",
-    "time-left": "Time left: {time}.",
-    "time-until-full": "Time until full: {time}."
+    "idle": "Idle",
+    "no-battery-detected": "No battery detected",
+    "plugged-in": "Plugged in",
+    "time-left": "Time left: {time}",
+    "time-until-full": "Time until full: {time}"
   },
   "bluetooth": {
     "panel": {
@@ -398,8 +395,57 @@
       "loading": "Loading weather…"
     }
   },
+  "changelog": {
+    "panel": {
+      "title": "What's new in {version}",
+      "subtitle": {
+        "fresh": "Thanks for installing Noctalia! Here is what’s included in this build.",
+        "updated": "Updated from {previousVersion}"
+      },
+      "version": {
+        "new-user": "Fresh install"
+      },
+      "highlight-title": "Highlights",
+      "empty": "Release notes are not available yet.",
+      "section": {
+        "version": "Version {version}",
+        "released": "Released on {date}"
+      },
+      "buttons": {
+        "discord": "Join our Discord",
+        "dismiss": "Ok"
+      }
+    },
+    "error": {
+      "rate-limit": "GitHub rate limit exceeded. Please try again in a few minutes."
+    }
+  },
   "clock": {
     "tooltip": "Open calendar"
+  },
+  "context-menu": {
+    "activate-app": "Activate {app}",
+    "clear-history": "Clear history",
+    "close-app": "Close {app}",
+    "cycle-visualizer": "Cycle visualizer",
+    "disable-bluetooth": "Disable Bluetooth",
+    "disable-dnd": "Disable Do Not Disturb",
+    "disable-wifi": "Disable Wi-Fi",
+    "enable-bluetooth": "Enable Bluetooth",
+    "enable-dnd": "Enable Do Not Disturb",
+    "enable-wifi": "Enable Wi-Fi",
+    "next": "Next",
+    "open-calendar": "Open calendar",
+    "open-display-settings": "Display settings",
+    "open-launcher": "Open launcher",
+    "open-mixer": "Audio mixer",
+    "open-settings": "Open settings",
+    "pause": "Pause",
+    "play": "Play",
+    "previous": "Previous",
+    "random-wallpaper": "Random wallpaper",
+    "toggle-mute": "Toggle mute",
+    "widget-settings": "Widget settings"
   },
   "dock": {
     "menu": {
@@ -564,6 +610,7 @@
     },
     "workspace-labels": {
       "index": "Index",
+      "index+name": "Index and Name",
       "name": "Name",
       "none": "None"
     }
@@ -579,8 +626,8 @@
     "search": "Search...",
     "search-icons": "e.g., noctalia, niri, battery, cloud",
     "search-launcher": "Search entries... or use > for commands",
-    "search-wallpapers": "Type to filter wallpapers...",
     "search-wallhaven": "Search Wallhaven...",
+    "search-wallpapers": "Type to filter wallpapers...",
     "select": "Select",
     "test": "Test"
   },
@@ -721,6 +768,11 @@
           "label": "Audio devices"
         }
       },
+      "external-mixer": {
+        "description": "Enter the command or application path to launch when activating the external audio mixer feature.",
+        "label": "External Audio Mixer Command",
+        "placeholder": "pwvucontrol || pavucontrol"
+      },
       "media": {
         "excluded-player": {
           "description": "Add keywords for players you want the system to ignore. Each keyword should be on a new line.",
@@ -794,6 +846,10 @@
         "background-opacity": {
           "description": "Adjust the background opacity of the bar.",
           "label": "Background opacity"
+        },
+        "capsule-opacity": {
+          "description": "Set the opacity level for widget backgrounds when capsule is shown.",
+          "label": "Capsule opacity"
         },
         "density": {
           "description": "Adjust the bar's padding for a compact or spacious look.",
@@ -886,6 +942,41 @@
           "description": "Switches to a darker theme for easier viewing at night.",
           "label": "Dark mode"
         }
+      },
+      "delete": {
+        "error": {
+          "description": "Failed to delete {scheme}",
+          "title": "Delete Failed"
+        },
+        "success": {
+          "description": "Successfully deleted {scheme}",
+          "title": "Color Scheme Deleted"
+        }
+      },
+      "download": {
+        "button": "Download more",
+        "delete": "Delete",
+        "download": "Download",
+        "downloading": "Downloading...",
+        "empty": "No color schemes available",
+        "error": {
+          "api-error": "API error: {status}",
+          "description": "Failed to download {scheme}",
+          "download-failed": "Download failed with exit code: {code}",
+          "invalid-response": "Invalid API response format",
+          "no-files": "No files found for scheme",
+          "parse-failed": "Failed to parse API response: {error}",
+          "rate-limit": "GitHub API rate limit exceeded",
+          "title": "Download Failed"
+        },
+        "fetching": "Fetching available color schemes...",
+        "installed": "Installed",
+        "refresh": "Refresh",
+        "success": {
+          "description": "Successfully downloaded {scheme}",
+          "title": "Color Scheme Downloaded"
+        },
+        "title": "Download Color Schemes"
       },
       "predefined": {
         "generate-templates": {
@@ -1364,6 +1455,10 @@
           "description": "Choose your preferred temperature unit.",
           "label": "Weather"
         },
+        "show-effects": {
+          "description": "Shows additional visual effects (like rain, snow, or lightning) on the weather card.",
+          "label": "Display weather effects"
+        },
         "show-in-calendar": {
           "description": "Show the daily weather forecast directly in your calendar view.",
           "label": "Display weather in calendar"
@@ -1663,6 +1758,10 @@
       }
     },
     "user-interface": {
+      "allow-panels-without-bar": {
+        "description": "When enabled, panels can open on any screen. When disabled, panels will only open on screens that have a bar, which can reduce memory usage.",
+        "label": "Allow panels on screens without a bar"
+      },
       "animation-disable": {
         "description": "Disable all animations for a faster, more responsive experience.",
         "label": "Disable UI Animations"
@@ -1874,19 +1973,6 @@
       "low": "Low battery",
       "low-desc": "Battery is at {percent}%. Please connect the charger."
     },
-    "battery-manager": {
-      "initial-setup": "Initial setup required",
-      "install-failed": "Installation failed",
-      "install-missing": "Required files are missing",
-      "install-success": "Installed successfully",
-      "install-unsupported": "System is not supported",
-      "set-failed": "Failed to set battery threshold",
-      "set-success-desc": "Battery threshold set to {percent}%",
-      "title": "Battery threshold",
-      "uninstall-failed": "Uninstallation failed",
-      "uninstall-setup": "Uninstalling, authentication required",
-      "uninstall-success": "Uninstalled successfully"
-    },
     "bluetooth": {
       "disabled": "Disabled",
       "enabled": "Enabled"
@@ -1971,39 +2057,39 @@
   "tooltips": {
     "add-widget": "Add widget",
     "bluetooth-devices": "Bluetooth devices",
-    "brightness-at": "Brightness: {brightness}%\nRight click for settings.\nScroll to modify brightness.",
+    "brightness-at": "Brightness: {brightness}%\nScroll to modify brightness",
     "cancel-timer": "Cancel timer",
     "clear-history": "Clear history",
     "click-to-start-recording": "Click to start recording",
     "click-to-stop-recording": "Click to stop recording",
     "close": "Close",
-    "connect-disconnect-devices": "Left click to connect. Right click to forget.",
+    "connect-disconnect-devices": "Left click to connect\nRight click to forget",
     "delete-notification": "Delete notification",
-    "disable-keep-awake": "Click to disable keep awake.\nScroll to adjust timeout.",
+    "disable-keep-awake": "Click to disable keep awake.\nScroll to adjust timeout",
     "do-not-disturb-disabled": "'Do not disturb' disabled",
     "do-not-disturb-enabled": "'Do not disturb' enabled",
-    "enable-keep-awake": "Click to enable keep awake.\nScroll to adjust timeout.",
+    "enable-keep-awake": "Click to enable keep awake.\nScroll to adjust timeout",
     "forget-network": "Forget network",
     "home": "Home",
     "input-muted": "Toggle input mute",
     "keep-awake": "Keep awake",
     "keyboard-layout": "{layout} keyboard layout",
     "manage-wifi": "Manage Wi-Fi",
-    "microphone-volume-at": "Microphone volume at {volume}%\nLeft click for settings. Right click to toggle mute.\nScroll to modify volume.",
+    "microphone-volume-at": "Microphone volume at {volume}%\nScroll to modify volume",
     "move-to-center-section": "Move to center section",
     "move-to-left-section": "Move to left section",
     "move-to-right-section": "Move to right section",
     "next-media": "Next media",
     "next-month": "Next month",
-    "night-light-disabled": "Night light is disabled.\nLeft click to cycle mode.\nRight click to access settings.",
-    "night-light-enabled": "Night light is enabled.\nLeft click to cycle mode.\nRight click to access settings.",
-    "night-light-forced": "Night light is forced.\nLeft click to cycle mode.\nRight click to access settings.",
-    "night-light-not-installed": "Night light is not available.\nwlsunset is not installed.",
-    "noctalia-performance-disabled": "Noctalia performance mode is disabled.\nLeft click to enable.",
-    "noctalia-performance-enabled": "Noctalia performance mode is enabled.\nLeft click to disable.",
+    "night-light-disabled": "Night light is disabled.\nLeft click to cycle mode\nRight click to access settings",
+    "night-light-enabled": "Night light is enabled.\nLeft click to cycle mode\nRight click to access settings",
+    "night-light-forced": "Night light is forced.\nLeft click to cycle mode\nRight click to access settings",
+    "night-light-not-installed": "Night light is not available\nwlsunset is not installed",
+    "noctalia-performance-disabled": "Noctalia performance mode is disabled\nLeft click to enable",
+    "noctalia-performance-enabled": "Noctalia performance mode is enabled\nLeft click to disable",
     "open-control-center": "Open control center",
-    "open-notification-history-disable-dnd": "Open notification history\nRight-click to disable \"Do not disturb\".",
-    "open-notification-history-enable-dnd": "Open notification history\nRight-click to enable \"Do not disturb\".",
+    "open-notification-history-disable-dnd": "Open notification history\nRight-click to disable \"Do not disturb\"",
+    "open-notification-history-enable-dnd": "Open notification history\nRight-click to enable \"Do not disturb\"",
     "open-settings": "Open settings",
     "open-tray-dropdown": "Open tray dropdown",
     "open-wallpaper-selector": "Open wallpaper selector",
@@ -2026,8 +2112,8 @@
     "switch-to-dark-mode": "Switch to dark mode",
     "switch-to-light-mode": "Switch to light mode",
     "up": "Up",
-    "volume-at": "Output volume at {volume}%\nLeft click for settings. Right click to toggle mute.\nScroll to modify volume.",
-    "wallpaper-selector": "Left click: Open wallpaper selector.\nRight click: Set random wallpaper.",
+    "volume-at": "Output volume at {volume}%\nScroll to modify volume",
+    "wallpaper-selector": "Left click: Open wallpaper selector.\nRight click: Set random wallpaper",
     "widget-settings": "Widget settings"
   },
   "wallpaper": {
@@ -2056,6 +2142,11 @@
         "label": "Categories",
         "people": "People"
       },
+      "order": {
+        "asc": "Ascending",
+        "desc": "Descending",
+        "label": "Order"
+      },
       "purity": {
         "all": "All",
         "label": "Content filter",
@@ -2080,21 +2171,16 @@
         "toplist": "Toplist",
         "views": "Views"
       },
-      "order": {
-        "asc": "Ascending",
-        "desc": "Descending",
-        "label": "Order"
-      },
-      "wallhaven-settings": {
-        "apply": "Apply",
-        "title": "Wallhaven Settings"
-      },
       "source": {
         "label": "Source",
         "local": "Local",
         "wallhaven": "Wallhaven"
       },
-      "title": "Wallpaper Selector"
+      "title": "Wallpaper Selector",
+      "wallhaven-settings": {
+        "apply": "Apply",
+        "title": "Wallhaven Settings"
+      }
     },
     "transitions": {
       "disc": "Disc",
