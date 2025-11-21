@@ -33,7 +33,11 @@ Singleton {
   property string changelogLastSeenVersion: ""
   property bool changelogStateLoaded: false
   property bool pendingShowRequest: false
-  
+
+  // Changelog fetching
+  property string changelogBaseUrl: Quickshell.env("NOCTALIA_CHANGELOG_URL") || "https://noctalia.dev:7777/changelogs"
+  property string upgradeLogBaseUrl: Quickshell.env("NOCTALIA_UPGRADELOG_URL") || "https://noctalia.dev:7777/upgradelog"
+
   // Fix for FileView race condition
   property bool saveInProgress: false
   property bool pendingSave: false
@@ -57,19 +61,6 @@ Singleton {
 
     initialized = true;
     Logger.i("UpdateService", "Version:", root.currentVersion);
-  }
-
-  Connections {
-    target: GitHubService ? GitHubService : null
-    function onReleaseNotesChanged() {
-      rebuildHighlights();
-    }
-    function onReleasesChanged() {
-      rebuildHighlights();
-    }
-    function onReleaseFetchErrorChanged() {
-      fetchError = GitHubService ? GitHubService.releaseFetchError : "";
-    }
   }
 
   FileView {
@@ -108,7 +99,7 @@ Singleton {
   function handleChangelogRequest() {
     const fromVersion = changelogFromVersion || "";
     const toVersion = changelogToVersion || "";
-    
+
     if (!toVersion)
       return;
 
@@ -120,71 +111,68 @@ Singleton {
 
     previousVersion = fromVersion;
     changelogCurrentVersion = toVersion;
-    fetchError = GitHubService ? GitHubService.releaseFetchError : "";
-    releaseHighlights = buildReleaseHighlights(previousVersion, changelogCurrentVersion);
     releaseNotesUrl = buildReleaseNotesUrl(toVersion);
+
+    // Fetch the upgrade log from the server
+    fetchUpgradeLog(fromVersion, toVersion);
 
     popupScheduled = true;
     root.popupQueued(previousVersion, changelogCurrentVersion);
 
     clearChangelogRequest();
-    openWhenReady();
   }
 
-  function rebuildHighlights() {
-    if (!changelogCurrentVersion)
-      return;
-    fetchError = GitHubService ? GitHubService.releaseFetchError : "";
-    releaseHighlights = buildReleaseHighlights(previousVersion, changelogCurrentVersion);
-  }
+  function fetchUpgradeLog(fromVersion, toVersion) {
+    // Use the last seen version, or default to v3.0.0 if this is a fresh install
+    let from = fromVersion || changelogLastSeenVersion || "v3.0.0";
+    let to = toVersion;
 
-  function buildReleaseHighlights(fromVersion, toVersion) {
-    const releases = GitHubService && GitHubService.releases ? GitHubService.releases : [];
-    const selected = [];
-    const fromNorm = normalizeVersion(fromVersion);
-    const toNorm = normalizeVersion(toVersion);
+    // Strip -dev suffix from versions
+    from = from.replace(/-dev$/, "");
+    to = to.replace(/-dev$/, "");
 
-    if (releases.length > 0) {
-      for (var i = 0; i < releases.length; i++) {
-        const rel = releases[i];
-        const tag = rel.version || "";
-        const tagNorm = normalizeVersion(tag);
-        if (!tagNorm)
-          continue;
+    const url = `${upgradeLogBaseUrl}/${from}/${to}`;
 
-        if (toNorm && compareVersions(tagNorm, toNorm) > 0) {
-          continue;
+    Logger.w("UpdateService", "=== Fetching upgrade log ===");
+    Logger.w("UpdateService", "From version:", from);
+    Logger.w("UpdateService", "To version:", to);
+    Logger.w("UpdateService", "URL:", url);
+    Logger.w("UpdateService", "upgradeLogBaseUrl:", upgradeLogBaseUrl);
+    Logger.w("UpdateService", "changelogLastSeenVersion:", changelogLastSeenVersion);
+
+    const request = new XMLHttpRequest();
+    request.onreadystatechange = function () {
+      if (request.readyState === XMLHttpRequest.DONE) {
+        Logger.d("UpdateService", "Request completed with status:", request.status);
+        Logger.d("UpdateService", "Response text length:", request.responseText ? request.responseText.length : 0);
+
+        if (request.status >= 200 && request.status < 300) {
+          const content = request.responseText || "";
+          Logger.d("UpdateService", "Successfully fetched upgrade log, parsing...");
+          const entries = parseReleaseNotes(content);
+          Logger.d("UpdateService", "Parsed entries count:", entries.length);
+          releaseHighlights = [
+                {
+                  "version": toVersion,
+                  "date": "",
+                  "entries": entries
+                }
+              ];
+          fetchError = "";
+          openWhenReady();
+        } else {
+          Logger.e("UpdateService", "Failed to fetch upgrade log");
+          Logger.e("UpdateService", "Status:", request.status);
+          Logger.e("UpdateService", "Status text:", request.statusText);
+          Logger.e("UpdateService", "Response:", request.responseText);
+          fetchError = I18n.tr("changelog.error.fetch-failed");
+          releaseHighlights = [];
+          openWhenReady();
         }
-
-        if (fromNorm && compareVersions(tagNorm, fromNorm) <= 0) {
-          break;
-        }
-
-        const entries = parseReleaseNotes(rel.body);
-        if (entries.length === 0)
-          continue;
-
-        selected.push({
-          "version": tag,
-          "date": rel.createdAt || "",
-          "entries": entries
-        });
       }
-    }
-
-    if (selected.length === 0 && toVersion) {
-      const fallback = parseReleaseNotes(GitHubService ? GitHubService.releaseNotes : "");
-      if (fallback.length > 0) {
-        selected.push({
-          "version": toVersion,
-          "date": "",
-          "entries": fallback
-        });
-        fetchError = "";
-      }
-    }
-
-    return selected;
+    };
+    request.open("GET", url);
+    request.send();
   }
 
   function normalizeVersion(version) {
@@ -221,7 +209,7 @@ Singleton {
     if (!version)
       return "";
     const tag = version.startsWith("v") ? version : `v${version}`;
-    return `https://github.com/noctalia-dev/noctalia-shell/releases/tag/${tag}`;
+    return `${changelogBaseUrl}/CHANGELOG-${tag}.txt`;
   }
 
   function parseReleaseNotes(body) {
@@ -232,32 +220,16 @@ Singleton {
     var entries = [];
 
     for (var i = 0; i < lines.length; i++) {
-      var line = lines[i].trim();
-      if (!line)
-        continue;
-
-      if (line.startsWith("- ") || line.startsWith("* ")) {
-        const text = cleanEntry(line.substring(2).trim());
-        if (text.length > 0 && !isVersionLine(text) && !isIgnoredEntry(text)) {
-          entries.push(text);
-        }
-      }
-
-      if (entries.length >= 6)
-        break;
+      const line = lines[i];
+      entries.push(line);
     }
 
-    var uniqueEntries = [];
-    var seen = {};
-    for (var j = 0; j < entries.length; j++) {
-      const key = entries[j].toLowerCase();
-      if (seen[key])
-        continue;
-      seen[key] = true;
-      uniqueEntries.push(entries[j]);
+    // Remove trailing blank lines
+    while (entries.length > 0 && entries[entries.length - 1].trim().length === 0) {
+      entries.pop();
     }
 
-    return uniqueEntries;
+    return entries;
   }
 
   function isVersionLine(text) {
@@ -412,25 +384,25 @@ Singleton {
 
     try {
       changelogStateAdapter.lastSeenVersion = changelogLastSeenVersion || "";
-      
+
       // Ensure cache directory exists
       Quickshell.execDetached(["mkdir", "-p", Settings.cacheDir]);
-      
+
       // Small delay to ensure directory creation completes
       Qt.callLater(() => {
-        try {
-          changelogStateFileView.writeAdapter();
-          saveInProgress = false;
-          
-          // Check if another save was queued while we were saving
-          if (pendingSave) {
-            Qt.callLater(executeSave);
-          }
-        } catch (writeError) {
-          Logger.e("UpdateService", "Failed to write changelog state:", writeError);
-          saveInProgress = false;
-        }
-      });
+                     try {
+                       changelogStateFileView.writeAdapter();
+                       saveInProgress = false;
+
+                       // Check if another save was queued while we were saving
+                       if (pendingSave) {
+                         Qt.callLater(executeSave);
+                       }
+                     } catch (writeError) {
+                       Logger.e("UpdateService", "Failed to write changelog state:", writeError);
+                       saveInProgress = false;
+                     }
+                   });
     } catch (error) {
       Logger.e("UpdateService", "Failed to save changelog state:", error);
       saveInProgress = false;
@@ -441,4 +413,6 @@ Singleton {
     // Immediate save (backward compatibility)
     debouncedSaveChangelogState();
   }
+
+  // Changelog fetching functions (removed cache - only fetch on version change via fetchUpgradeLog)
 }

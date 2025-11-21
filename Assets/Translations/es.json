@@ -123,9 +123,13 @@
           "stream-description": "Introduce un comando para ejecutar continuamente."
         },
         "dynamic-text": "Texto dinámico",
-        "hide-vertical": {
-          "description": "Si está activado, el texto de la salida del comando no se mostrará cuando la barra esté en un diseño vertical (izquierda o derecha).",
-          "label": "Ocultar texto en barra vertical"
+        "max-text-length-horizontal": {
+          "description": "Número máximo de caracteres a mostrar en la barra horizontal (0 para ocultar el texto)",
+          "label": "Longitud máxima de texto (horizontal)"
+        },
+        "max-text-length-vertical": {
+          "description": "Número máximo de caracteres a mostrar en la barra vertical (0 para ocultar el texto)",
+          "label": "Longitud máxima de texto (vertical)"
         },
         "icon": {
           "description": "Selecciona un icono de la biblioteca.",
@@ -140,6 +144,23 @@
           "description": "Comando a ejecutar cuando se hace clic medio en el botón.",
           "label": "Clic medio",
           "update-text": "Actualizar el texto mostrado al hacer clic con el botón central"
+        },
+        "wheel": {
+          "description": "Comando a ejecutar cuando se usa la rueda de desplazamiento.\nUsa $delta para el delta de la rueda de desplazamiento en el comando",
+          "label": "Rueda de desplazamiento",
+          "update-text": "Actualizar texto mostrado al desplazarse"
+        },
+        "wheel-mode-separate": {
+          "label": "Comandos de rueda separados",
+          "description": "Habilitar comandos separados para rueda arriba y abajo"
+        },
+        "wheel-up": {
+          "description": "Comando a ejecutar cuando la rueda de desplazamiento se desplaza hacia arriba.",
+          "label": "Comando de rueda hacia arriba"
+        },
+        "wheel-down": {
+          "description": "Comando a ejecutar cuando la rueda de desplazamiento se desplaza hacia abajo.",
+          "label": "Comando de rueda hacia abajo"
         },
         "parse-json": {
           "description": "Analizar la salida del comando como un objeto JSON para establecer dinámicamente el texto y el ícono.",
@@ -396,29 +417,29 @@
     }
   },
   "changelog": {
+    "error": {
+      "rate-limit": "Se alcanzó el límite de GitHub. Inténtalo de nuevo en unos minutos.",
+      "fetch-failed": "No se pudieron cargar los datos del registro de cambios. Inténtalo de nuevo más tarde."
+    },
     "panel": {
-      "title": "Novedades en {version}",
+      "buttons": {
+        "discord": "Únete a nuestro Discord",
+        "dismiss": "Ok"
+      },
+      "empty": "Las notas de la versión aún no están disponibles.",
+      "highlight-title": "Cambios destacados",
+      "section": {
+        "released": "Publicado el {date}",
+        "version": "Versión {version}"
+      },
       "subtitle": {
         "fresh": "Gracias por instalar Noctalia. Esto es lo que incluye esta compilación.",
         "updated": "Actualizado desde {previousVersion}"
       },
+      "title": "Novedades en {version}",
       "version": {
         "new-user": "Instalación nueva"
-      },
-      "highlight-title": "Cambios destacados",
-      "empty": "Las notas de la versión aún no están disponibles.",
-      "section": {
-        "version": "Versión {version}",
-        "released": "Publicado el {date}"
-      },
-      "buttons": {
-        "discord": "Únete a nuestro Discord",
-        "feedback": "Enviar comentarios",
-        "dismiss": "Ok"
       }
-    },
-    "error": {
-      "rate-limit": "Se alcanzó el límite de GitHub. Inténtalo de nuevo en unos minutos."
     }
   },
   "clock": {
@@ -1372,6 +1393,10 @@
           "description": "Accede a los elementos copiados anteriormente desde el lanzador.",
           "label": "Activar historial del portapapeles"
         },
+        "clip-preview": {
+          "description": "Muestra una vista previa del contenido del portapapeles al usar el comando >clip.",
+          "label": "Activar vista previa del portapapeles"
+        },
         "custom-launch-prefix": {
           "description": "Prefijar comandos con un lanzador personalizado (ej. 'runapp' para integración con systemd).",
           "label": "Prefijo de lanzamiento personalizado"
@@ -2306,6 +2331,7 @@
   },
   "wifi": {
     "panel": {
+      "available-networks": "Redes disponibles",
       "connect": "Conectar",
       "connected": "Conectado",
       "disabled": "Wi-Fi está desactivado",
@@ -2316,6 +2342,7 @@
       "forget": "Olvidar",
       "forget-network": "¿Olvidar esta red?",
       "forgetting": "Olvidando...",
+      "known-networks": "Redes conocidas",
       "no-networks": "No se encontraron redes",
       "password": "Contraseña",
       "saved": "Guardado",

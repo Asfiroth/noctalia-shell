@@ -123,9 +123,13 @@
           "stream-description": "Entrez une commande à exécuter en continu."
         },
         "dynamic-text": "Texte dynamique",
-        "hide-vertical": {
-          "description": "Si activé, le texte de la sortie de la commande ne sera pas affiché lorsque la barre est en disposition verticale (gauche ou droite).",
-          "label": "Masquer le texte dans la barre verticale"
+        "max-text-length-horizontal": {
+          "description": "Nombre maximal de caractères à afficher dans la barre horizontale (0 pour masquer le texte)",
+          "label": "Longueur max du texte (horizontal)"
+        },
+        "max-text-length-vertical": {
+          "description": "Nombre maximal de caractères à afficher dans la barre verticale (0 pour masquer le texte)",
+          "label": "Longueur max du texte (vertical)"
         },
         "icon": {
           "description": "Sélectionnez une icône dans la bibliothèque.",
@@ -140,6 +144,23 @@
           "description": "Commande à exécuter quand le bouton est cliqué au milieu.",
           "label": "Clic milieu",
           "update-text": "Mettre à jour le texte affiché lors d'un clic molette."
+        },
+        "wheel": {
+          "description": "Commande à exécuter lorsque la molette est utilisée.\nUtilisez $delta pour le delta de la molette dans la commande",
+          "label": "Molette",
+          "update-text": "Mettre à jour le texte affiché au défilement"
+        },
+        "wheel-mode-separate": {
+          "label": "Commandes de molette séparées",
+          "description": "Activer des commandes séparées pour la molette haut et bas"
+        },
+        "wheel-up": {
+          "description": "Commande à exécuter lorsque la molette est défilée vers le haut.",
+          "label": "Commande molette haut"
+        },
+        "wheel-down": {
+          "description": "Commande à exécuter lorsque la molette est défilée vers le bas.",
+          "label": "Commande molette bas"
         },
         "parse-json": {
           "description": "Analyser la sortie de la commande en tant qu'objet JSON pour définir dynamiquement le texte et l'icône.",
@@ -396,29 +417,29 @@
     }
   },
   "changelog": {
+    "error": {
+      "rate-limit": "Limite de GitHub atteinte. Réessayez dans quelques minutes.",
+      "fetch-failed": "Impossible de charger les données du journal des modifications. Veuillez réessayer plus tard."
+    },
     "panel": {
-      "title": "Quoi de neuf dans {version}",
+      "buttons": {
+        "discord": "Rejoindre notre Discord",
+        "dismiss": "Ok"
+      },
+      "empty": "Les notes de version ne sont pas encore disponibles.",
+      "highlight-title": "Points importants",
+      "section": {
+        "released": "Publié le {date}",
+        "version": "Version {version}"
+      },
       "subtitle": {
         "fresh": "Merci d’avoir installé Noctalia ! Voici ce que contient cette version.",
         "updated": "Mise à jour depuis {previousVersion}"
       },
+      "title": "Quoi de neuf dans {version}",
       "version": {
         "new-user": "Nouvelle installation"
-      },
-      "highlight-title": "Points importants",
-      "empty": "Les notes de version ne sont pas encore disponibles.",
-      "section": {
-        "version": "Version {version}",
-        "released": "Publié le {date}"
-      },
-      "buttons": {
-        "discord": "Rejoindre notre Discord",
-        "feedback": "Envoyer un retour",
-        "dismiss": "Ok"
       }
-    },
-    "error": {
-      "rate-limit": "Limite de GitHub atteinte. Réessayez dans quelques minutes."
     }
   },
   "clock": {
@@ -1372,6 +1393,10 @@
           "description": "Accédez aux éléments précédemment copiés depuis le lanceur.",
           "label": "Activer l'historique du presse-papiers"
         },
+        "clip-preview": {
+          "description": "Afficher un aperçu du contenu du presse-papiers lors de l'utilisation de la commande >clip.",
+          "label": "Activer l'aperçu du presse-papiers"
+        },
         "custom-launch-prefix": {
           "description": "Préfixer les commandes avec un lanceur personnalisé (ex. 'runapp' pour l'intégration systemd).",
           "label": "Préfixe de lancement personnalisé"
@@ -2306,6 +2331,7 @@
   },
   "wifi": {
     "panel": {
+      "available-networks": "Réseaux disponibles",
       "connect": "Connecter",
       "connected": "Connecté",
       "disabled": "Le Wi-Fi est désactivé",
@@ -2316,6 +2342,7 @@
       "forget": "Oublier",
       "forget-network": "Oublier ce réseau ?",
       "forgetting": "Oubli en cours...",
+      "known-networks": "Réseaux connus",
       "no-networks": "Aucun réseau trouvé",
       "password": "Mot de passe",
       "saved": "Enregistré",

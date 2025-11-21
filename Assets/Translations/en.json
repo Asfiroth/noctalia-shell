@@ -123,9 +123,13 @@
           "stream-description": "Enter a command to run continuously."
         },
         "dynamic-text": "Dynamic text",
-        "hide-vertical": {
-          "description": "If enabled, the text from the command output will not be shown when the bar is in a vertical layout (left or right).",
-          "label": "Hide text in vertical bar"
+        "max-text-length-horizontal": {
+          "description": "Maximum number of characters to show in horizontal bar (0 to hide text)",
+          "label": "Max text length (horizontal)"
+        },
+        "max-text-length-vertical": {
+          "description": "Maximum number of characters to show in vertical bar (0 to hide text)",
+          "label": "Max text length (vertical)"
         },
         "icon": {
           "description": "Select an icon from the library.",
@@ -140,6 +144,23 @@
           "description": "Command to execute when the button is middle-clicked.",
           "label": "Middle click",
           "update-text": "Update displayed text on middle-click"
+        },
+        "wheel": {
+          "description": "Command to execute when the scroll wheel is used.\nUse $delta for the scroll wheel delta in the command",
+          "label": "Scroll wheel",
+          "update-text": "Update displayed text on scroll"
+        },
+        "wheel-mode-separate": {
+          "label": "Separate wheel commands",
+          "description": "Enable separate commands for wheel up and down"
+        },
+        "wheel-up": {
+          "description": "Command to execute when the scroll wheel is scrolled up.",
+          "label": "Wheel up command"
+        },
+        "wheel-down": {
+          "description": "Command to execute when the scroll wheel is scrolled down.",
+          "label": "Wheel down command"
         },
         "parse-json": {
           "description": "Parse the command output as a JSON object to dynamically set text and icon.",
@@ -396,28 +417,29 @@
     }
   },
   "changelog": {
+    "error": {
+      "rate-limit": "GitHub rate limit exceeded. Please try again in a few minutes.",
+      "fetch-failed": "Unable to load changelog data. Please try again later."
+    },
     "panel": {
-      "title": "What's new in {version}",
+      "buttons": {
+        "discord": "Join our Discord",
+        "dismiss": "Ok"
+      },
+      "empty": "Release notes are not available yet.",
+      "highlight-title": "Highlights",
+      "section": {
+        "released": "Released on {date}",
+        "version": "Version {version}"
+      },
       "subtitle": {
         "fresh": "Thanks for installing Noctalia! Here is what’s included in this build.",
         "updated": "Updated from {previousVersion}"
       },
+      "title": "What's new in {version}",
       "version": {
         "new-user": "Fresh install"
-      },
-      "highlight-title": "Highlights",
-      "empty": "Release notes are not available yet.",
-      "section": {
-        "version": "Version {version}",
-        "released": "Released on {date}"
-      },
-      "buttons": {
-        "discord": "Join our Discord",
-        "dismiss": "Ok"
       }
-    },
-    "error": {
-      "rate-limit": "GitHub rate limit exceeded. Please try again in a few minutes."
     }
   },
   "clock": {
@@ -1216,6 +1238,10 @@
           "description": "Adjust the dock's background opacity.",
           "label": "Background opacity"
         },
+        "border-radius": {
+          "description": "Adjust the dock's border radius.",
+          "label": "Border radius"
+        },
         "colorize-icons": {
           "description": "Apply theme colors to dock app icons (non-focused apps only).",
           "label": "Colorize Icons"
@@ -1370,6 +1396,10 @@
         "clipboard-history": {
           "description": "Access previously copied items from the launcher.",
           "label": "Enable clipboard history"
+        },
+        "clip-preview": {
+          "description": "Show a preview of the clipboard content when using the >clip command.",
+          "label": "Enable clip preview"
         },
         "custom-launch-prefix": {
           "description": "Prefix commands with a custom launcher (e.g., 'runapp' for systemd integration).",
@@ -2305,6 +2335,7 @@
   },
   "wifi": {
     "panel": {
+      "available-networks": "Available Networks",
       "connect": "Connect",
       "connected": "Connected",
       "disabled": "Wi-Fi is disabled",
@@ -2315,6 +2346,7 @@
       "forget": "Forget",
       "forget-network": "Forget this network?",
       "forgetting": "Forgetting...",
+      "known-networks": "Known Networks",
       "no-networks": "No networks found",
       "password": "Password",
       "saved": "Saved",
