@@ -21,8 +21,8 @@ Variants {
 
     property ListModel notificationModel: NotificationService.activeList
 
-    // Loader is active when there are notifications
-    active: notificationModel.count > 0 || delayTimer.running
+    // Always create window (but with 0x0 dimensions when no notifications)
+    active: true
 
     // Keep loader active briefly after last notification to allow animations to complete
     Timer {
@@ -104,8 +104,8 @@ Variants {
       margins.left: isLeft ? barOffsetLeft : 0
       margins.right: isRight ? barOffsetRight : 0
 
-      implicitWidth: notifWidth
-      implicitHeight: notificationStack.implicitHeight + Style.marginL
+      implicitWidth: (notificationModel.count > 0 || delayTimer.running) ? notifWidth : 0
+      implicitHeight: (notificationModel.count > 0 || delayTimer.running) ? (notificationStack.implicitHeight + Style.marginL) : 0
 
       property var animateConnection: null
 
@@ -393,22 +393,21 @@ Variants {
               RowLayout {
                 Layout.fillWidth: true
                 spacing: Style.marginL
-                Layout.margins: Style.marginM
+                Layout.leftMargin: Style.marginM * 2
+                Layout.rightMargin: Style.marginM * 2
+                Layout.topMargin: Style.marginM
+                Layout.bottomMargin: Style.marginM
 
                 ColumnLayout {
                   NImageCircled {
                     Layout.preferredWidth: Math.round(40 * Style.uiScaleRatio)
                     Layout.preferredHeight: Math.round(40 * Style.uiScaleRatio)
-                    Layout.alignment: Qt.AlignTop
-                    Layout.topMargin: 30
+                    Layout.alignment: Qt.AlignVCenter
                     imagePath: model.originalImage || ""
                     borderColor: Color.transparent
                     borderWidth: 0
                     fallbackIcon: "bell"
                     fallbackIconSize: 24
-                  }
-                  Item {
-                    Layout.fillHeight: true
                   }
                 }
 
@@ -430,9 +429,18 @@ Variants {
                     }
 
                     NText {
-                      text: `${model.appName || I18n.tr("system.unknown-app")} · ${Time.formatRelativeTime(model.timestamp)}`
-                      color: Color.mSecondary
+                      text: model.appName || "Unknown App"
                       pointSize: Style.fontSizeXS
+                      font.weight: Style.fontWeightBold
+                      color: Color.mSecondary
+                    }
+
+                    NText {
+                      textFormat: Text.PlainText
+                      text: " " + Time.formatRelativeTime(model.timestamp)
+                      pointSize: Style.fontSizeXXS
+                      color: Color.mOnSurfaceVariant
+                      Layout.alignment: Qt.AlignBottom
                     }
 
                     Item {

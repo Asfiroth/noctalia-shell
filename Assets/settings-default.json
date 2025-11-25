@@ -70,6 +70,7 @@
     "animationDisabled": false,
     "compactLockScreen": false,
     "lockOnSuspend": true,
+    "showHibernateOnLockScreen": false,
     "enableShadows": true,
     "shadowDirection": "bottom_right",
     "shadowOffsetX": 2,
@@ -86,9 +87,6 @@
     "panelBackgroundOpacity": 1,
     "panelsAttachedToBar": true,
     "settingsPanelAttachToBar": false
-  },
-  "changelog": {
-    "lastSeenVersion": ""
   },
   "location": {
     "name": "Tokyo",
@@ -151,7 +149,8 @@
     "sortByMostUsed": true,
     "terminalCommand": "xterm -e",
     "customLaunchPrefixEnabled": false,
-    "customLaunchPrefix": ""
+    "customLaunchPrefix": "",
+    "viewMode": "list"
   },
   "controlCenter": {
     "position": "close_to_bar_button",
@@ -225,6 +224,7 @@
     "enabled": true,
     "displayMode": "always_visible",
     "backgroundOpacity": 1,
+    "radiusRatio": 0.1,
     "floatingRatio": 1,
     "size": 1,
     "onlySameOutput": true,
@@ -285,7 +285,8 @@
     "monitors": [],
     "autoHideMs": 2000,
     "overlayLayer": true,
-    "backgroundOpacity": 1
+    "backgroundOpacity": 1,
+    "showLockKeyNotifications": true
   },
   "audio": {
     "volumeStep": 5,
@@ -294,7 +295,8 @@
     "visualizerType": "linear",
     "visualizerQuality": "high",
     "mprisBlacklist": [],
-    "preferredPlayer": ""
+    "preferredPlayer": "",
+    "externalMixer": "pwvucontrol || pavucontrol"
   },
   "brightness": {
     "brightnessStep": 5,
@@ -327,6 +329,8 @@
     "walker": false,
     "code": false,
     "spicetify": false,
+    "telegram": false,
+    "cava": false,
     "enableUserTemplates": false
   },
   "nightLight": {
@@ -337,6 +341,9 @@
     "dayTemp": "6500",
     "manualSunrise": "06:30",
     "manualSunset": "18:30"
+  },
+  "changelog": {
+    "lastSeenVersion": ""
   },
   "hooks": {
     "enabled": false,

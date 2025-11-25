@@ -95,21 +95,33 @@ Item {
     function toggle() {
       root.withTargetScreen(screen => {
                               var launcherPanel = PanelService.getPanel("launcherPanel", screen);
-                              launcherPanel?.toggle();
+                              if (!launcherPanel?.windowActive || (launcherPanel?.windowActive && !launcherPanel?.activePlugin))
+                                launcherPanel?.toggle();
+                              launcherPanel?.setSearchText("");
                             });
     }
     function clipboard() {
       root.withTargetScreen(screen => {
                               var launcherPanel = PanelService.getPanel("launcherPanel", screen);
+                              if (!launcherPanel?.windowActive || (launcherPanel?.windowActive && launcherPanel?.searchText.startsWith(">clip")))
+                                launcherPanel?.toggle();
                               launcherPanel?.setSearchText(">clip ");
-                              launcherPanel?.toggle();
                             });
     }
     function calculator() {
       root.withTargetScreen(screen => {
                               var launcherPanel = PanelService.getPanel("launcherPanel", screen);
+                              if (!launcherPanel?.windowActive || (launcherPanel?.windowActive && launcherPanel?.searchText.startsWith(">calc")))
+                                launcherPanel?.toggle();
                               launcherPanel?.setSearchText(">calc ");
-                              launcherPanel?.toggle();
+                            });
+    }
+    function emoji() {
+      root.withTargetScreen(screen => {
+                              var launcherPanel = PanelService.getPanel("launcherPanel", screen);
+                              if (!launcherPanel?.windowActive || (launcherPanel?.windowActive && launcherPanel?.searchText.startsWith(">emoji")))
+                                launcherPanel?.toggle();
+                              launcherPanel?.setSearchText(">emoji ");
                             });
     }
   }
@@ -120,24 +132,8 @@ Item {
     // New preferred method - lock the screen
     function lock() {
       // Only lock if not already locked (prevents the red screen issue)
-      // Note: No unlock via IPC for security reasons
-      if (!lockScreen.active) {
-        lockScreen.triggeredViaDeprecatedCall = false;
-        lockScreen.active = true;
-      }
-    }
-
-    // Deprecated: Use 'lockScreen lock' instead
-    function toggle() {
-      // Mark as triggered via deprecated call - warning will show in lock screen
-      lockScreen.triggeredViaDeprecatedCall = true;
-
-      // Log deprecation warning for users checking logs
-      Logger.w("IPC", "The 'lockScreen toggle' IPC call is deprecated. Use 'lockScreen lock' instead.");
-
-      // Still functional for backward compatibility
-      if (!lockScreen.active) {
-        lockScreen.active = true;
+      if (!PanelService.lockScreen.active) {
+        PanelService.lockScreen.active = true;
       }
     }
   }

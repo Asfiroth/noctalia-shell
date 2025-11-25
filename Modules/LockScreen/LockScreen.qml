@@ -20,21 +20,19 @@ import qs.Widgets
 import qs.Widgets.AudioSpectrum
 
 Loader {
-  id: lockScreen
+  id: root
   active: false
 
-  // Track if triggered via deprecated IPC call
-  property bool triggeredViaDeprecatedCall: false
+  Component.onCompleted: {
+    // Register with panel service
+    PanelService.lockScreen = this;
+  }
 
   Timer {
     id: unloadAfterUnlockTimer
     interval: 250
     repeat: false
-    onTriggered: {
-      lockScreen.active = false;
-      // Reset the deprecation flag when unlocking
-      lockScreen.triggeredViaDeprecatedCall = false;
-    }
+    onTriggered: root.active = false
   }
 
   function scheduleUnloadAfterUnlock() {
@@ -49,7 +47,7 @@ Loader {
         id: lockContext
         onUnlocked: {
           lockSession.locked = false;
-          lockScreen.scheduleUnloadAfterUnlock();
+          root.scheduleUnloadAfterUnlock();
           lockContext.currentText = "";
         }
         onFailed: {
@@ -59,7 +57,7 @@ Loader {
 
       WlSessionLock {
         id: lockSession
-        locked: lockScreen.active
+        locked: root.active
 
         WlSessionLockSurface {
           readonly property var now: Time.now
@@ -346,14 +344,14 @@ Loader {
                       var lang = I18n.locale.name.split("_")[0];
                       var formats = {
                         "de": "dddd, d. MMMM",
+                        "en": "dddd, MMMM d",
                         "es": "dddd, d 'de' MMMM",
                         "fr": "dddd d MMMM",
+                        "nl": "dddd d MMMM",
                         "pt": "dddd, d 'de' MMMM",
-                        "zh": "yyyy年M月d日 dddd",
-                        "uk": "dddd, d MMMM",
-                        "tr": "dddd, d MMMM"
+                        "zh": "yyyy年M月d日 dddd"
                       };
-                      return I18n.locale.toString(Time.now, formats[lang] || "dddd, MMMM d");
+                      return I18n.locale.toString(Time.now, formats[lang] || "dddd, d MMMM");
                     }
                     pointSize: Style.fontSizeXL
                     font.weight: Font.Medium
@@ -383,72 +381,14 @@ Loader {
               }
             }
 
-            // Deprecation warning (shown above error notification)
-            Rectangle {
-              width: Math.min(650, parent.width - 40)
-              implicitHeight: deprecationContent.implicitHeight + 24
-              height: implicitHeight
-              anchors.horizontalCenter: parent.horizontalCenter
-              anchors.bottom: parent.bottom
-              anchors.bottomMargin: (Settings.data.general.compactLockScreen ? 320 : 400) * Style.uiScaleRatio
-              radius: Style.radiusL
-              color: Qt.alpha(Color.mTertiary, 0.95)
-              border.color: Color.mTertiary
-              border.width: 2
-              visible: lockScreen.triggeredViaDeprecatedCall
-              opacity: visible ? 1.0 : 0.0
-
-              ColumnLayout {
-                id: deprecationContent
-                anchors.fill: parent
-                anchors.margins: 12
-                spacing: 6
-
-                RowLayout {
-                  Layout.alignment: Qt.AlignHCenter
-                  spacing: 8
-
-                  NIcon {
-                    icon: "alert-triangle"
-                    pointSize: Style.fontSizeL
-                    color: Color.mOnTertiary
-                  }
-
-                  NText {
-                    text: "Deprecated IPC Call"
-                    color: Color.mOnTertiary
-                    pointSize: Style.fontSizeL
-                    font.weight: Font.Bold
-                  }
-                }
-
-                NText {
-                  text: "The 'lockScreen toggle' IPC call is deprecated. Use 'lockScreen lock' instead."
-                  color: Color.mOnTertiary
-                  pointSize: Style.fontSizeM
-                  horizontalAlignment: Text.AlignHCenter
-                  Layout.alignment: Qt.AlignHCenter
-                  Layout.fillWidth: true
-                  wrapMode: Text.WordWrap
-                }
-              }
-
-              Behavior on opacity {
-                NumberAnimation {
-                  duration: 300
-                  easing.type: Easing.OutCubic
-                }
-              }
-            }
-
             // Error notification
             Rectangle {
-              width: 450
-              height: 60
+              width: errorRowLayout.implicitWidth + Style.marginXL * 1.5
+              height: 50
               anchors.horizontalCenter: parent.horizontalCenter
               anchors.bottom: parent.bottom
-              anchors.bottomMargin: (Settings.data.general.compactLockScreen ? 240 : 320) * Style.uiScaleRatio
-              radius: 30
+              anchors.bottomMargin: (Settings.data.general.compactLockScreen ? 280 : 360) * Style.uiScaleRatio
+              radius: Style.radiusL
               color: Color.mError
               border.color: Color.mError
               border.width: 1
@@ -456,6 +396,7 @@ Loader {
               opacity: visible ? 1.0 : 0.0
 
               RowLayout {
+                id: errorRowLayout
                 anchors.centerIn: parent
                 spacing: 10
 
@@ -584,7 +525,7 @@ Loader {
                 }
                 Text {
                   id: hibernateText
-                  text: I18n.tr("session-menu.hibernate")
+                  text: Settings.data.general.showHibernateOnLockScreen ? I18n.tr("session-menu.hibernate") : ""
                   font.pointSize: buttonRowTextMeasurer.fontSize
                   font.weight: Font.Medium
                 }
@@ -607,10 +548,12 @@ Loader {
               }
 
               // Calculate minimum width based on button requirements
-              // Button row needs: margins + 5 buttons + 4 spacings + margins
+              // Button row needs: margins + buttons (4 or 5 depending on hibernate visibility) + spacings + margins
               // Plus ColumnLayout margins (14 on each side = 28 total)
               // Add extra buffer to ensure password input has proper padding
-              property real minButtonRowWidth: buttonRowTextMeasurer.minButtonWidth > 0 ? (5 * buttonRowTextMeasurer.minButtonWidth) + 40 + (2 * Style.marginM) + 28 + (2 * Style.marginM) : 750
+              property int buttonCount: Settings.data.general.showHibernateOnLockScreen ? 5 : 4
+              property int spacingCount: buttonCount - 1
+              property real minButtonRowWidth: buttonRowTextMeasurer.minButtonWidth > 0 ? (buttonCount * buttonRowTextMeasurer.minButtonWidth) + (spacingCount * 10) + 40 + (2 * Style.marginM) + 28 + (2 * Style.marginM) : 750
               width: Math.max(750, minButtonRowWidth)
 
               ColumnLayout {
@@ -809,7 +752,7 @@ Loader {
                     }
                   }
 
-                  // 3-day forecast
+                  // Forecast
                   RowLayout {
                     visible: Settings.data.location.weatherEnabled && LocationService.data.weather !== null
                     Layout.preferredWidth: 260
@@ -817,7 +760,7 @@ Loader {
                     spacing: 4
 
                     Repeater {
-                      model: 3
+                      model: MediaService.currentPlayer && MediaService.canPlay ? 3 : 4
                       delegate: ColumnLayout {
                         Layout.fillWidth: true
                         spacing: 3
@@ -864,8 +807,6 @@ Loader {
 
                   Item {
                     Layout.fillWidth: true
-                    visible: !(Settings.data.location.weatherEnabled && LocationService.data.weather !== null)
-                    Layout.preferredWidth: visible ? 1 : 0
                   }
 
                   // Battery and Keyboard Layout (full mode only)
@@ -1081,6 +1022,7 @@ Loader {
                         id: eyeButtonArea
                         anchors.fill: parent
                         hoverEnabled: true
+                        cursorShape: Qt.PointingHandCursor
                         onClicked: parent.parent.passwordVisible = !parent.parent.passwordVisible
                       }
 
@@ -1117,6 +1059,7 @@ Loader {
                         id: submitButtonArea
                         anchors.fill: parent
                         hoverEnabled: true
+                        cursorShape: Qt.PointingHandCursor
                         onClicked: lockContext.tryUnlock()
                       }
                     }
@@ -1175,6 +1118,7 @@ Loader {
                       id: logoutButtonArea
                       anchors.fill: parent
                       hoverEnabled: true
+                      cursorShape: Qt.PointingHandCursor
                       onClicked: CompositorService.logout()
                     }
 
@@ -1224,6 +1168,7 @@ Loader {
                       id: suspendButtonArea
                       anchors.fill: parent
                       hoverEnabled: true
+                      cursorShape: Qt.PointingHandCursor
                       onClicked: CompositorService.suspend()
                     }
 
@@ -1250,6 +1195,7 @@ Loader {
                     color: hibernateButtonArea.containsMouse ? Color.mHover : "transparent"
                     border.color: Color.mOutline
                     border.width: 1
+                    visible: Settings.data.general.showHibernateOnLockScreen
 
                     RowLayout {
                       anchors.centerIn: parent
@@ -1273,6 +1219,7 @@ Loader {
                       id: hibernateButtonArea
                       anchors.fill: parent
                       hoverEnabled: true
+                      cursorShape: Qt.PointingHandCursor
                       onClicked: CompositorService.hibernate()
                     }
 
@@ -1322,6 +1269,7 @@ Loader {
                       id: rebootButtonArea
                       anchors.fill: parent
                       hoverEnabled: true
+                      cursorShape: Qt.PointingHandCursor
                       onClicked: CompositorService.reboot()
                     }
 
@@ -1371,6 +1319,7 @@ Loader {
                       id: shutdownButtonArea
                       anchors.fill: parent
                       hoverEnabled: true
+                      cursorShape: Qt.PointingHandCursor
                       onClicked: CompositorService.shutdown()
                     }
 

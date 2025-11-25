@@ -133,8 +133,9 @@ Item {
 
     onWheel: function (angle) {
       var monitor = getMonitor();
-      if (!monitor)
+      if (!monitor || !monitor.brightnessControlAvailable)
         return;
+
       if (angle > 0) {
         monitor.increaseBrightness();
       } else if (angle < 0) {
@@ -142,18 +143,14 @@ Item {
       }
     }
 
-    onClicked: {
-      var settingsPanel = PanelService.getPanel("settingsPanel", screen);
-      settingsPanel.requestedTab = SettingsPanel.Tab.Display;
-      settingsPanel.open();
-    }
+    onClicked: PanelService.getPanel("brightnessPanel", screen)?.toggle(this)
 
     onRightClicked: {
       var popupMenuWindow = PanelService.getPopupMenuWindow(screen);
       if (popupMenuWindow) {
+        popupMenuWindow.showContextMenu(contextMenu);
         const pos = BarService.getContextMenuPosition(pill, contextMenu.implicitWidth, contextMenu.implicitHeight);
         contextMenu.openAtItem(pill, pos.x, pos.y);
-        popupMenuWindow.showContextMenu(contextMenu);
       }
     }
   }
