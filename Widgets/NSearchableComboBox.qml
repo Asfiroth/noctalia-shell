@@ -124,7 +124,7 @@ RowLayout {
       color: Color.mSurface
       border.color: combo.activeFocus ? Color.mSecondary : Color.mOutline
       border.width: Style.borderS
-      radius: Style.radiusM
+      radius: Style.iRadiusM
 
       Behavior on border.color {
         ColorAnimation {
@@ -219,23 +219,30 @@ RowLayout {
                 }
 
                 RowLayout {
-                  spacing: Style.marginS
+                  spacing: 0
                   Layout.alignment: Qt.AlignRight
 
+                  // Generic badge renderer
                   Repeater {
-                    model: typeof badgeLocations !== 'undefined' ? badgeLocations : []
+                    model: (typeof badges !== 'undefined' && badges !== null) ? badges.count : 0
 
-                    delegate: Item {
-                      width: Style.baseWidgetSize * 0.7
-                      height: Style.baseWidgetSize * 0.7
+                    delegate: NIcon {
+                      required property int index
+                      readonly property var badgeData: badges.get(index)
 
-                      NText {
-                        anchors.centerIn: parent
-                        text: modelData
-                        pointSize: Style.fontSizeXXS
-                        font.weight: Style.fontWeightBold
-                        color: highlighted ? Color.mOnHover : Color.mOnSurface
+                      icon: badgeData.icon || ""
+                      pointSize: {
+                        if (badgeData.size === "xsmall")
+                          return Style.fontSizeXXS;
+                        else if (badgeData.size === "medium")
+                          return Style.fontSizeM;
+                        else
+                          return Style.fontSizeXS;
                       }
+                      color: highlighted ? Color.mOnHover : (badgeData.color || Color.mOnSurface)
+                      Layout.preferredWidth: Style.baseWidgetSize * 0.6
+                      Layout.preferredHeight: Style.baseWidgetSize * 0.6
+                      visible: badgeData && badgeData.icon !== undefined && badgeData.icon !== ""
                     }
                   }
                 }
@@ -243,7 +250,7 @@ RowLayout {
               background: Rectangle {
                 width: listView.width
                 color: highlighted ? Color.mHover : Color.transparent
-                radius: Style.radiusS
+                radius: Style.iRadiusS
                 Behavior on color {
                   ColorAnimation {
                     duration: Style.animationFast
@@ -259,7 +266,7 @@ RowLayout {
         color: Color.mSurfaceVariant
         border.color: Color.mOutline
         border.width: Style.borderS
-        radius: Style.radiusM
+        radius: Style.iRadiusM
       }
     }
 

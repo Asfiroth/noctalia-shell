@@ -7,6 +7,7 @@ import "../Helpers/QtObj2JS.js" as QtObj2JS
 import qs.Commons
 import qs.Commons.Migrations
 import qs.Modules.OSD
+import qs.Services.Noctalia
 import qs.Services.UI
 
 Singleton {
@@ -228,6 +229,8 @@ Singleton {
       property bool forceBlackScreenCorners: false
       property real scaleRatio: 1.0
       property real radiusRatio: 1.0
+      property real iRadiusRatio: 1.0
+      property real boxRadiusRatio: 1.0
       property real screenRadiusRatio: 1.0
       property real animationSpeed: 1.0
       property bool animationDisabled: false
@@ -434,7 +437,6 @@ Singleton {
       property bool enabled: true
       property string displayMode: "auto_hide" // "always_visible", "auto_hide", "exclusive"
       property real backgroundOpacity: 1.0
-      property real radiusRatio: 0.1
       property real floatingRatio: 1.0
       property real size: 1
       property bool onlySameOutput: true
@@ -711,6 +713,12 @@ Singleton {
     // Wait for BarWidgetRegistry to be ready
     if (!BarWidgetRegistry.widgets || Object.keys(BarWidgetRegistry.widgets).length === 0) {
       Logger.w("Settings", "BarWidgetRegistry not ready, deferring upgrade");
+      Qt.callLater(upgradeSettingsData);
+      return;
+    }
+
+    // Wait for PluginService to finish loading plugin widgets
+    if (!PluginService.pluginsFullyLoaded) {
       Qt.callLater(upgradeSettingsData);
       return;
     }
