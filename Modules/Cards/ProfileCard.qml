@@ -5,7 +5,6 @@ import Quickshell
 import Quickshell.Io
 import Quickshell.Widgets
 import qs.Commons
-import qs.Modules.Panels.ControlCenter.Cards
 import qs.Modules.Panels.Settings
 import qs.Services.System
 import qs.Services.UI
@@ -32,7 +31,7 @@ NBox {
       imagePath: Settings.preprocessPath(Settings.data.general.avatarImage)
       fallbackIcon: "person"
       borderColor: Color.mPrimary
-      borderWidth: Style.borderM
+      borderWidth: Style.borderS * 1.5
     }
 
     ColumnLayout {
