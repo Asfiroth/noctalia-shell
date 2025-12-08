@@ -1,3 +1,4 @@
 .qml*.ini
 .zed
 .idea
+.vscode

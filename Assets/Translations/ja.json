@@ -58,6 +58,14 @@
         "low-battery-threshold": {
           "description": "バッテリー残量がこのパーセンテージを下回ると警告を表示します。",
           "label": "低バッテリー警告の閾値"
+        },
+        "show-noctalia-performance": {
+          "description": "バッテリーパネルにNoctaliaパフォーマンスモードのトグルを表示します。",
+          "label": "Noctaliaパフォーマンストグルを表示"
+        },
+        "show-power-profile": {
+          "description": "バッテリーパネルに電源プロファイルの選択を表示します。",
+          "label": "電源プロファイルコントロールを表示"
         }
       },
       "brightness": {
@@ -132,6 +140,13 @@
           "stream-description": "継続的に実行するコマンドを入力します。"
         },
         "dynamic-text": "動的テキスト",
+        "hide-mode": {
+          "alwaysExpanded": "常に展開",
+          "description": "コマンドが出力を持っていない場合のウィジェットの表示を制御します。",
+          "expandWithOutput": "出力があるときに展開",
+          "label": "非表示モード",
+          "maxTransparent": "最大展開だが透過"
+        },
         "icon": {
           "description": "ライブラリからアイコンを選択します。",
           "label": "アイコン"
@@ -166,6 +181,10 @@
           "description": "ボタンを右クリックした際に実行するコマンド。",
           "label": "右クリック",
           "update-text": "右クリック時に表示テキストを更新"
+        },
+        "show-icon": {
+          "description": "ウィジェットのアイコンの表示を切り替えます。",
+          "label": "アイコンを表示"
         },
         "text-stream": {
           "description": "コマンドからストリーミングされた行を、ボタン上のテキストとして表示します。",
@@ -325,6 +344,20 @@
         "only-same-output": {
           "description": "バーが配置されているディスプレイ上のアプリのみを表示します。",
           "label": "同じディスプレイのみ"
+        },
+        "show-pinned-apps": {
+          "description": "ドックからピン留めされたアプリをタスクバーに表示する。",
+          "label": "ピン留めされたアプリを表示"
+        },
+        "show-title": {
+          "description": "タスクバーにウィンドウタイトルを表示します。",
+          "description-disabled": "縦型タスクバーはタイトル表示に対応していません。",
+          "label": "タイトルを表示"
+        },
+        "title-width": {
+          "description": "タスクバーのウィンドウタイトルの幅を設定します（ピクセル単位）。",
+          "label": "タイトル幅",
+          "reset-tooltip": "タイトル幅をリセット"
         }
       },
       "taskbar-grouped": {
@@ -341,6 +374,10 @@
         "drawer-enabled": {
           "description": "有効にすると、ピン留めされていないトレイ項目をドロワーパネル内に表示します。\n無効にすると、すべての項目をインラインで表示します。",
           "label": "ドロワーを有効化"
+        },
+        "hide-passive": {
+          "description": "有効にすると、非アクティブなステータスのトレイアイコンは非表示になります。",
+          "label": "受動的なアイテムを隠す"
         }
       },
       "volume": {
@@ -458,6 +495,7 @@
     "add": "追加",
     "apply": "適用",
     "cancel": "キャンセル",
+    "check-settings": "詳細については設定を確認してください。",
     "close": "閉じる",
     "save": "保存"
   },
@@ -512,11 +550,12 @@
       "misc": "その他",
       "network": "ネットワーク",
       "office": "オフィス",
+      "pinned": "ピン留め",
       "system": "システム",
       "webbrowser": "ウェブブラウザ"
     },
-    "pin": "ドックにピン留め",
-    "unpin": "ドックからピン留めを解除"
+    "pin": "ピン留め",
+    "unpin": "ピン留め解除"
   },
   "lock-screen": {
     "authenticating": "認証中...",
@@ -717,6 +756,9 @@
     "clipboard-loading": "クリップボード履歴を読み込み中...",
     "clipboard-loading-description": "お待ちください",
     "clipboard-search-description": "クリップボード履歴を検索",
+    "command": "コマンド",
+    "command-description": "シェルコマンドを実行する",
+    "command-name": "コマンド",
     "emoji": "絵文字選択",
     "emoji-loading": "絵文字を読み込み中...",
     "emoji-loading-description": "お待ちください",
@@ -1318,6 +1360,10 @@
           "description": "ドックのアプリアイコンにテーマカラーを適用します（非フォーカス時のみ）。",
           "label": "テーマカラーの適用"
         },
+        "dead-opacity": {
+          "description": "実行されていないアプリのアイコンの不透明度を調整します。",
+          "label": "死んだ不透明度"
+        },
         "display": {
           "always-visible": "常に表示",
           "auto-hide": "自動的に隠す",
@@ -1332,6 +1378,14 @@
         "icon-size": {
           "description": "ドック全体のサイズを調整します。",
           "label": "ドックのサイズ"
+        },
+        "inactive-indicators": {
+          "description": "現在アクティブなアプリだけでなく、すべてのアプリのインジケーターピルを表示する。",
+          "label": "実行指標"
+        },
+        "pinned-static": {
+          "description": "ピン留めされたアプリのアイコンは、常に静的な順序で左に寄せてください。",
+          "label": "固定された静的アプリ"
         },
         "section": {
           "description": "ドックの動作と外観をカスタマイズします。",
@@ -1493,6 +1547,10 @@
         "section": {
           "description": "ランチャーの挙動と外観をカスタマイズします。",
           "label": "外観"
+        },
+        "show-categories": {
+          "description": "アプリケーションをフィルタリングするためのカテゴリタブを表示します。",
+          "label": "カテゴリを表示"
         },
         "sort-by-usage": {
           "description": "有効にすると、よく使うアプリがリストの上位に表示されます。",
@@ -1807,7 +1865,16 @@
       },
       "uninstall-error": "アンインストールに失敗しました: {error}",
       "uninstall-success": "{plugin} のアンインストールに成功しました。",
-      "uninstalling": "{plugin} をアンインストールしています..."
+      "uninstalling": "{plugin} をアンインストールしています...",
+      "update": "更新",
+      "update-all": "すべて更新 ({count})",
+      "update-all-success": "すべてのプラグインが正常に更新されました。",
+      "update-available": "{count}個のプラグインアップデートがあります",
+      "update-error": "プラグインの更新に失敗しました: {plugin}: {error}",
+      "update-incompatible": "Noctalia v{version} 以降が必要です。",
+      "update-success": "{plugin} を v{version} にアップデートしました。",
+      "update-version": "v{現在} → v{新規}",
+      "updating": "{plugin}を更新しています..."
     },
     "screen-recorder": {
       "audio": {
@@ -2254,7 +2321,7 @@
     "noctalia-performance": {
       "disabled": "パフォーマンスモード: 無効",
       "enabled": "パフォーマンスモード: 有効",
-      "label": "Noctalia パフォーマンス"
+      "label": "Noctaliaパフォーマンス"
     },
     "power-profile": {
       "changed": "電源プロファイルを変更しました",
