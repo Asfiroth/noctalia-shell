@@ -969,13 +969,38 @@ SmartPanel {
                     }
                   }
 
-                  // Pin/Unpin action icon button
-                  NIconButton {
-                    visible: !!entry.appId && !modelData.isImage && entry.isSelected && Settings.data.dock.enabled
+                  // Action buttons row
+                  RowLayout {
                     Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
-                    icon: entry.isPinned(entry.appId) ? "unpin" : "pin"
-                    tooltipText: entry.isPinned(entry.appId) ? I18n.tr("launcher.unpin") : I18n.tr("launcher.pin")
-                    onClicked: entry.togglePin(entry.appId)
+                    spacing: Style.marginXS
+                    visible: (!!entry.appId && entry.isSelected) || (!!modelData.clipboardId && entry.isSelected)
+
+                    // Pin/Unpin action icon button
+                    NIconButton {
+                      visible: !!entry.appId && !modelData.isImage && entry.isSelected
+                      icon: entry.isPinned(entry.appId) ? "unpin" : "pin"
+                      tooltipText: entry.isPinned(entry.appId) ? I18n.tr("launcher.unpin") : I18n.tr("launcher.pin")
+                      onClicked: entry.togglePin(entry.appId)
+                    }
+
+                    // Delete action icon button for clipboard entries
+                    NIconButton {
+                      visible: !!modelData.clipboardId && entry.isSelected
+                      icon: "trash"
+                      tooltipText: I18n.tr("plugins.clipboard-delete")
+                      z: 1
+                      onClicked: {
+                        if (modelData.clipboardId) {
+                          ClipboardService.deleteById(String(modelData.clipboardId));
+                          // Force refresh after deletion
+                          Qt.callLater(() => {
+                                         clipPlugin.gotResults = false;
+                                         clipPlugin.lastSearchText = "";
+                                         ClipboardService.list(100);
+                                       });
+                        }
+                      }
+                    }
                   }
                 }
               }
@@ -1287,16 +1312,41 @@ SmartPanel {
                 }
               }
 
-              // Pin/Unpin action icon button (overlay in top-right corner)
-              NIconButton {
-                visible: !!gridEntry.appId && !modelData.isImage && gridEntry.isSelected && Settings.data.dock.enabled
+              // Action buttons (overlay in top-right corner)
+              Row {
+                visible: (!!gridEntry.appId && gridEntry.isSelected) || (!!modelData.clipboardId && gridEntry.isSelected)
                 anchors.top: parent.top
                 anchors.right: parent.right
                 anchors.margins: Style.marginXS
                 z: 10
-                icon: gridEntry.isPinned(gridEntry.appId) ? "unpin" : "pin"
-                tooltipText: gridEntry.isPinned(gridEntry.appId) ? I18n.tr("launcher.unpin") : I18n.tr("launcher.pin")
-                onClicked: gridEntry.togglePin(gridEntry.appId)
+                spacing: Style.marginXXS
+
+                // Pin/Unpin action icon button
+                NIconButton {
+                  visible: !!gridEntry.appId && !modelData.isImage && gridEntry.isSelected
+                  icon: gridEntry.isPinned(gridEntry.appId) ? "unpin" : "pin"
+                  tooltipText: gridEntry.isPinned(gridEntry.appId) ? I18n.tr("launcher.unpin") : I18n.tr("launcher.pin")
+                  onClicked: gridEntry.togglePin(gridEntry.appId)
+                }
+
+                // Delete action icon button for clipboard entries
+                NIconButton {
+                  visible: !!modelData.clipboardId && gridEntry.isSelected
+                  icon: "trash"
+                  tooltipText: I18n.tr("plugins.clipboard-delete")
+                  z: 11
+                  onClicked: {
+                    if (modelData.clipboardId) {
+                      ClipboardService.deleteById(String(modelData.clipboardId));
+                      // Force refresh after deletion
+                      Qt.callLater(() => {
+                                     clipPlugin.gotResults = false;
+                                     clipPlugin.lastSearchText = "";
+                                     ClipboardService.list(100);
+                                   });
+                    }
+                  }
+                }
               }
 
               MouseArea {

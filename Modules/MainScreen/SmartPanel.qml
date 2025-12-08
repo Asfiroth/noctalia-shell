@@ -372,15 +372,27 @@ Item {
           calculatedX = Style.marginL;
         }
       } else {
-        // No explicit anchor: default to centering on bar
+        // No explicit anchor: attach to bar if allowAttach, otherwise center
         if (root.barIsVertical) {
-          if (root.barPosition === "left") {
-            var availableStart = root.barMarginH + Style.barHeight;
-            var availableWidth = root.width - availableStart - Style.marginL;
-            calculatedX = availableStart + (availableWidth - panelWidth) / 2;
+          if (panelContent.allowAttach) {
+            // Attach to the bar edge
+            if (root.barPosition === "left") {
+              var leftBarEdge = root.barMarginH + Style.barHeight;
+              calculatedX = leftBarEdge;
+            } else {
+              var rightBarEdge = root.width - root.barMarginH - Style.barHeight;
+              calculatedX = rightBarEdge - panelWidth;
+            }
           } else {
-            var availableWidth = root.width - root.barMarginH - Style.barHeight - Style.marginL;
-            calculatedX = Style.marginL + (availableWidth - panelWidth) / 2;
+            // Not attached: center in available space
+            if (root.barPosition === "left") {
+              var availableStart = root.barMarginH + Style.barHeight;
+              var availableWidth = root.width - availableStart - Style.marginL;
+              calculatedX = availableStart + (availableWidth - panelWidth) / 2;
+            } else {
+              var availableWidth = root.width - root.barMarginH - Style.barHeight - Style.marginL;
+              calculatedX = Style.marginL + (availableWidth - panelWidth) / 2;
+            }
           }
         } else {
           if (panelContent.allowAttach) {
@@ -792,7 +804,7 @@ Item {
             return true;
           }
           // Attached to vertical bar (left/right) - don't animate from top
-          // Only if panel is on the SAME side as the bar
+          // Panels attach to bar if they have allowAttach (with or without explicit anchor)
           var attachedToVerticalBar = panelContent.allowAttachToBar && root.barIsVertical && ((root.effectivePanelAnchorLeft && root.barPosition === "left") || (root.effectivePanelAnchorRight && root.barPosition === "right"));
           if (attachedToVerticalBar) {
             return false;
@@ -1022,13 +1034,11 @@ Item {
           return 0;
         }
 
-        var barInverted = panelContent.allowAttachToBar && ((root.barPosition === "top" && !root.barIsVertical && root.effectivePanelAnchorTop) || (root.barPosition === "left" && root.barIsVertical && root.effectivePanelAnchorLeft));
         var barTouchInverted = panelContent.touchingTopBar || panelContent.touchingLeftBar;
         // Invert if touching either edge that forms this corner (left OR top), regardless of bar position
         var edgeInverted = panelContent.allowAttach && (panelContent.touchingLeftEdge || panelContent.touchingTopEdge);
-        var oppositeEdgeInverted = panelContent.allowAttach && (panelContent.touchingTopEdge && !root.barIsVertical && root.barPosition !== "top");
 
-        if (barInverted || barTouchInverted || edgeInverted || oppositeEdgeInverted) {
+        if (barTouchInverted || edgeInverted) {
           // Determine inversion direction based on which edge is touched
           if (panelContent.touchingLeftEdge && panelContent.touchingTopEdge)
             return 0; // Both edges: no inversion (normal rounded corner)
@@ -1057,13 +1067,11 @@ Item {
           return 0;
         }
 
-        var barInverted = panelContent.allowAttachToBar && ((root.barPosition === "top" && !root.barIsVertical && root.effectivePanelAnchorTop) || (root.barPosition === "right" && root.barIsVertical && root.effectivePanelAnchorRight));
         var barTouchInverted = panelContent.touchingTopBar || panelContent.touchingRightBar;
         // Invert if touching either edge that forms this corner (right OR top), regardless of bar position
         var edgeInverted = panelContent.allowAttach && (panelContent.touchingRightEdge || panelContent.touchingTopEdge);
-        var oppositeEdgeInverted = panelContent.allowAttach && (panelContent.touchingTopEdge && !root.barIsVertical && root.barPosition !== "top");
 
-        if (barInverted || barTouchInverted || edgeInverted || oppositeEdgeInverted) {
+        if (barTouchInverted || edgeInverted) {
           // Determine inversion direction based on which edge is touched
           if (panelContent.touchingRightEdge && panelContent.touchingTopEdge)
             return 0; // Both edges: no inversion (normal rounded corner)
@@ -1092,13 +1100,11 @@ Item {
           return 0;
         }
 
-        var barInverted = panelContent.allowAttachToBar && ((root.barPosition === "bottom" && !root.barIsVertical && root.effectivePanelAnchorBottom) || (root.barPosition === "left" && root.barIsVertical && root.effectivePanelAnchorLeft));
         var barTouchInverted = panelContent.touchingBottomBar || panelContent.touchingLeftBar;
         // Invert if touching either edge that forms this corner (left OR bottom), regardless of bar position
         var edgeInverted = panelContent.allowAttach && (panelContent.touchingLeftEdge || panelContent.touchingBottomEdge);
-        var oppositeEdgeInverted = panelContent.allowAttach && (panelContent.touchingBottomEdge && !root.barIsVertical && root.barPosition !== "bottom");
 
-        if (barInverted || barTouchInverted || edgeInverted || oppositeEdgeInverted) {
+        if (barTouchInverted || edgeInverted) {
           // Determine inversion direction based on which edge is touched
           if (panelContent.touchingLeftEdge && panelContent.touchingBottomEdge)
             return 0; // Both edges: no inversion (normal rounded corner)
@@ -1127,13 +1133,11 @@ Item {
           return 0;
         }
 
-        var barInverted = panelContent.allowAttachToBar && ((root.barPosition === "bottom" && !root.barIsVertical && root.effectivePanelAnchorBottom) || (root.barPosition === "right" && root.barIsVertical && root.effectivePanelAnchorRight));
         var barTouchInverted = panelContent.touchingBottomBar || panelContent.touchingRightBar;
         // Invert if touching either edge that forms this corner (right OR bottom), regardless of bar position
         var edgeInverted = panelContent.allowAttach && (panelContent.touchingRightEdge || panelContent.touchingBottomEdge);
-        var oppositeEdgeInverted = panelContent.allowAttach && (panelContent.touchingBottomEdge && !root.barIsVertical && root.barPosition !== "bottom");
 
-        if (barInverted || barTouchInverted || edgeInverted || oppositeEdgeInverted) {
+        if (barTouchInverted || edgeInverted) {
           // Determine inversion direction based on which edge is touched
           if (panelContent.touchingRightEdge && panelContent.touchingBottomEdge)
             return 0; // Both edges: no inversion (normal rounded corner)
