@@ -797,7 +797,12 @@ Item {
       }
 
       readonly property bool animateFromTop: {
-        // When panel is opening, use effective anchors (known before position is calculated)
+        // Non-attached panels always roll down from top
+        // Check both the setting and whether panel actually touches any edge
+        if (!panelContent.allowAttach || !isActuallyAttachedToAnyEdge) {
+          return true;
+        }
+        // When panel is opening, use effective anchors and calculated positions
         if (!root.isPanelVisible) {
           // Attached to horizontal bar at top
           if (panelContent.allowAttachToBar && root.effectivePanelAnchorTop && !root.barIsVertical) {
@@ -809,15 +814,24 @@ Item {
           if (attachedToVerticalBar) {
             return false;
           }
-          // Panel anchored to left/right edge - animate from that edge instead
-          if (root.panelAnchorLeft || root.panelAnchorRight) {
+          // Panel touching left/right/bottom screen edge - animate from that edge instead
+          var touchingNonTopEdge = (willTouchLeftEdge || willTouchRightEdge || willTouchBottomEdge) && !willTouchTopBar && !willTouchBottomBar && !willTouchLeftBar && !willTouchRightBar;
+          if (touchingNonTopEdge) {
+            return false;
+          }
+          // Panel touching top screen edge (not bar)
+          if (willTouchTopEdge && !willTouchTopBar && !willTouchBottomBar && !willTouchLeftBar && !willTouchRightBar) {
+            return true;
+          }
+          // Panel anchored to left/right/bottom edge - animate from that edge instead
+          if (root.panelAnchorLeft || root.panelAnchorRight || root.panelAnchorBottom) {
             return false;
           }
           // Attached to top edge
           if (panelContent.allowAttach && root.panelAnchorTop) {
             return true;
           }
-          // Default: animate from top (for floating panels)
+          // Default: animate from top (for floating panels with no explicit anchors)
           return true;
         }
         // Panel is visible - use calculated positions
@@ -833,8 +847,30 @@ Item {
         return false;
       }
       readonly property bool animateFromBottom: {
+        // Non-attached panels always roll down from top, not bottom
+        if (!panelContent.allowAttach || !isActuallyAttachedToAnyEdge) {
+          return false;
+        }
         if (!root.isPanelVisible) {
+          // Attached to horizontal bar at bottom
           if (panelContent.allowAttachToBar && root.effectivePanelAnchorBottom && !root.barIsVertical) {
+            return true;
+          }
+          // Attached to vertical bar (left/right) - don't animate from bottom
+          var attachedToVerticalBar = panelContent.allowAttachToBar && root.barIsVertical && ((root.effectivePanelAnchorLeft && root.barPosition === "left") || (root.effectivePanelAnchorRight && root.barPosition === "right"));
+          if (attachedToVerticalBar) {
+            return false;
+          }
+          // Panel touching bottom screen edge (not bar)
+          if (willTouchBottomEdge && !willTouchTopBar && !willTouchBottomBar && !willTouchLeftBar && !willTouchRightBar) {
+            return true;
+          }
+          // Panel anchored to top/left/right edge - don't animate from bottom
+          if (root.panelAnchorTop || root.panelAnchorLeft || root.panelAnchorRight) {
+            return false;
+          }
+          // Attached to bottom edge (when bar is vertical, panel can still be anchored to bottom)
+          if (panelContent.allowAttach && root.panelAnchorBottom) {
             return true;
           }
           return false;
@@ -848,9 +884,17 @@ Item {
         return false;
       }
       readonly property bool animateFromLeft: {
+        // Non-attached panels always roll down from top, not left
+        if (!panelContent.allowAttach || !isActuallyAttachedToAnyEdge) {
+          return false;
+        }
         if (!root.isPanelVisible) {
           // Attached to vertical bar on left - must verify bar is actually on left
           if (panelContent.allowAttachToBar && root.effectivePanelAnchorLeft && root.barIsVertical && root.barPosition === "left") {
+            return true;
+          }
+          // Panel touching left screen edge (not bar)
+          if (willTouchLeftEdge && !willTouchTopBar && !willTouchBottomBar && !willTouchLeftBar && !willTouchRightBar) {
             return true;
           }
           // Panel anchored to left edge - animate from left
@@ -875,9 +919,17 @@ Item {
         return false;
       }
       readonly property bool animateFromRight: {
+        // Non-attached panels always roll down from top, not right
+        if (!panelContent.allowAttach || !isActuallyAttachedToAnyEdge) {
+          return false;
+        }
         if (!root.isPanelVisible) {
           // Attached to vertical bar on right - must verify bar is actually on right
           if (panelContent.allowAttachToBar && root.effectivePanelAnchorRight && root.barIsVertical && root.barPosition === "right") {
+            return true;
+          }
+          // Panel touching right screen edge (not bar)
+          if (willTouchRightEdge && !willTouchTopBar && !willTouchBottomBar && !willTouchLeftBar && !willTouchRightBar) {
             return true;
           }
           // Panel anchored to right edge - animate from right

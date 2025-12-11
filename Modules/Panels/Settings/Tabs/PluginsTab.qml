@@ -118,7 +118,7 @@ ColumnLayout {
           NIcon {
             icon: "plugin"
             pointSize: Style.fontSizeXL
-            color: Color.mOnSurface
+            color: PluginService.hasPluginError(modelData.id) ? Color.mError : Color.mOnSurface
           }
 
           ColumnLayout {
@@ -165,6 +165,29 @@ ColumnLayout {
                 text: stripAuthorEmail(modelData.author)
                 font.pointSize: Style.fontSizeXXS
                 color: Color.mOnSurfaceVariant
+              }
+            }
+
+            // Error indicator
+            RowLayout {
+              spacing: Style.marginS
+              visible: PluginService.hasPluginError(modelData.id)
+
+              NIcon {
+                icon: "alert-triangle"
+                pointSize: Style.fontSizeS
+                color: Color.mError
+              }
+
+              NText {
+                property var errorInfo: PluginService.getPluginError(modelData.id)
+                text: errorInfo ? errorInfo.error : ""
+                font.pointSize: Style.fontSizeXXS
+                color: Color.mError
+                wrapMode: Text.WordWrap
+                Layout.fillWidth: true
+                elide: Text.ElideRight
+                maximumLineCount: 3
               }
             }
           }
@@ -285,22 +308,35 @@ ColumnLayout {
 
           ColumnLayout {
             spacing: Style.marginS
+            Layout.fillWidth: true
 
             NText {
               text: modelData.name
               font.weight: Font.Medium
               color: Color.mOnSurface
+              Layout.fillWidth: true
             }
 
             NText {
               text: modelData.url
               font.pointSize: Style.fontSizeS
               color: Color.mOnSurfaceVariant
+              Layout.fillWidth: true
             }
           }
 
           Item {
             Layout.fillWidth: true
+          }
+
+          NIconButton {
+            icon: "trash"
+            tooltipText: I18n.tr("settings.plugins.sources.remove.tooltip")
+            visible: index !== 0 // Cannot remove official source
+            baseSize: Style.baseWidgetSize * 0.7
+            onClicked: {
+              PluginRegistry.removePluginSource(modelData.url);
+            }
           }
 
           // Enable/Disable a source
@@ -311,16 +347,6 @@ ColumnLayout {
               PluginRegistry.setSourceEnabled(modelData.url, checked);
               PluginService.refreshAvailablePlugins();
               ToastService.showNotice(I18n.tr("settings.plugins.refresh.refreshing"));
-            }
-          }
-
-          NIconButton {
-            icon: "trash"
-            tooltipText: I18n.tr("settings.plugins.sources.remove.tooltip")
-            visible: index !== 0 // Cannot remove official source
-            baseSize: Style.baseWidgetSize * 0.7
-            onClicked: {
-              PluginRegistry.removePluginSource(modelData.url);
             }
           }
         }
@@ -383,7 +409,7 @@ ColumnLayout {
     NIconButton {
       icon: "refresh"
       tooltipText: I18n.tr("settings.plugins.refresh.tooltip")
-      baseSize: Style.baseWidgetSize * 0.9
+      baseSize: Style.baseWidgetSize * 0.8
       onClicked: {
         PluginService.refreshAvailablePlugins();
         checkUpdatesTimer.restart();
@@ -404,135 +430,136 @@ ColumnLayout {
   property string pluginFilter: "all"
 
   // Available plugins list
-  NListView {
-    id: pluginListView
-    Layout.fillWidth: true
-    Layout.preferredHeight: 400
+  ColumnLayout {
     spacing: Style.marginM
-    visible: pluginListView.count > 0
+    Layout.fillWidth: true
 
-    model: {
-      var all = PluginService.availablePlugins || [];
-      var filtered = [];
+    Repeater {
+      id: availablePluginsRepeater
 
-      for (var i = 0; i < all.length; i++) {
-        var plugin = all[i];
-        var downloaded = plugin.downloaded || false;
+      model: {
+        var all = PluginService.availablePlugins || [];
+        var filtered = [];
 
-        if (pluginFilter === "all") {
-          filtered.push(plugin);
-        } else if (pluginFilter === "downloaded" && downloaded) {
-          filtered.push(plugin);
-        } else if (pluginFilter === "notDownloaded" && !downloaded) {
-          filtered.push(plugin);
+        for (var i = 0; i < all.length; i++) {
+          var plugin = all[i];
+          var downloaded = plugin.downloaded || false;
+
+          if (pluginFilter === "all") {
+            filtered.push(plugin);
+          } else if (pluginFilter === "downloaded" && downloaded) {
+            filtered.push(plugin);
+          } else if (pluginFilter === "notDownloaded" && !downloaded) {
+            filtered.push(plugin);
+          }
         }
+
+        return filtered;
       }
 
-      return filtered;
-    }
+      delegate: NBox {
+        Layout.fillWidth: true
+        implicitHeight: contentRow.implicitHeight + Style.marginL * 2
+        color: Color.mSurface
 
-    delegate: NBox {
-      width: ListView.view.width - pluginListView.scrollBarWidth
-      implicitHeight: contentRow.implicitHeight + Style.marginL * 2
-      color: Color.mSurface
+        RowLayout {
+          id: contentRow
+          anchors.fill: parent
+          anchors.margins: Style.marginL
+          spacing: Style.marginM
 
-      RowLayout {
-        id: contentRow
-        anchors.fill: parent
-        anchors.margins: Style.marginL
-        spacing: Style.marginM
-
-        NIcon {
-          icon: "plugin"
-          pointSize: Style.fontSizeXL
-          color: Color.mOnSurface
-        }
-
-        ColumnLayout {
-          spacing: 2
-          Layout.fillWidth: true
-
-          NText {
-            text: modelData.name
-            font.weight: Font.Medium
+          NIcon {
+            icon: "plugin"
+            pointSize: Style.fontSizeXL
             color: Color.mOnSurface
-            Layout.fillWidth: true
           }
 
-          NText {
-            text: modelData.description
-            font.pointSize: Style.fontSizeXS
-            color: Color.mOnSurfaceVariant
-            wrapMode: Text.WordWrap
+          ColumnLayout {
+            spacing: 2
             Layout.fillWidth: true
-          }
-
-          RowLayout {
-            spacing: Style.marginS
 
             NText {
-              text: "v" + modelData.version
-              font.pointSize: Style.fontSizeXXS
-              color: Color.mOnSurfaceVariant
+              text: modelData.name
+              font.weight: Font.Medium
+              color: Color.mOnSurface
+              Layout.fillWidth: true
             }
 
             NText {
-              text: "•"
-              font.pointSize: Style.fontSizeXXS
-              color: Color.mOnSurfaceVariant
-            }
-
-            NText {
-              text: stripAuthorEmail(modelData.author)
-              font.pointSize: Style.fontSizeXXS
-              color: Color.mOnSurfaceVariant
-            }
-
-            NText {
-              text: "•"
-              font.pointSize: Style.fontSizeXXS
-              color: Color.mOnSurfaceVariant
-            }
-
-            NText {
-              text: modelData.source?.name || "Unknown"
+              text: modelData.description
               font.pointSize: Style.fontSizeXS
               color: Color.mOnSurfaceVariant
+              wrapMode: Text.WordWrap
+              Layout.fillWidth: true
+            }
+
+            RowLayout {
+              spacing: Style.marginS
+
+              NText {
+                text: "v" + modelData.version
+                font.pointSize: Style.fontSizeXXS
+                color: Color.mOnSurfaceVariant
+              }
+
+              NText {
+                text: "•"
+                font.pointSize: Style.fontSizeXXS
+                color: Color.mOnSurfaceVariant
+              }
+
+              NText {
+                text: stripAuthorEmail(modelData.author)
+                font.pointSize: Style.fontSizeXXS
+                color: Color.mOnSurfaceVariant
+              }
+
+              NText {
+                text: "•"
+                font.pointSize: Style.fontSizeXXS
+                color: Color.mOnSurfaceVariant
+              }
+
+              NText {
+                text: modelData.source?.name || "Unknown"
+                font.pointSize: Style.fontSizeXS
+                color: Color.mOnSurfaceVariant
+              }
             }
           }
-        }
 
-        // Downloaded indicator
-        NIcon {
-          icon: "circle-check"
-          pointSize: Style.fontSizeXL
-          color: Color.mPrimary
-          visible: modelData.downloaded === true
-        }
+          // Downloaded indicator
+          NIcon {
+            icon: "circle-check"
+            pointSize: Style.fontSizeXL
+            color: Color.mPrimary
+            visible: modelData.downloaded === true
+          }
 
-        // Install/Uninstall button
-        NIconButton {
-          icon: modelData.downloaded ? "trash" : "download"
-          baseSize: Style.baseWidgetSize * 0.9
-          tooltipText: modelData.downloaded ? I18n.tr("settings.plugins.uninstall") : I18n.tr("settings.plugins.install")
-          onClicked: {
-            if (modelData.downloaded) {
-              uninstallDialog.pluginToUninstall = modelData;
-              uninstallDialog.open();
-            } else {
-              installPlugin(modelData);
+          // Install/Uninstall button
+          NIconButton {
+            icon: modelData.downloaded ? "trash" : "download"
+            baseSize: Style.baseWidgetSize * 0.7
+            tooltipText: modelData.downloaded ? I18n.tr("settings.plugins.uninstall") : I18n.tr("settings.plugins.install")
+            onClicked: {
+              if (modelData.downloaded) {
+                uninstallDialog.pluginToUninstall = modelData;
+                uninstallDialog.open();
+              } else {
+                installPlugin(modelData);
+              }
             }
           }
         }
       }
     }
-  }
 
-  NLabel {
-    visible: pluginListView.count === 0
-    label: I18n.tr("settings.plugins.available.no-plugins-label")
-    description: I18n.tr("settings.plugins.available.no-plugins-description")
-    Layout.fillWidth: true
+    NLabel {
+      visible: availablePluginsRepeater.count === 0
+      label: I18n.tr("settings.plugins.available.no-plugins-label")
+      description: I18n.tr("settings.plugins.available.no-plugins-description")
+      Layout.fillWidth: true
+    }
   }
 
   NDivider {
@@ -764,9 +791,9 @@ ColumnLayout {
 
     function onAvailablePluginsUpdated() {
       // Force model refresh
-      pluginListView.model = undefined;
+      availablePluginsRepeater.model = undefined;
       Qt.callLater(function () {
-        pluginListView.model = Qt.binding(function () {
+        availablePluginsRepeater.model = Qt.binding(function () {
           var all = PluginService.availablePlugins || [];
           var filtered = [];
 

@@ -337,6 +337,10 @@
           "description": "Controls how the widget behaves when there are no matching windows.",
           "label": "Hiding mode"
         },
+        "max-width": {
+          "description": "Maximum width of the taskbar as a percentage of screen width.",
+          "label": "Maximum width"
+        },
         "only-active-workspaces": {
           "description": "Show only apps from active workspaces.",
           "label": "Only from active workspaces"
@@ -353,6 +357,10 @@
           "description": "Display window titles in the taskbar.",
           "description-disabled": "Vertical taskbar does not support showing titles.",
           "label": "Show title"
+        },
+        "smart-width": {
+          "description": "Automatically adjust entry width based on the number of entries.",
+          "label": "Smart width"
         },
         "title-width": {
           "description": "Set the width of window titles in the taskbar (in pixels).",
@@ -860,7 +868,6 @@
         }
       },
       "noctalia": {
-        "download-latest": "Download latest release",
         "git-commit": "Git commit:",
         "git-commit-loading": "Loading...",
         "installed-version": "Installed version:",
@@ -1659,6 +1666,10 @@
         "description": "Show the option 'hibernate' in the energy actions.",
         "label": "Show hibernate"
       },
+      "show-session-buttons": {
+        "description": "Allow access to power settings from the lock screen.",
+        "label": "Power controls"
+      },
       "title": "Lock Screen"
     },
     "network": {
@@ -1922,7 +1933,6 @@
       },
       "uninstall-error": "Failed to uninstall: {error}",
       "uninstall-success": "Successfully uninstalled {plugin}",
-      "uninstall.tooltip": "Uninstall plugin",
       "uninstalling": "Uninstalling {plugin}...",
       "update": "Update",
       "update-all": "Update All ({count})",
@@ -2431,7 +2441,7 @@
     "clear-history": "Clear history",
     "click-to-start-recording": "Screen recorder (start recording)",
     "click-to-stop-recording": "Screen recorder (stop recording)",
-    "close": "Close button",
+    "close": "Close",
     "connect-disconnect-devices": "Bluetooth device",
     "delete-notification": "Delete notification",
     "disable-keep-awake": "Keep Awake",
@@ -2468,8 +2478,8 @@
     "open-tray-dropdown": "System tray",
     "open-wallpaper-selector": "Wallpaper selector",
     "output-muted": "Audio output",
-    "pause": "Pause button",
-    "play": "Play button",
+    "pause": "Pause",
+    "play": "Play",
     "power-profile": "{profile} power profile",
     "previous-media": "Previous track",
     "previous-month": "Previous month",

@@ -337,6 +337,10 @@
           "description": "Bepaalt hoe de widget zich gedraagt wanneer er geen overeenkomende vensters zijn.",
           "label": "Verbergmodus"
         },
+        "max-width": {
+          "description": "Maximale breedte van de taakbalk als percentage van de schermbreedte.",
+          "label": "Maximale breedte"
+        },
         "only-active-workspaces": {
           "description": "Toon alleen apps van actieve werkruimten.",
           "label": "Alleen van actieve werkruimten"
@@ -353,6 +357,10 @@
           "description": "Venster titels weergeven in de taakbalk.",
           "description-disabled": "Verticale taakbalk ondersteunt geen titelopties.",
           "label": "Titel weergeven"
+        },
+        "smart-width": {
+          "description": "Pas automatisch de breedte van items aan op basis van het aantal items.",
+          "label": "Slimme breedte"
         },
         "title-width": {
           "description": "Stel de breedte van venstertitels in de taakbalk in (in pixels).",
@@ -489,7 +497,7 @@
     }
   },
   "clock": {
-    "tooltip": "Kalender openen"
+    "tooltip": "Klok"
   },
   "common": {
     "add": "Toevoegen",
@@ -860,7 +868,6 @@
         }
       },
       "noctalia": {
-        "download-latest": "Nieuwste release downloaden",
         "git-commit": "Git commit:",
         "git-commit-loading": "Laden...",
         "installed-version": "Geïnstalleerde versie:",
@@ -1460,7 +1467,7 @@
           "label": "Profiel"
         },
         "select-avatar": "Avatarafbeelding selecteren",
-        "tooltip": "Bladeren naar avatarafbeelding"
+        "tooltip": "Profielfoto"
       },
       "screen-corners": {
         "radius": {
@@ -1658,6 +1665,10 @@
       "show-hibernate": {
         "description": "De optie 'sluimerstand' tonen in de energieacties.",
         "label": "Sluimerstand tonen"
+      },
+      "show-session-buttons": {
+        "description": "Toegang tot energie-instellingen toestaan vanaf het vergrendelscherm.",
+        "label": "Stroombediening"
       },
       "title": "Vergrendelscherm"
     },
@@ -1952,7 +1963,7 @@
         "output-folder": {
           "description": "Map waarin schermopnamen worden opgeslagen.",
           "label": "Uitvoermap",
-          "tooltip": "Bladeren naar uitvoermap"
+          "tooltip": "Uitvoermap"
         },
         "section": {
           "description": "Beheer schermopname-uitvoer en inhoud.",
@@ -2238,7 +2249,7 @@
         "folder": {
           "description": "Pad naar je hoofdachtergrondmap.",
           "label": "Achtergrondmap",
-          "tooltip": "Bladeren naar achtergrondmap"
+          "tooltip": "Achtergrondmap"
         },
         "hide-wallpaper-filenames": {
           "description": "Verberg de bestandsnamen van de achtergrond in de selector.",
@@ -2247,7 +2258,7 @@
         "monitor-specific": {
           "description": "Stel een andere achtergrondmap in voor elke monitor.",
           "label": "Monitor-specifieke mappen",
-          "tooltip": "Bladeren naar achtergrondmap"
+          "tooltip": "Monitor-achtergrondmap"
         },
         "recursive-search": {
           "description": "Zoek ook naar achtergronden in submappen van de achtergrondmap.",
@@ -2262,7 +2273,7 @@
         "selector": {
           "description": "Kies je achtergrond.",
           "label": "Achtergrondkiezer",
-          "tooltip": "Achtergrondkiezer openen"
+          "tooltip": "Achtergrondkiezer"
         },
         "selector-position": {
           "description": "Kies waar het achtergrondselectiepaneel verschijnt.",
@@ -2426,7 +2437,7 @@
     "clear-history": "Geschiedenis wissen",
     "click-to-start-recording": "Schermrecorder (opname starten)",
     "click-to-stop-recording": "Schermrecorder (opname stoppen)",
-    "close": "Sluiten-knop",
+    "close": "Sluiten",
     "connect-disconnect-devices": "Bluetooth-apparaat",
     "delete-notification": "Melding verwijderen",
     "disable-keep-awake": "Wakker houden",
@@ -2463,8 +2474,8 @@
     "open-tray-dropdown": "Systeemvak",
     "open-wallpaper-selector": "Achtergrondkiezer",
     "output-muted": "Audio-uitvoer",
-    "pause": "Pauze-knop",
-    "play": "Afspelen-knop",
+    "pause": "Pauzeren",
+    "play": "Afspelen",
     "power-profile": "{profile} energieprofiel",
     "previous-media": "Vorige track",
     "previous-month": "Vorige maand",
