@@ -275,7 +275,6 @@ ColumnLayout {
     label: I18n.tr("settings.color-scheme.color-source.matugen-scheme-type.label")
     description: I18n.tr("settings.color-scheme.color-source.matugen-scheme-type.description." + Settings.data.colorSchemes.matugenSchemeType)
     enabled: Settings.data.colorSchemes.useWallpaperColors
-    opacity: Settings.data.colorSchemes.useWallpaperColors ? 1.0 : 0.6
     visible: Settings.data.colorSchemes.useWallpaperColors
 
     model: [
@@ -592,10 +591,26 @@ ColumnLayout {
                                                                                 })
         checked: Settings.data.templates.niri
         enabled: ProgramCheckerService.niriAvailable
-        opacity: ProgramCheckerService.niriAvailable ? 1.0 : 0.6
         onToggled: checked => {
                      if (ProgramCheckerService.niriAvailable) {
                        Settings.data.templates.niri = checked;
+                       AppThemeService.generate();
+                     }
+                   }
+      }
+
+      NCheckbox {
+        label: "Mango"
+        description: ProgramCheckerService.mangoAvailable ? I18n.tr("settings.color-scheme.templates.compositors.mango.description", {
+                                                                      "filepath": "~/.config/mango/noctalia.conf"
+                                                                    }) : I18n.tr("settings.color-scheme.templates.compositors.mango.description-missing", {
+                                                                                   "app": "Mango"
+                                                                                 })
+        checked: Settings.data.templates.mango
+        enabled: ProgramCheckerService.mangoAvailable
+        onToggled: checked => {
+                     if (ProgramCheckerService.mangoAvailable) {
+                       Settings.data.templates.mango = checked;
                        AppThemeService.generate();
                      }
                    }
@@ -618,7 +633,6 @@ ColumnLayout {
                                                                                 })
         checked: Settings.data.templates.alacritty
         enabled: ProgramCheckerService.alacrittyAvailable
-        opacity: ProgramCheckerService.alacrittyAvailable ? 1.0 : 0.6
         onToggled: checked => {
                      if (ProgramCheckerService.alacrittyAvailable) {
                        Settings.data.templates.alacritty = checked;
@@ -636,7 +650,6 @@ ColumnLayout {
                                                                                  })
         checked: Settings.data.templates.kitty
         enabled: ProgramCheckerService.kittyAvailable
-        opacity: ProgramCheckerService.kittyAvailable ? 1.0 : 0.6
         onToggled: checked => {
                      if (ProgramCheckerService.kittyAvailable) {
                        Settings.data.templates.kitty = checked;
@@ -654,7 +667,6 @@ ColumnLayout {
                                                                                    })
         checked: Settings.data.templates.ghostty
         enabled: ProgramCheckerService.ghosttyAvailable
-        opacity: ProgramCheckerService.ghosttyAvailable ? 1.0 : 0.6
         onToggled: checked => {
                      if (ProgramCheckerService.ghosttyAvailable) {
                        Settings.data.templates.ghostty = checked;
@@ -672,7 +684,6 @@ ColumnLayout {
                                                                                 })
         checked: Settings.data.templates.foot
         enabled: ProgramCheckerService.footAvailable
-        opacity: ProgramCheckerService.footAvailable ? 1.0 : 0.6
         onToggled: checked => {
                      if (ProgramCheckerService.footAvailable) {
                        Settings.data.templates.foot = checked;
@@ -690,7 +701,6 @@ ColumnLayout {
                                                                                    })
         checked: Settings.data.templates.wezterm
         enabled: ProgramCheckerService.weztermAvailable
-        opacity: ProgramCheckerService.weztermAvailable ? 1.0 : 0.6
         onToggled: checked => {
                      if (ProgramCheckerService.weztermAvailable) {
                        Settings.data.templates.wezterm = checked;
@@ -716,7 +726,6 @@ ColumnLayout {
                                                                                   })
         checked: Settings.data.templates.fuzzel
         enabled: ProgramCheckerService.fuzzelAvailable
-        opacity: ProgramCheckerService.fuzzelAvailable ? 1.0 : 0.6
         onToggled: checked => {
                      if (ProgramCheckerService.fuzzelAvailable) {
                        Settings.data.templates.fuzzel = checked;
@@ -746,7 +755,6 @@ ColumnLayout {
         Layout.preferredWidth: -1
         checked: Settings.data.templates.discord
         enabled: ProgramCheckerService.availableDiscordClients.length > 0
-        opacity: ProgramCheckerService.availableDiscordClients.length > 0 ? 1.0 : 0.6
         onToggled: checked => {
                      // Set unified discord property
                      Settings.data.templates.discord = checked;
@@ -765,7 +773,6 @@ ColumnLayout {
                                                                                     })
         checked: Settings.data.templates.pywalfox
         enabled: ProgramCheckerService.pywalfoxAvailable
-        opacity: ProgramCheckerService.pywalfoxAvailable ? 1.0 : 0.6
         onToggled: checked => {
                      if (ProgramCheckerService.pywalfoxAvailable) {
                        Settings.data.templates.pywalfox = checked;
@@ -782,7 +789,6 @@ ColumnLayout {
                                                                                    })
         checked: Settings.data.templates.vicinae
         enabled: ProgramCheckerService.vicinaeAvailable
-        opacity: ProgramCheckerService.vicinaeAvailable ? 1.0 : 0.6
         onToggled: checked => {
                      if (ProgramCheckerService.vicinaeAvailable) {
                        Settings.data.templates.vicinae = checked;
@@ -799,7 +805,6 @@ ColumnLayout {
                                                                                   })
         checked: Settings.data.templates.walker
         enabled: ProgramCheckerService.walkerAvailable
-        opacity: ProgramCheckerService.walkerAvailable ? 1.0 : 0.6
         onToggled: checked => {
                      if (ProgramCheckerService.walkerAvailable) {
                        Settings.data.templates.walker = checked;
@@ -824,18 +829,23 @@ ColumnLayout {
               var clientName = client.name === "code" ? "VSCode" : "VSCodium";
               clientInfo.push(clientName);
             }
-            return "Detected: " + clientInfo.join(", ");
+            return "Applied to default profile. Detected: " + clientInfo.join(", ");
           }
         }
         Layout.fillWidth: true
         Layout.preferredWidth: -1
         checked: Settings.data.templates.code
         enabled: ProgramCheckerService.availableCodeClients.length > 0
-        opacity: ProgramCheckerService.availableCodeClients.length > 0 ? 1.0 : 0.6
         onToggled: checked => {
                      // Set unified code property
                      Settings.data.templates.code = checked;
                      if (ProgramCheckerService.availableCodeClients.length > 0) {
+                       if (!checked) {
+                         const homeDir = Quickshell.env("HOME");
+                         for (var i = 0; i < ProgramCheckerService.availableCodeClients.length; i++) {
+                           var client = ProgramCheckerService.availableCodeClients[i];
+                         }
+                       }
                        AppThemeService.generate();
                      }
                    }
@@ -850,7 +860,6 @@ ColumnLayout {
                                                                                      })
         checked: Settings.data.templates.spicetify
         enabled: ProgramCheckerService.spicetifyAvailable
-        opacity: ProgramCheckerService.spicetifyAvailable ? 1.0 : 0.6
         onToggled: checked => {
                      if (ProgramCheckerService.spicetifyAvailable) {
                        Settings.data.templates.spicetify = checked;
@@ -868,7 +877,6 @@ ColumnLayout {
                                                                                     })
         checked: Settings.data.templates.telegram
         enabled: ProgramCheckerService.telegramAvailable
-        opacity: ProgramCheckerService.telegramAvailable ? 1.0 : 0.6
         onToggled: checked => {
                      if (ProgramCheckerService.telegramAvailable) {
                        Settings.data.templates.telegram = checked;
@@ -886,7 +894,6 @@ ColumnLayout {
                                                                                 })
         checked: Settings.data.templates.cava
         enabled: ProgramCheckerService.cavaAvailable
-        opacity: ProgramCheckerService.cavaAvailable ? 1.0 : 0.6
         onToggled: checked => {
                      if (ProgramCheckerService.cavaAvailable) {
                        Settings.data.templates.cava = checked;
@@ -896,13 +903,46 @@ ColumnLayout {
       }
 
       NCheckbox {
+        label: "Yazi"
+        description: ProgramCheckerService.yaziAvailable ? I18n.tr("settings.color-scheme.templates.programs.yazi.description", {
+                                                                     "filepath": "~/.config/yazi/flavors/noctalia.yazi/flavor.toml"
+                                                                   }) : I18n.tr("settings.color-scheme.templates.programs.yazi.description-missing", {
+                                                                                  "app": "yazi"
+                                                                                })
+        checked: Settings.data.templates.yazi
+        enabled: ProgramCheckerService.yaziAvailable
+        onToggled: checked => {
+                     if (ProgramCheckerService.yaziAvailable) {
+                       Settings.data.templates.yazi = checked;
+                       AppThemeService.generate();
+                     }
+                   }
+      }
+
+      NCheckbox {
+        label: "Zeditor"
+        description: ProgramCheckerService.zedAvailable ? I18n.tr("settings.color-scheme.templates.programs.zed.description", {
+                                                                    "filepath": "~/.config/zed/themes/noctalia.json"
+                                                                  }) : I18n.tr("settings.color-scheme.templates.programs.zed.description-missing", {
+                                                                                 "app": "zed"
+                                                                               })
+        checked: Settings.data.templates.zed
+        enabled: ProgramCheckerService.zedAvailable
+        onToggled: checked => {
+                     if (ProgramCheckerService.zedAvailable) {
+                       Settings.data.templates.zed = checked;
+                       AppThemeService.generate();
+                     }
+                   }
+      }
+
+      NCheckbox {
         label: "Emacs"
-        description: ProgramCheckerService.emacsAvailable ? "Doom: ~/.config/doom/themes/noctalia.el\nStandard: ~/.emacs.d/themes/noctalia.el\n\nApply manually: (load-theme 'noctalia t)" : I18n.tr("settings.color-scheme.templates.programs.emacs.description-missing", {
-                                                                                                                                                                                                       "app": "emacs"
-                                                                                                                                                                                                     })
+        description: ProgramCheckerService.emacsAvailable ? I18n.tr("settings.color-scheme.templates.programs.emacs.description") : I18n.tr("settings.color-scheme.templates.programs.emacs.description-missing", {
+                                                                                                                                              "app": "emacs"
+                                                                                                                                            })
         checked: Settings.data.templates.emacs
         enabled: ProgramCheckerService.emacsAvailable
-        opacity: ProgramCheckerService.emacsAvailable ? 1.0 : 0.6
         onToggled: checked => {
                      if (ProgramCheckerService.emacsAvailable) {
                        Settings.data.templates.emacs = checked;

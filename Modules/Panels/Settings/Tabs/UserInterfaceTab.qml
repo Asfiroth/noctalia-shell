@@ -18,53 +18,102 @@ ColumnLayout {
       description: I18n.tr("settings.user-interface.section.description")
     }
 
-    NToggle {
-      label: I18n.tr("settings.user-interface.tooltips.label")
-      description: I18n.tr("settings.user-interface.tooltips.description")
-      checked: Settings.data.ui.tooltipsEnabled
-      onToggled: checked => Settings.data.ui.tooltipsEnabled = checked
-    }
-
-    // Dim desktop opacity
-    ColumnLayout {
-      spacing: Style.marginXXS
-      Layout.fillWidth: true
-
-      NLabel {
-        label: I18n.tr("settings.user-interface.dimmer-opacity.label")
-        description: I18n.tr("settings.user-interface.dimmer-opacity.description")
-      }
-
-      NValueSlider {
-        Layout.fillWidth: true
-        from: 0
-        to: 1
-        stepSize: 0.01
-        value: Settings.data.general.dimmerOpacity
-        onMoved: value => Settings.data.general.dimmerOpacity = value
-        text: Math.floor(Settings.data.general.dimmerOpacity * 100) + "%"
-      }
-    }
-
+    // Panels attached to bar and screen edges
     NToggle {
       label: I18n.tr("settings.user-interface.panels-attached-to-bar.label")
       description: I18n.tr("settings.user-interface.panels-attached-to-bar.description")
       checked: Settings.data.ui.panelsAttachedToBar
+      isSettings: true
+      defaultValue: Settings.getDefaultValue("ui.panelsAttachedToBar")
       onToggled: checked => Settings.data.ui.panelsAttachedToBar = checked
     }
 
     NToggle {
-      label: I18n.tr("settings.user-interface.settings-panel-attached-to-bar.label")
-      description: I18n.tr("settings.user-interface.settings-panel-attached-to-bar.description")
-      checked: Settings.data.ui.settingsPanelAttachToBar
-      enabled: Settings.data.ui.panelsAttachedToBar
-      onToggled: checked => Settings.data.ui.settingsPanelAttachToBar = checked
+      visible: (Quickshell.screens.length > 1)
+      label: I18n.tr("settings.user-interface.allow-panels-without-bar.label")
+      description: I18n.tr("settings.user-interface.allow-panels-without-bar.description")
+      checked: Settings.data.general.allowPanelsOnScreenWithoutBar
+      isSettings: true
+      defaultValue: Settings.getDefaultValue("general.allowPanelsOnScreenWithoutBar")
+      onToggled: checked => Settings.data.general.allowPanelsOnScreenWithoutBar = checked
+    }
+
+    // Settings panel display mode
+    NComboBox {
+      label: I18n.tr("settings.user-interface.settings-panel-mode.label")
+      description: I18n.tr("settings.user-interface.settings-panel-mode.description")
+      Layout.fillWidth: true
+      model: [
+        {
+          "key": "attached",
+          "name": I18n.tr("options.settings-panel-mode.attached")
+        },
+        {
+          "key": "centered",
+          "name": I18n.tr("options.settings-panel-mode.centered")
+        },
+        {
+          "key": "window",
+          "name": I18n.tr("options.settings-panel-mode.window")
+        }
+      ]
+      currentKey: Settings.data.ui.settingsPanelMode
+      isSettings: true
+      defaultValue: Settings.getDefaultValue("ui.settingsPanelMode")
+      onSelected: key => Settings.data.ui.settingsPanelMode = key
+    }
+
+    // Panel Background Opacity
+    NValueSlider {
+      Layout.fillWidth: true
+      label: I18n.tr("settings.user-interface.panel-background-opacity.label")
+      description: I18n.tr("settings.user-interface.panel-background-opacity.description")
+      from: 0.4
+      to: 1
+      stepSize: 0.01
+      value: Settings.data.ui.panelBackgroundOpacity
+      isSettings: true
+      defaultValue: Settings.getDefaultValue("ui.panelBackgroundOpacity")
+      onMoved: value => Settings.data.ui.panelBackgroundOpacity = value
+      text: Math.floor(Settings.data.ui.panelBackgroundOpacity * 100) + "%"
+    }
+
+    // Dim desktop opacity
+    NValueSlider {
+      Layout.fillWidth: true
+      label: I18n.tr("settings.user-interface.dimmer-opacity.label")
+      description: I18n.tr("settings.user-interface.dimmer-opacity.description")
+      from: 0
+      to: 1
+      stepSize: 0.01
+      value: Settings.data.general.dimmerOpacity
+      isSettings: true
+      defaultValue: Settings.getDefaultValue("general.dimmerOpacity")
+      onMoved: value => Settings.data.general.dimmerOpacity = value
+      text: Math.floor(Settings.data.general.dimmerOpacity * 100) + "%"
+    }
+
+    NDivider {
+      Layout.fillWidth: true
+      Layout.topMargin: Style.marginL
+      Layout.bottomMargin: Style.marginL
+    }
+
+    NToggle {
+      label: I18n.tr("settings.user-interface.tooltips.label")
+      description: I18n.tr("settings.user-interface.tooltips.description")
+      checked: Settings.data.ui.tooltipsEnabled
+      isSettings: true
+      defaultValue: Settings.getDefaultValue("ui.tooltipsEnabled")
+      onToggled: checked => Settings.data.ui.tooltipsEnabled = checked
     }
 
     NToggle {
       label: I18n.tr("settings.user-interface.shadows.label")
       description: I18n.tr("settings.user-interface.shadows.description")
       checked: Settings.data.general.enableShadows
+      isSettings: true
+      defaultValue: Settings.getDefaultValue("general.enableShadows")
       onToggled: checked => Settings.data.general.enableShadows = checked
     }
 
@@ -122,6 +171,8 @@ ColumnLayout {
       })
 
       currentKey: Settings.data.general.shadowDirection
+      isSettings: true
+      defaultValue: Settings.getDefaultValue("general.shadowDirection")
 
       onSelected: function (key) {
         var opt = shadowOptionsMap[key];
@@ -131,35 +182,6 @@ ColumnLayout {
           Settings.data.general.shadowOffsetY = opt.p.y;
         }
       }
-    }
-
-    // Panel Background Opacity
-    ColumnLayout {
-      spacing: Style.marginXXS
-      Layout.fillWidth: true
-
-      NLabel {
-        label: I18n.tr("settings.user-interface.panel-background-opacity.label")
-        description: I18n.tr("settings.user-interface.panel-background-opacity.description")
-      }
-
-      NValueSlider {
-        Layout.fillWidth: true
-        from: 0
-        to: 1
-        stepSize: 0.01
-        value: Settings.data.ui.panelBackgroundOpacity
-        onMoved: value => Settings.data.ui.panelBackgroundOpacity = value
-        text: Math.floor(Settings.data.ui.panelBackgroundOpacity * 100) + "%"
-      }
-    }
-
-    NToggle {
-      visible: (Quickshell.screens.length > 1)
-      label: I18n.tr("settings.user-interface.allow-panels-without-bar.label")
-      description: I18n.tr("settings.user-interface.allow-panels-without-bar.description")
-      checked: Settings.data.general.allowPanelsOnScreenWithoutBar
-      onToggled: checked => Settings.data.general.allowPanelsOnScreenWithoutBar = checked
     }
 
     NDivider {
@@ -173,21 +195,20 @@ ColumnLayout {
       spacing: Style.marginXXS
       Layout.fillWidth: true
 
-      NLabel {
-        label: I18n.tr("settings.user-interface.scaling.label")
-        description: I18n.tr("settings.user-interface.scaling.description")
-      }
-
       RowLayout {
         spacing: Style.marginL
         Layout.fillWidth: true
 
         NValueSlider {
           Layout.fillWidth: true
+          label: I18n.tr("settings.user-interface.scaling.label")
+          description: I18n.tr("settings.user-interface.scaling.description")
           from: 0.8
           to: 1.2
           stepSize: 0.05
           value: Settings.data.general.scaleRatio
+          isSettings: true
+          defaultValue: Settings.getDefaultValue("general.scaleRatio")
           onMoved: value => Settings.data.general.scaleRatio = value
           text: Math.floor(Settings.data.general.scaleRatio * 100) + "%"
         }
@@ -198,7 +219,7 @@ ColumnLayout {
           Layout.preferredHeight: 30 * Style.uiScaleRatio
 
           NIconButton {
-            icon: "refresh"
+            icon: "restore"
             baseSize: Style.baseWidgetSize * 0.8
             tooltipText: I18n.tr("settings.user-interface.scaling.reset-scaling")
             onClicked: Settings.data.general.scaleRatio = 1.0
@@ -210,83 +231,71 @@ ColumnLayout {
     }
 
     // Container Border Radius
-    ColumnLayout {
-      spacing: Style.marginXXS
+    RowLayout {
+      spacing: Style.marginL
       Layout.fillWidth: true
 
-      NLabel {
+      NValueSlider {
+        Layout.fillWidth: true
         label: I18n.tr("settings.user-interface.box-border-radius.label")
         description: I18n.tr("settings.user-interface.box-border-radius.description")
+        from: 0
+        to: 2
+        stepSize: 0.01
+        value: Settings.data.general.radiusRatio
+        isSettings: true
+        defaultValue: Settings.getDefaultValue("general.radiusRatio")
+        onMoved: value => Settings.data.general.radiusRatio = value
+        text: Math.floor(Settings.data.general.radiusRatio * 100) + "%"
       }
 
-      RowLayout {
-        spacing: Style.marginL
-        Layout.fillWidth: true
+      // Reset button container
+      Item {
+        Layout.preferredWidth: 30 * Style.uiScaleRatio
+        Layout.preferredHeight: 30 * Style.uiScaleRatio
 
-        NValueSlider {
-          Layout.fillWidth: true
-          from: 0
-          to: 2
-          stepSize: 0.01
-          value: Settings.data.general.radiusRatio
-          onMoved: value => Settings.data.general.radiusRatio = value
-          text: Math.floor(Settings.data.general.radiusRatio * 100) + "%"
-        }
-
-        // Reset button container
-        Item {
-          Layout.preferredWidth: 30 * Style.uiScaleRatio
-          Layout.preferredHeight: 30 * Style.uiScaleRatio
-
-          NIconButton {
-            icon: "refresh"
-            baseSize: Style.baseWidgetSize * 0.8
-            tooltipText: I18n.tr("settings.user-interface.box-border-radius.reset")
-            onClicked: Settings.data.general.radiusRatio = 1.0
-            anchors.right: parent.right
-            anchors.verticalCenter: parent.verticalCenter
-          }
+        NIconButton {
+          icon: "restore"
+          baseSize: Style.baseWidgetSize * 0.8
+          tooltipText: I18n.tr("settings.user-interface.box-border-radius.reset")
+          onClicked: Settings.data.general.radiusRatio = 1.0
+          anchors.right: parent.right
+          anchors.verticalCenter: parent.verticalCenter
         }
       }
     }
 
     // Control Border Radius (for UI components)
-    ColumnLayout {
-      spacing: Style.marginXXS
+    RowLayout {
+      spacing: Style.marginL
       Layout.fillWidth: true
 
-      NLabel {
+      NValueSlider {
+        Layout.fillWidth: true
         label: I18n.tr("settings.user-interface.control-border-radius.label")
         description: I18n.tr("settings.user-interface.control-border-radius.description")
+        from: 0
+        to: 2
+        stepSize: 0.01
+        value: Settings.data.general.iRadiusRatio
+        isSettings: true
+        defaultValue: Settings.getDefaultValue("general.iRadiusRatio")
+        onMoved: value => Settings.data.general.iRadiusRatio = value
+        text: Math.floor(Settings.data.general.iRadiusRatio * 100) + "%"
       }
 
-      RowLayout {
-        spacing: Style.marginL
-        Layout.fillWidth: true
+      // Reset button container
+      Item {
+        Layout.preferredWidth: 30 * Style.uiScaleRatio
+        Layout.preferredHeight: 30 * Style.uiScaleRatio
 
-        NValueSlider {
-          Layout.fillWidth: true
-          from: 0
-          to: 2
-          stepSize: 0.01
-          value: Settings.data.general.iRadiusRatio
-          onMoved: value => Settings.data.general.iRadiusRatio = value
-          text: Math.floor(Settings.data.general.iRadiusRatio * 100) + "%"
-        }
-
-        // Reset button container
-        Item {
-          Layout.preferredWidth: 30 * Style.uiScaleRatio
-          Layout.preferredHeight: 30 * Style.uiScaleRatio
-
-          NIconButton {
-            icon: "refresh"
-            baseSize: Style.baseWidgetSize * 0.8
-            tooltipText: I18n.tr("settings.user-interface.control-border-radius.reset")
-            onClicked: Settings.data.general.iRadiusRatio = 1.0
-            anchors.right: parent.right
-            anchors.verticalCenter: parent.verticalCenter
-          }
+        NIconButton {
+          icon: "restore"
+          baseSize: Style.baseWidgetSize * 0.8
+          tooltipText: I18n.tr("settings.user-interface.control-border-radius.reset")
+          onClicked: Settings.data.general.iRadiusRatio = 1.0
+          anchors.right: parent.right
+          anchors.verticalCenter: parent.verticalCenter
         }
       }
     }
@@ -301,21 +310,20 @@ ColumnLayout {
         Layout.fillWidth: true
         visible: !Settings.data.general.animationDisabled
 
-        NLabel {
-          label: I18n.tr("settings.user-interface.animation-speed.label")
-          description: I18n.tr("settings.user-interface.animation-speed.description")
-        }
-
         RowLayout {
           spacing: Style.marginL
           Layout.fillWidth: true
 
           NValueSlider {
             Layout.fillWidth: true
+            label: I18n.tr("settings.user-interface.animation-speed.label")
+            description: I18n.tr("settings.user-interface.animation-speed.description")
             from: 0
             to: 2.0
             stepSize: 0.01
             value: Settings.data.general.animationSpeed
+            isSettings: true
+            defaultValue: Settings.getDefaultValue("general.animationSpeed")
             onMoved: value => Settings.data.general.animationSpeed = Math.max(value, 0.05)
             text: Math.round(Settings.data.general.animationSpeed * 100) + "%"
           }
@@ -326,7 +334,7 @@ ColumnLayout {
             Layout.preferredHeight: 30 * Style.uiScaleRatio
 
             NIconButton {
-              icon: "refresh"
+              icon: "restore"
               baseSize: Style.baseWidgetSize * 0.8
               tooltipText: I18n.tr("settings.user-interface.animation-speed.reset")
               onClicked: Settings.data.general.animationSpeed = 1.0
@@ -341,6 +349,8 @@ ColumnLayout {
         label: I18n.tr("settings.user-interface.animation-disable.label")
         description: I18n.tr("settings.user-interface.animation-disable.description")
         checked: Settings.data.general.animationDisabled
+        isSettings: true
+        defaultValue: Settings.getDefaultValue("general.animationDisabled")
         onToggled: checked => Settings.data.general.animationDisabled = checked
       }
     }
@@ -366,6 +376,8 @@ ColumnLayout {
       label: I18n.tr("settings.general.screen-corners.show-corners.label")
       description: I18n.tr("settings.general.screen-corners.show-corners.description")
       checked: Settings.data.general.showScreenCorners
+      isSettings: true
+      defaultValue: Settings.getDefaultValue("general.showScreenCorners")
       onToggled: checked => Settings.data.general.showScreenCorners = checked
     }
 
@@ -373,6 +385,8 @@ ColumnLayout {
       label: I18n.tr("settings.general.screen-corners.solid-black.label")
       description: I18n.tr("settings.general.screen-corners.solid-black.description")
       checked: Settings.data.general.forceBlackScreenCorners
+      isSettings: true
+      defaultValue: Settings.getDefaultValue("general.forceBlackScreenCorners")
       onToggled: checked => Settings.data.general.forceBlackScreenCorners = checked
     }
 
@@ -380,21 +394,20 @@ ColumnLayout {
       spacing: Style.marginXXS
       Layout.fillWidth: true
 
-      NLabel {
-        label: I18n.tr("settings.general.screen-corners.radius.label")
-        description: I18n.tr("settings.general.screen-corners.radius.description")
-      }
-
       RowLayout {
         spacing: Style.marginL
         Layout.fillWidth: true
 
         NValueSlider {
           Layout.fillWidth: true
+          label: I18n.tr("settings.general.screen-corners.radius.label")
+          description: I18n.tr("settings.general.screen-corners.radius.description")
           from: 0
           to: 2
           stepSize: 0.01
           value: Settings.data.general.screenRadiusRatio
+          isSettings: true
+          defaultValue: Settings.getDefaultValue("general.screenRadiusRatio")
           onMoved: value => Settings.data.general.screenRadiusRatio = value
           text: Math.floor(Settings.data.general.screenRadiusRatio * 100) + "%"
         }
@@ -405,7 +418,7 @@ ColumnLayout {
           Layout.preferredHeight: 30 * Style.uiScaleRatio
 
           NIconButton {
-            icon: "refresh"
+            icon: "restore"
             baseSize: Style.baseWidgetSize * 0.8
             tooltipText: I18n.tr("settings.general.screen-corners.radius.reset")
             onClicked: Settings.data.general.screenRadiusRatio = 1.0

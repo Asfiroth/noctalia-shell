@@ -53,6 +53,8 @@ ColumnLayout {
       }
     ]
     currentKey: Settings.data.bar.position
+    isSettings: true
+    defaultValue: Settings.getDefaultValue("bar.position")
     onSelected: key => Settings.data.bar.position = key
   }
 
@@ -79,7 +81,29 @@ ColumnLayout {
       }
     ]
     currentKey: Settings.data.bar.density
+    isSettings: true
+    defaultValue: Settings.getDefaultValue("bar.density")
     onSelected: key => Settings.data.bar.density = key
+  }
+
+  NToggle {
+    Layout.fillWidth: true
+    label: I18n.tr("settings.bar.appearance.transparent.label")
+    description: I18n.tr("settings.bar.appearance.transparent.description")
+    checked: Settings.data.bar.transparent
+    isSettings: true
+    defaultValue: Settings.getDefaultValue("bar.transparent")
+    onToggled: checked => Settings.data.bar.transparent = checked
+  }
+
+  NToggle {
+    Layout.fillWidth: true
+    label: I18n.tr("settings.bar.appearance.show-outline.label")
+    description: I18n.tr("settings.bar.appearance.show-outline.description")
+    checked: Settings.data.bar.showOutline
+    isSettings: true
+    defaultValue: Settings.getDefaultValue("bar.showOutline")
+    onToggled: checked => Settings.data.bar.showOutline = checked
   }
 
   NToggle {
@@ -87,6 +111,8 @@ ColumnLayout {
     label: I18n.tr("settings.bar.appearance.show-capsule.label")
     description: I18n.tr("settings.bar.appearance.show-capsule.description")
     checked: Settings.data.bar.showCapsule
+    isSettings: true
+    defaultValue: Settings.getDefaultValue("bar.showCapsule")
     onToggled: checked => Settings.data.bar.showCapsule = checked
   }
 
@@ -95,17 +121,16 @@ ColumnLayout {
     spacing: Style.marginXXS
     visible: Settings.data.bar.showCapsule
 
-    NLabel {
-      label: I18n.tr("settings.bar.appearance.capsule-opacity.label")
-      description: I18n.tr("settings.bar.appearance.capsule-opacity.description")
-    }
-
     NValueSlider {
       Layout.fillWidth: true
+      label: I18n.tr("settings.bar.appearance.capsule-opacity.label")
+      description: I18n.tr("settings.bar.appearance.capsule-opacity.description")
       from: 0
       to: 1
       stepSize: 0.01
       value: Settings.data.bar.capsuleOpacity
+      isSettings: true
+      defaultValue: Settings.getDefaultValue("bar.capsuleOpacity")
       onMoved: value => Settings.data.bar.capsuleOpacity = value
       text: Math.floor(Settings.data.bar.capsuleOpacity * 100) + "%"
     }
@@ -116,6 +141,8 @@ ColumnLayout {
     label: I18n.tr("settings.bar.appearance.floating.label")
     description: I18n.tr("settings.bar.appearance.floating.description")
     checked: Settings.data.bar.floating
+    isSettings: true
+    defaultValue: Settings.getDefaultValue("bar.floating")
     onToggled: checked => {
                  Settings.data.bar.floating = checked;
                }
@@ -127,6 +154,8 @@ ColumnLayout {
     description: I18n.tr("settings.bar.appearance.outer-corners.description")
     checked: Settings.data.bar.outerCorners
     visible: !Settings.data.bar.floating
+    isSettings: true
+    defaultValue: Settings.getDefaultValue("bar.outerCorners")
     onToggled: checked => Settings.data.bar.outerCorners = checked
   }
 
@@ -148,18 +177,15 @@ ColumnLayout {
       ColumnLayout {
         spacing: Style.marginXXS
 
-        NText {
-          text: I18n.tr("settings.bar.appearance.margins.vertical")
-          pointSize: Style.fontSizeXS
-          color: Color.mOnSurfaceVariant
-        }
-
         NValueSlider {
           Layout.fillWidth: true
+          label: I18n.tr("settings.bar.appearance.margins.vertical")
           from: 0
           to: 1
           stepSize: 0.01
           value: Settings.data.bar.marginVertical
+          isSettings: true
+          defaultValue: Settings.getDefaultValue("bar.marginVertical")
           onMoved: value => Settings.data.bar.marginVertical = value
           text: Math.round(Settings.data.bar.marginVertical * 100) + "%"
         }
@@ -168,42 +194,19 @@ ColumnLayout {
       ColumnLayout {
         spacing: Style.marginXXS
 
-        NText {
-          text: I18n.tr("settings.bar.appearance.margins.horizontal")
-          pointSize: Style.fontSizeXS
-          color: Color.mOnSurfaceVariant
-        }
-
         NValueSlider {
           Layout.fillWidth: true
+          label: I18n.tr("settings.bar.appearance.margins.horizontal")
           from: 0
           to: 1
           stepSize: 0.01
           value: Settings.data.bar.marginHorizontal
+          isSettings: true
+          defaultValue: Settings.getDefaultValue("bar.marginHorizontal")
           onMoved: value => Settings.data.bar.marginHorizontal = value
           text: Math.ceil(Settings.data.bar.marginHorizontal * 100) + "%"
         }
       }
-    }
-  }
-
-  ColumnLayout {
-    spacing: Style.marginXXS
-    Layout.fillWidth: true
-
-    NLabel {
-      label: I18n.tr("settings.bar.appearance.background-opacity.label")
-      description: I18n.tr("settings.bar.appearance.background-opacity.description")
-    }
-
-    NValueSlider {
-      Layout.fillWidth: true
-      from: 0
-      to: 1
-      stepSize: 0.01
-      value: Settings.data.bar.backgroundOpacity
-      onMoved: value => Settings.data.bar.backgroundOpacity = value
-      text: Math.floor(Settings.data.bar.backgroundOpacity * 100) + "%"
     }
   }
 

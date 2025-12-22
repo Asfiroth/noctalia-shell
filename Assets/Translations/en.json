@@ -191,7 +191,7 @@
           "label": "Stream"
         },
         "wheel": {
-          "description": "Command to execute when the scroll wheel is used.\nUse $delta for the scroll wheel delta in the command.",
+          "description": "Command to execute when the scroll wheel is used.<br>Use $delta for the scroll wheel delta in the command.",
           "label": "Scroll wheel",
           "update-text": "Update displayed text on scroll"
         },
@@ -279,9 +279,9 @@
         }
       },
       "notification-history": {
-        "hide-badge-when-zero": {
-          "description": "Hide the notification badge when there are no unread notifications.",
-          "label": "Hide badge when zero"
+        "hide-widget-when-zero": {
+          "description": "Hide the notification icon when there are no unread notifications.",
+          "label": "Hide icon when zero"
         },
         "show-unread-badge": {
           "description": "Display a badge showing the number of unread notifications.",
@@ -311,6 +311,10 @@
           "description": "Select which disk mount point to monitor.",
           "label": "Disk path"
         },
+        "gpu-temperature": {
+          "description": "Show GPU temperature readings if available.",
+          "label": "GPU temperature"
+        },
         "memory-percentage": {
           "description": "Show memory usage as a percentage instead of absolute values.",
           "label": "Memory as percentage"
@@ -337,6 +341,10 @@
           "description": "Controls how the widget behaves when there are no matching windows.",
           "label": "Hiding mode"
         },
+        "icon-scale": {
+          "description": "Sets the scaling factor for taskbar icons.",
+          "label": "Icon scaling"
+        },
         "max-width": {
           "description": "Maximum width of the taskbar as a percentage of screen width.",
           "label": "Maximum width"
@@ -345,9 +353,9 @@
           "description": "Show only apps from active workspaces.",
           "label": "Only from active workspaces"
         },
-        "only-same-output": {
-          "description": "Show only apps from the output where the bar is located.",
-          "label": "Only from same output"
+        "only-same-monitor": {
+          "description": "Show only apps from the monitor where the bar is located.",
+          "label": "Only from same monitor"
         },
         "show-pinned-apps": {
           "description": "Show pinned apps from the dock in the taskbar.",
@@ -368,19 +376,13 @@
           "reset-tooltip": "Reset title width"
         }
       },
-      "taskbar-grouped": {
-        "show-labels-only-when-occupied": {
-          "description": "Only show workspace label for workspaces that have open windows.",
-          "label": "Show label only when occupied"
-        }
-      },
       "tray": {
         "colorize-icons": {
           "description": "Apply theme colors to tray icons.",
           "label": "Colorize icons"
         },
         "drawer-enabled": {
-          "description": "When enabled, unpinned tray items are shown in a drawer panel. When disabled, all tray items are shown inline.",
+          "description": "When enabled, unpinned tray items are shown in a drawer panel.<br>When disabled, all tray items are shown inline.",
           "label": "Enable drawer"
         },
         "hide-passive": {
@@ -399,6 +401,10 @@
           "description": "Number of characters to display from workspace names (1-10).",
           "label": "Character count"
         },
+        "enable-scrollwheel": {
+          "description": "Switch between workspaces using the mouse scroll wheel.",
+          "label": "Scroll to switch workspaces"
+        },
         "follow-focused-screen": {
           "description": "Display workspaces from the currently focused screen, rather than the screen where the bar is located.",
           "label": "Follow focused screen"
@@ -410,6 +416,14 @@
         "label-mode": {
           "description": "Choose how workspace labels are displayed.",
           "label": "Label mode"
+        },
+        "show-applications": {
+          "description": "Display application icons inside each workspace.",
+          "label": "Show applications"
+        },
+        "show-labels-only-when-occupied": {
+          "description": "Only show workspace labels when they contain windows.",
+          "label": "Show labels only when occupied"
         }
       }
     }
@@ -435,18 +449,28 @@
   "bluetooth": {
     "panel": {
       "available-devices": "Available devices",
+      "battery": "Battery",
       "blocked": "Blocked",
       "connect": "Connect",
       "connected-devices": "Connected devices",
       "connecting": "Connecting...",
+      "device-address": "Device address",
       "disabled": "Bluetooth is disabled",
       "disconnect": "Disconnect",
+      "discoverable": "Discoverable",
       "enable-message": "Enable Bluetooth to see available devices.",
+      "info": "Info",
       "known-devices": "Known devices",
+      "pair": "Pair",
+      "paired": "Paired",
+      "paired-devices": "Paired devices",
       "pairing": "Pairing...",
       "pairing-mode": "Make sure your device is in pairing mode.",
       "scanning": "Scanning for devices...",
-      "title": "Bluetooth"
+      "signal": "Signal",
+      "title": "Bluetooth",
+      "trusted": "Trusted",
+      "unpair": "Unpair"
     }
   },
   "calendar": {
@@ -460,6 +484,7 @@
       "minutes": "m",
       "pause": "Pause",
       "reset": "Reset",
+      "resume": "Resume",
       "seconds": "s",
       "start": "Start",
       "stopwatch": "Stopwatch",
@@ -505,14 +530,16 @@
     "cancel": "Cancel",
     "check-settings": "Check Settings for details",
     "close": "Close",
-    "save": "Save"
+    "no": "No",
+    "save": "Save",
+    "yes": "Yes"
   },
   "context-menu": {
-    "activate-app": "Activate {app}",
     "clear-history": "Clear history",
     "close-app": "Close {app}",
     "connect-vpn": "Connect to {name}",
     "cycle-visualizer": "Cycle visualizer",
+    "delete": "Delete",
     "disable-bluetooth": "Disable Bluetooth",
     "disable-dnd": "Disable Do Not Disturb",
     "disable-wifi": "Disable Wi-Fi",
@@ -705,6 +732,11 @@
       "hover": "Scroll on hover",
       "never": "Never scroll"
     },
+    "settings-panel-mode": {
+      "attached": "Panel attached to bar",
+      "centered": "Centered panel",
+      "window": "Separate window"
+    },
     "shadow-direction": {
       "bottom": "Below",
       "bottom_left": "Bottom left",
@@ -716,15 +748,15 @@
       "top_left": "Top left",
       "top_right": "Top right"
     },
-    "visualizer-quality": {
-      "high": "High",
-      "low": "Low"
-    },
     "visualizer-types": {
       "linear": "Linear",
       "mirrored": "Mirrored",
       "none": "None",
       "wave": "Wave"
+    },
+    "visualizer-visibility": {
+      "always": "Always visible",
+      "with-background": "With background only"
     },
     "workspace-labels": {
       "index": "Index",
@@ -752,7 +784,7 @@
   "plugins": {
     "applications": "Applications",
     "calculator": "Calculator",
-    "calculator-description": "Calculator - evaluate mathematical expressions",
+    "calculator-description": "Calculator — evaluate mathematical expressions",
     "calculator-enter-expression": "Enter a mathematical expression",
     "calculator-error": "Error",
     "calculator-name": "Calculator",
@@ -927,13 +959,20 @@
           "description": "Set your preferred and ignored media applications.",
           "label": "Media players"
         },
-        "visualizer-quality": {
-          "description": "High quality use more GPU ressources.",
-          "label": "Visualization quality"
-        },
         "visualizer-type": {
           "description": "Choose a visualization type for media playback.",
           "label": "Visualization type"
+        }
+      },
+      "panel": {
+        "applications": {
+          "empty": "No applications are currently playing audio"
+        },
+        "input": "Input",
+        "output": "Output",
+        "tabs": {
+          "devices": "Devices",
+          "volumes": "Volumes"
         }
       },
       "title": "Audio",
@@ -970,10 +1009,6 @@
     },
     "bar": {
       "appearance": {
-        "background-opacity": {
-          "description": "Adjust the background opacity of the bar.",
-          "label": "Background opacity"
-        },
         "capsule-opacity": {
           "description": "Set the opacity level for widget backgrounds when capsule is shown.",
           "label": "Capsule opacity"
@@ -1007,6 +1042,14 @@
         "show-capsule": {
           "description": "Show widget backgrounds.",
           "label": "Show capsule"
+        },
+        "show-outline": {
+          "description": "Displays a visible border around every widget.",
+          "label": "Show widget outlines"
+        },
+        "transparent": {
+          "description": "This will prevent the panels from attaching to the bar.",
+          "label": "Transparent background"
         }
       },
       "monitors": {
@@ -1037,14 +1080,14 @@
       "color-source": {
         "matugen-scheme-type": {
           "description": {
-            "scheme-content": "Derives colors that closely match the underlying image",
-            "scheme-expressive": "Vibrant palette with playful saturation",
-            "scheme-fidelity": "High-fidelity palette that preserves source hues",
-            "scheme-fruit-salad": "Colorful mix of bright contrasting accents",
-            "scheme-monochrome": "Minimal palette built around a single hue",
-            "scheme-neutral": "Muted palette with subdued and calming tones",
-            "scheme-rainbow": "Diverse palette spanning the full spectrum",
-            "scheme-tonal-spot": "Balanced palette with focused accents"
+            "scheme-content": "Derives colors that closely match the underlying image.",
+            "scheme-expressive": "Vibrant palette with playful saturation.",
+            "scheme-fidelity": "High-fidelity palette that preserves source hues.",
+            "scheme-fruit-salad": "Colorful mix of bright contrasting accents.",
+            "scheme-monochrome": "Minimal palette built around a single hue.",
+            "scheme-neutral": "Muted palette with subdued and calming tones.",
+            "scheme-rainbow": "Diverse palette spanning the full spectrum.",
+            "scheme-tonal-spot": "Balanced palette with focused accents."
           },
           "label": "Matugen scheme type"
         },
@@ -1119,16 +1162,20 @@
         "compositors": {
           "description": "Compositor theming.",
           "label": "Compositors",
+          "mango": {
+            "description": "Write {filepath}. Requires mango",
+            "description-missing": "Requires {app} to be installed"
+          },
           "niri": {
             "description": "Write {filepath}. Requires niri v25.11+",
             "description-missing": "Requires {app} to be installed"
           }
         },
         "misc": {
-          "description": "Create your own Templates",
+          "description": "Create your own templates",
           "label": "Advanced",
           "user-templates": {
-            "description": "Only enable if you know what you are doing, refer to our online documentation",
+            "description": "Only enable if you know what you are doing — refer to our online documentation",
             "label": "Enable user templates"
           }
         },
@@ -1138,13 +1185,17 @@
             "description-missing": "Requires {app} to be installed"
           },
           "code": {
-            "description": "Write {filepath}. Hyprluna theme needs to be installed and activated manually",
-            "description-missing": "No Code client detected. Install VSCode or VSCodium"
+            "description": "Write {filepath} — HyprLuna theme needs to be installed and activated manually",
+            "description-missing": "No Code client detected — install VSCode or VSCodium"
           },
           "description": "Application-specific theming.",
           "discord": {
-            "description": "Write {filepath} for {client}. Hyprluna theme needs to be activated manually",
-            "description-missing": "No Discord client detected. Install vencord, vesktop, webcord, armcord, equibop, lightcord, or dorion"
+            "description": "Write {filepath} for {client} — HyprLuna theme needs to be activated manually",
+            "description-missing": "No Discord client detected — install vencord, vesktop, webcord, armcord, equibop, lightcord, or dorion"
+          },
+          "emacs": {
+            "description": "Doom: ~/.config/doom/themes/noctalia.el<br>Standard: ~/.emacs.d/themes/noctalia.el<br>Apply manually: (load-theme 'noctalia t)",
+            "description-missing": "Requires {app} to be installed"
           },
           "fuzzel": {
             "description": "Write {filepath} and reload",
@@ -1156,7 +1207,7 @@
             "description-missing": "Requires {app} to be installed"
           },
           "spicetify": {
-            "description": "Write {filepath}. Comfy theme needs to be installed and activated manually",
+            "description": "Write {filepath} — Comfy theme needs to be installed and activated manually",
             "description-missing": "Requires {app} to be installed"
           },
           "telegram": {
@@ -1169,6 +1220,14 @@
           },
           "walker": {
             "description": "Write {filepath} and set theme to noctalia",
+            "description-missing": "Requires {app} to be installed"
+          },
+          "yazi": {
+            "description": "Write {filepath} — flavor needs to be activated manually",
+            "description-missing": "Requires {app} to be installed"
+          },
+          "zed": {
+            "description": "Write {filepath} and reload",
             "description-missing": "Requires {app} to be installed"
           }
         },
@@ -1295,6 +1354,129 @@
       },
       "title": "Control Center"
     },
+    "desktop-widgets": {
+      "clock": {
+        "clock-display": {
+          "description": "Customize your clock's display by adding tokens from the list below. To use the 12-hour format, you must include the 'AP' token.",
+          "label": "Clock display"
+        },
+        "custom-font": {
+          "description": "Select a custom font for the clock display.",
+          "label": "Custom font",
+          "placeholder": "Select custom font...",
+          "search-placeholder": "Search fonts..."
+        },
+        "enabled": {
+          "description": "Show a clock widget on the desktop.",
+          "label": "Enable clock widget"
+        },
+        "format": {
+          "description": "Tip: Use \\n to create a line break.",
+          "label": "Format"
+        },
+        "height": {
+          "description": "Height of the clock widget in pixels.",
+          "label": "Height"
+        },
+        "minimal-mode": {
+          "description": "Use a minimal clock display with time and date.",
+          "label": "Minimal mode"
+        },
+        "preview": "Preview",
+        "show-background": {
+          "description": "Show the background container for the clock widget.",
+          "label": "Show background"
+        },
+        "show-date": {
+          "description": "Display the current date below the time.",
+          "label": "Show date"
+        },
+        "show-seconds": {
+          "description": "Display seconds in the time.",
+          "label": "Show seconds"
+        },
+        "style": {
+          "analog": "Analog",
+          "description": "Choose the clock display style.",
+          "digital": "Digital",
+          "label": "Clock style",
+          "minimal": "Minimal"
+        },
+        "use-custom-font": {
+          "description": "Override the default font selection with a custom font for the clock.",
+          "label": "Use custom font"
+        },
+        "use-primary-color": {
+          "description": "When enabled, this applies the primary color for emphasis.",
+          "label": "Use primary color"
+        },
+        "width": {
+          "description": "Width of the clock widget in pixels.",
+          "label": "Width"
+        }
+      },
+      "edit-mode": {
+        "add-widget": "Add widget",
+        "button": {
+          "label": "Enter edit mode"
+        },
+        "controls-explanation": "Left-click & drag: Move or resize the widget.\nRight-click: Open the context menu options.",
+        "description": "Enable edit mode to move and reposition desktop widgets. When enabled, widgets show a drag outline and can be repositioned.",
+        "exit-button": "Exit edit mode",
+        "grid-snap": {
+          "label": "Grid snap"
+        },
+        "label": "Edit mode",
+        "open-settings": "Open settings"
+      },
+      "enabled": {
+        "description": "Enable or disable desktop widgets entirely.",
+        "label": "Enable desktop widgets"
+      },
+      "general": {
+        "section": {
+          "description": "Configure widgets that appear on your desktop.",
+          "label": "Desktop widgets"
+        }
+      },
+      "media-player": {
+        "enabled": {
+          "description": "Show a media player widget on the desktop.",
+          "label": "Enable media player widget"
+        },
+        "hide-mode": {
+          "description": "Controls how the widget behaves when no media is playing.",
+          "label": "Hiding mode"
+        },
+        "show-background": {
+          "description": "Show the background container for the media player widget.",
+          "label": "Show background"
+        },
+        "show-buttons": {
+          "description": "Show media control buttons (play/pause, previous, next) on the media player widget.",
+          "label": "Show buttons"
+        },
+        "visualizer-type": {
+          "description": "Choose a visualization type for the desktop media player background.",
+          "label": "Visualization type"
+        },
+        "visualizer-visibility": {
+          "description": "Control when the audio visualizer is visible.",
+          "label": "Audio visualizer visibility"
+        }
+      },
+      "title": "Desktop Widgets",
+      "weather": {
+        "enabled": {
+          "description": "Show a weather widget on the desktop.",
+          "label": "Enable weather widget"
+        },
+        "show-background": {
+          "description": "Show the background container for the weather widget.",
+          "label": "Show background"
+        }
+      }
+    },
     "display": {
       "monitors": {
         "brightness": "Brightness",
@@ -1321,7 +1503,7 @@
       },
       "night-light": {
         "auto-schedule": {
-          "description": "Based on the sunset and sunrise time in <i>{location}</i> - recommended.",
+          "description": "Based on the sunset and sunrise time in <i>{location}</i> — recommended.",
           "label": "Automatic scheduling"
         },
         "enable": {
@@ -1384,6 +1566,10 @@
           "description": "Set the distance between the dock and the edge of the screen.",
           "label": "Dock floating distance"
         },
+        "hide-show-speed": {
+          "description": "Adjust the speed of the dock hide/show animation.",
+          "label": "Hide/Show Speed"
+        },
         "icon-size": {
           "description": "Adjust the overall size of the dock.",
           "label": "Dock size"
@@ -1406,9 +1592,9 @@
         "label": "Enable dock"
       },
       "monitors": {
-        "only-same-output": {
-          "description": "Show only apps from the output where the dock is located.",
-          "label": "Only apps from same output"
+        "only-same-monitor": {
+          "description": "Show only apps from the monitor where the dock is located.",
+          "label": "Only apps from same monitor"
         },
         "section": {
           "description": "Show dock on specific monitors. Defaults to all if none are chosen.",
@@ -1493,13 +1679,33 @@
     "hooks": {
       "info": {
         "command-info": {
-          "description": "• Commands are executed via shell (sh -c)\n• Commands run in background (detached)\n• Test buttons execute with current values",
+          "description": "• Commands are executed via shell (sh -c)<br>• Commands run in background (detached)<br>• Test buttons execute with current values",
           "label": "Hook command information"
         },
         "parameters": {
-          "description": "• Wallpaper hook: $1 = wallpaper path, $2 = screen name\n• Theme toggle hook: $1 = true/false (Dark Mode state)",
+          "description": "• Wallpaper hook: $1 = wallpaper path, $2 = screen name<br>• Theme toggle hook: $1 = true/false (Dark Mode state)<br>• Screen lock/unlock hooks: No parameters<br>• Performance mode hooks: No parameters",
           "label": "Available parameters"
         }
+      },
+      "performance-mode-disabled": {
+        "description": "Command to be executed when Noctalia Performance Mode is disabled.",
+        "label": "Performance mode disabled",
+        "placeholder": "e.g., notify-send \"Performance\" \"Mode Disabled\""
+      },
+      "performance-mode-enabled": {
+        "description": "Command to be executed when Noctalia Performance Mode is enabled.",
+        "label": "Performance mode enabled",
+        "placeholder": "e.g., notify-send \"Performance\" \"Mode Enabled\""
+      },
+      "screen-lock": {
+        "description": "Command to be executed when the screen is locked.",
+        "label": "Screen locked",
+        "placeholder": "e.g., notify-send \"Screen\" \"Locked\""
+      },
+      "screen-unlock": {
+        "description": "Command to be executed when the lock screen is unlocked.",
+        "label": "Screen unlocked",
+        "placeholder": "e.g., notify-send \"Screen\" \"Unlocked\""
       },
       "system-hooks": {
         "enable": {
@@ -1523,12 +1729,12 @@
         "placeholder": "e.g., notify-send \"Wallpaper\" \"Changed\""
       }
     },
+    "indicator": {
+      "default-value": "Default: {value}",
+      "system-default": "System Default"
+    },
     "launcher": {
       "settings": {
-        "background-opacity": {
-          "description": "Adjust the background opacity of the launcher.",
-          "label": "Background opacity"
-        },
         "clip-preview": {
           "description": "Show a preview of the clipboard content when using the >clip command.",
           "label": "Enable clip preview"
@@ -1548,6 +1754,10 @@
         "grid-view": {
           "description": "Display items in a grid layout instead of a list.",
           "label": "Grid view"
+        },
+        "icon-mode": {
+          "description": "Use native system icons instead of Tabler icons.",
+          "label": "Use native icons"
         },
         "position": {
           "description": "Choose where the launcher panel appears.",
@@ -1674,6 +1884,7 @@
     },
     "network": {
       "bluetooth": {
+        "description": "Activate Bluetooth management.",
         "label": "Enable Bluetooth"
       },
       "section": {
@@ -1681,6 +1892,7 @@
       },
       "title": "Network",
       "wifi": {
+        "description": "Manage wireless networks (requires NetworkManager).",
         "label": "Enable Wi-Fi"
       }
     },
@@ -1857,6 +2069,10 @@
           "description": "Show OSD when screen brightness changes.",
           "label": "Brightness"
         },
+        "custom-text": {
+          "description": "Show OSD for custom text messages from IPC.",
+          "label": "Custom Text"
+        },
         "input-volume": {
           "description": "Show OSD when microphone volume changes.",
           "label": "Input volume"
@@ -1887,6 +2103,11 @@
         "downloaded": "Downloaded",
         "not-downloaded": "Not Downloaded"
       },
+      "hot-reload": {
+        "description": "Automatically reload plugins when their files change. Useful for plugin development.",
+        "label": "Hot reload (dev mode)"
+      },
+      "hot-reloaded": "Reloaded plugin: {name}",
       "install": "Install",
       "install-error": "Failed to install: {error}",
       "install-success": "Successfully installed {plugin}",
@@ -1918,8 +2139,8 @@
           "title": "Add plugin source",
           "url": "Repository URL"
         },
-        "description": "Manage plugin repositories where plugins are downloaded from.",
-        "label": "Plugin sources",
+        "description": "Manage plugin repositories.",
+        "label": "Sources",
         "placeholder": "My cool repository",
         "remove": {
           "tooltip": "Remove plugin source"
@@ -1942,7 +2163,7 @@
       "update-incompatible": "Requires Noctalia v{version} or higher",
       "update-success": "Updated {plugin} to v{version}",
       "update-version": "v{current} → v{new}",
-      "updating": "Updating {plugin}..."
+      "updating": "Updating..."
     },
     "screen-recorder": {
       "audio": {
@@ -2041,6 +2262,10 @@
           "label": "General"
         }
       },
+      "large-buttons-style": {
+        "description": "Display the session menu with large buttons in a grid layout.",
+        "label": "Large buttons style"
+      },
       "position": {
         "description": "Choose where the session menu panel appears when opened.",
         "label": "Position"
@@ -2052,14 +2277,8 @@
       "title": "Session Menu"
     },
     "system-monitor": {
-      "cpu-critical-threshold": {
-        "label": "Critical threshold"
-      },
       "cpu-section": {
         "label": "CPU usage"
-      },
-      "cpu-warning-threshold": {
-        "label": "Warning threshold"
       },
       "critical-color": {
         "label": "Critical color"
@@ -2067,14 +2286,12 @@
       "custom-highlight-colors-title": {
         "label": "Custom highlight colors"
       },
-      "disk-critical-threshold": {
-        "label": "Critical threshold"
-      },
       "disk-section": {
         "label": "Disk usage"
       },
-      "disk-warning-threshold": {
-        "label": "Warning threshold"
+      "enable-nvidia-gpu": {
+        "description": "Warning: This will wake up your NVIDIA GPU, which may significantly impact battery life on laptops with hybrid graphics.",
+        "label": "Enable NVIDIA GPU monitoring"
       },
       "general": {
         "section": {
@@ -2082,14 +2299,11 @@
           "label": "General"
         }
       },
+      "gpu-section": {
+        "label": "GPU temperature"
+      },
       "highlight-colors-section": {
         "label": "Highlight colors"
-      },
-      "mem-critical-threshold": {
-        "label": "Critical threshold"
-      },
-      "mem-warning-threshold": {
-        "label": "Warning threshold"
       },
       "memory-section": {
         "label": "Memory usage"
@@ -2100,14 +2314,12 @@
       "polling-interval": {
         "label": "Polling interval"
       },
-      "temp-critical-threshold": {
-        "label": "Critical threshold"
-      },
-      "temp-warning-threshold": {
-        "label": "Warning threshold"
-      },
       "temperature-section": {
         "label": "CPU temperature"
+      },
+      "threshold": {
+        "critical": "Critical threshold",
+        "warning": "Warning threshold"
       },
       "thresholds-section": {
         "description": "Adjust warning/critical thresholds and polling intervals for each system metric.",
@@ -2156,7 +2368,7 @@
         "reset": "Reset dimmed desktop opacity"
       },
       "panel-background-opacity": {
-        "description": "Set the background opacity for all panels (launcher, control center, settings, etc.).",
+        "description": "Set the background opacity for all panels (bar, launcher, settings, etc...).",
         "label": "Panel background opacity"
       },
       "panels-attached-to-bar": {
@@ -2176,9 +2388,9 @@
         "description": "Customize the look, feel, and behavior of the interface.",
         "label": "Appearance"
       },
-      "settings-panel-attached-to-bar": {
-        "description": "Keep the settings window aligned with the bar for a unified look.",
-        "label": "Snap settings window to bar"
+      "settings-panel-mode": {
+        "description": "Choose settings layout (may require reopening).",
+        "label": "Settings panel mode"
       },
       "shadows": {
         "description": "Enables drop shadows under bars and panels.",
@@ -2313,7 +2525,7 @@
       "subheader": "Set the mood with a beautiful background."
     },
     "welcome": {
-      "note": "Just a few basics to get you started - full options are in the settings"
+      "note": "Just a few basics to get you started — full options are in the settings"
     }
   },
   "system": {
@@ -2344,8 +2556,20 @@
       "low-desc": "Battery is at {percent}%. Please connect the charger."
     },
     "bluetooth": {
+      "confirm-code": "Confirm code {value} on the other device",
+      "connect-failed": "Failed to connect to device",
       "disabled": "Disabled",
-      "enabled": "Enabled"
+      "disconnect-failed": "Failed to disconnect from device",
+      "discoverable-change-failed": "Failed to change discoverable state",
+      "discoverable-disabled": "Discoverable disabled",
+      "discoverable-enabled": "Discoverable enabled",
+      "display-code": "Enter code {value} on the other device",
+      "enabled": "Enabled",
+      "forget-failed": "Failed to forget device",
+      "pair-failed": "Failed to pair device",
+      "passkey-required": "Passkey required by the device",
+      "pincode-required": "PIN code required by the device",
+      "state-change-failed": "Failed to change Bluetooth state"
     },
     "clipboard": {
       "unavailable": "Clipboard history unavailable",
@@ -2397,7 +2621,7 @@
     },
     "power-profile": {
       "changed": "Power profile changed",
-      "profile-name": "\"{profile}\""
+      "profile-name": "{profile}"
     },
     "recording": {
       "failed-general": "Recorder exited with an error",
@@ -2412,7 +2636,7 @@
       "stopping": "Stopping recording…"
     },
     "theming-processor-failed": {
-      "desc-generic": "Encountered an error while processing templates.",
+      "desc-generic": "Encountered an error while processing templates",
       "title-matugen": "Matugen templating processing failed",
       "title-predefined": "Predefined color cheme processing failed"
     },
@@ -2424,13 +2648,17 @@
       "disabled": "Wallpaper colors disabled",
       "enabled": "Wallpaper colors enabled",
       "label": "Wallpaper colors generation",
-      "not-installed": "Matugen not installed - required for wallpaper color extraction"
+      "not-installed": "Matugen not installed — required for wallpaper color extraction"
     },
     "wifi": {
       "connected": "Connected to '{ssid}'",
+      "connection-failed": "Connection failed",
+      "connection-timeout": "Connection timeout",
       "disabled": "Disabled",
       "disconnected": "Disconnected from '{ssid}'",
-      "enabled": "Enabled"
+      "enabled": "Enabled",
+      "incorrect-password": "Incorrect password",
+      "network-not-found": "Network not found"
     }
   },
   "tooltips": {
@@ -2442,18 +2670,21 @@
     "click-to-start-recording": "Screen recorder (start recording)",
     "click-to-stop-recording": "Screen recorder (stop recording)",
     "close": "Close",
+    "collapse": "Collapse sidebar",
     "connect-disconnect-devices": "Bluetooth device",
     "delete-notification": "Delete notification",
     "disable-keep-awake": "Keep Awake",
     "do-not-disturb-disabled": "Do Not Disturb",
     "do-not-disturb-enabled": "Do Not Disturb",
     "enable-keep-awake": "Keep Awake",
+    "expand": "Expand sidebar",
     "forget-network": "Forget network",
     "grid-view": "Grid view",
     "hidden-files-hide": "Hidden files",
     "hidden-files-show": "Hidden files",
+    "hide-unnamed-devices": "Hide unnamed devices",
     "home": "Home directory",
-    "input-muted": "Microphone",
+    "input-muted": "Toggle input mute",
     "keep-awake": "Keep Awake",
     "keyboard-layout": "{layout} keyboard layout",
     "list-view": "List view",
@@ -2463,6 +2694,7 @@
     "move-to-center-section": "Center section",
     "move-to-left-section": "Left section",
     "move-to-right-section": "Right section",
+    "mute": "Mute",
     "next-media": "Next track",
     "next-month": "Next month",
     "night-light-disabled": "Night Light",
@@ -2477,7 +2709,7 @@
     "open-settings": "Settings",
     "open-tray-dropdown": "System tray",
     "open-wallpaper-selector": "Wallpaper selector",
-    "output-muted": "Audio output",
+    "output-muted": "Toggle output mute",
     "pause": "Pause",
     "play": "Play",
     "power-profile": "{profile} power profile",
@@ -2493,10 +2725,12 @@
     "search-close": "Close search",
     "session-menu": "Session menu",
     "set-power-profile": "{profile} power profile",
+    "show-all-devices": "Show all devices",
     "start-screen-recording": "Screen recorder",
     "stop-screen-recording": "Screen recorder",
     "switch-to-dark-mode": "Dark Mode",
     "switch-to-light-mode": "Light Mode",
+    "unmute": "Unmute",
     "up": "Parent directory",
     "volume-at": "Output volume: {volume}%",
     "wallpaper-selector": "Wallpaper selector",
@@ -2538,6 +2772,10 @@
         "label": "Content filter",
         "sfw": "SFW",
         "sketchy": "Sketchy"
+      },
+      "ratios": {
+        "any": "Any",
+        "label": "Aspect Ratio"
       },
       "resolution": {
         "atleast": "At least",
@@ -2629,8 +2867,8 @@
         "no-leading-zero": "Day without leading zero (1-31)"
       },
       "hour": {
-        "leading-zero": "Hour with leading zero (00-23) - 24-hour format",
-        "no-leading-zero": "Hour without leading zero (0-23) - 24-hour format"
+        "leading-zero": "Hour with leading zero (00-23) — 24-hour format",
+        "no-leading-zero": "Hour without leading zero (0-23) — 24-hour format"
       },
       "minute": {
         "leading-zero": "Minute with leading zero (00-59)",
@@ -2682,21 +2920,30 @@
       "available-networks": "Available networks",
       "connect": "Connect",
       "connected": "Connected",
-      "disabled": "Wi-Fi is disabled",
+      "disabled": "Wi‑Fi is disabled",
       "disconnect": "Disconnect",
-      "disconnecting": "Disconnecting...",
-      "enable-message": "Enable Wi-Fi to see available networks.",
-      "enter-password": "Enter password...",
+      "disconnecting": "Disconnecting…",
+      "dns": "DNS",
+      "enable-message": "Enable Wi‑Fi to see available networks.",
+      "enter-password": "Enter Wi‑Fi password",
       "forget": "Forget",
-      "forget-network": "Forget this network?",
-      "forgetting": "Forgetting...",
+      "forget-network": "Forget this network",
+      "forgetting": "Forgetting…",
+      "gateway": "Gateway",
+      "info": "Info",
+      "internet": "Internet",
+      "internet-connected": "Internet connected",
+      "internet-limited": "No internet",
+      "ipv4": "IPv4",
       "known-networks": "Known networks",
-      "no-networks": "No networks found",
+      "link-speed": "Link speed",
+      "no-networks": "No Wi‑Fi networks found",
       "password": "Password",
       "saved": "Saved",
       "scan-again": "Scan again",
-      "searching": "Searching for nearby networks...",
-      "title": "Wi-Fi"
+      "searching": "Searching for networks...",
+      "security": "Security",
+      "title": "Wi‑Fi"
     }
   }
 }

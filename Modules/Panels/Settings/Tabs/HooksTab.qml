@@ -77,6 +77,94 @@ ColumnLayout {
       Layout.fillWidth: true
     }
 
+    // Screen Lock Hook Section
+    NInputAction {
+      id: screenLockHookInput
+      label: I18n.tr("settings.hooks.screen-lock.label")
+      description: I18n.tr("settings.hooks.screen-lock.description")
+      placeholderText: I18n.tr("settings.hooks.screen-lock.placeholder")
+      text: Settings.data.hooks.screenLock
+      onEditingFinished: {
+        Settings.data.hooks.screenLock = screenLockHookInput.text;
+      }
+      onActionClicked: {
+        if (screenLockHookInput.text) {
+          HooksService.executeLockHook();
+        }
+      }
+      Layout.fillWidth: true
+    }
+
+    NDivider {
+      Layout.fillWidth: true
+    }
+
+    // Screen Unlock Hook Section
+    NInputAction {
+      id: screenUnlockHookInput
+      label: I18n.tr("settings.hooks.screen-unlock.label")
+      description: I18n.tr("settings.hooks.screen-unlock.description")
+      placeholderText: I18n.tr("settings.hooks.screen-unlock.placeholder")
+      text: Settings.data.hooks.screenUnlock
+      onEditingFinished: {
+        Settings.data.hooks.screenUnlock = screenUnlockHookInput.text;
+      }
+      onActionClicked: {
+        if (screenUnlockHookInput.text) {
+          HooksService.executeUnlockHook();
+        }
+      }
+      Layout.fillWidth: true
+    }
+
+    NDivider {
+      Layout.fillWidth: true
+    }
+
+    // Performance Mode Enabled Hook Section
+    NInputAction {
+      id: performanceModeEnabledHookInput
+      label: I18n.tr("settings.hooks.performance-mode-enabled.label")
+      description: I18n.tr("settings.hooks.performance-mode-enabled.description")
+      placeholderText: I18n.tr("settings.hooks.performance-mode-enabled.placeholder")
+      text: Settings.data.hooks.performanceModeEnabled
+      onEditingFinished: {
+        Settings.data.hooks.performanceModeEnabled = performanceModeEnabledHookInput.text;
+      }
+      onActionClicked: {
+        if (performanceModeEnabledHookInput.text) {
+          HooksService.executePerformanceModeEnabledHook();
+        }
+      }
+      Layout.fillWidth: true
+    }
+
+    NDivider {
+      Layout.fillWidth: true
+    }
+
+    // Performance Mode Disabled Hook Section
+    NInputAction {
+      id: performanceModeDisabledHookInput
+      label: I18n.tr("settings.hooks.performance-mode-disabled.label")
+      description: I18n.tr("settings.hooks.performance-mode-disabled.description")
+      placeholderText: I18n.tr("settings.hooks.performance-mode-disabled.placeholder")
+      text: Settings.data.hooks.performanceModeDisabled
+      onEditingFinished: {
+        Settings.data.hooks.performanceModeDisabled = performanceModeDisabledHookInput.text;
+      }
+      onActionClicked: {
+        if (performanceModeDisabledHookInput.text) {
+          HooksService.executePerformanceModeDisabledHook();
+        }
+      }
+      Layout.fillWidth: true
+    }
+
+    NDivider {
+      Layout.fillWidth: true
+    }
+
     // Info section
     ColumnLayout {
       spacing: Style.marginM

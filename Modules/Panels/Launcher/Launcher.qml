@@ -610,43 +610,62 @@ SmartPanel {
         Layout.preferredWidth: root.listPanelWidth
         spacing: Style.marginM
 
-        NTextInput {
-          id: searchInput
+        RowLayout {
           Layout.fillWidth: true
+          spacing: Style.marginS
 
-          fontSize: Style.fontSizeL
-          fontWeight: Style.fontWeightSemiBold
+          NTextInput {
+            id: searchInput
+            Layout.fillWidth: true
 
-          text: searchText
-          placeholderText: I18n.tr("placeholders.search-launcher")
+            fontSize: Style.fontSizeL
+            fontWeight: Style.fontWeightSemiBold
 
-          onTextChanged: searchText = text
+            text: searchText
+            placeholderText: I18n.tr("placeholders.search-launcher")
 
-          Component.onCompleted: {
-            if (searchInput.inputItem) {
-              searchInput.inputItem.forceActiveFocus();
-              // Intercept keys before TextField handles them
-              searchInput.inputItem.Keys.onPressed.connect(function (event) {
-                if (event.key === Qt.Key_Tab) {
-                  root.onTabPressed();
-                  event.accepted = true;
-                } else if (event.key === Qt.Key_Backtab) {
-                  root.onBackTabPressed();
-                  event.accepted = true;
-                } else if (event.key === Qt.Key_Left) {
-                  root.onLeftPressed();
-                  event.accepted = true;
-                } else if (event.key === Qt.Key_Right) {
-                  root.onRightPressed();
-                  event.accepted = true;
-                } else if (event.key === Qt.Key_Up) {
-                  root.onUpPressed();
-                  event.accepted = true;
-                } else if (event.key === Qt.Key_Down) {
-                  root.onDownPressed();
-                  event.accepted = true;
-                }
-              });
+            onTextChanged: searchText = text
+
+            Component.onCompleted: {
+              if (searchInput.inputItem) {
+                searchInput.inputItem.forceActiveFocus();
+                // Intercept keys before TextField handles them
+                searchInput.inputItem.Keys.onPressed.connect(function (event) {
+                  if (event.key === Qt.Key_Tab) {
+                    root.onTabPressed();
+                    event.accepted = true;
+                  } else if (event.key === Qt.Key_Backtab) {
+                    root.onBackTabPressed();
+                    event.accepted = true;
+                  } else if (event.key === Qt.Key_Left) {
+                    root.onLeftPressed();
+                    event.accepted = true;
+                  } else if (event.key === Qt.Key_Right) {
+                    root.onRightPressed();
+                    event.accepted = true;
+                  } else if (event.key === Qt.Key_Up) {
+                    root.onUpPressed();
+                    event.accepted = true;
+                  } else if (event.key === Qt.Key_Down) {
+                    root.onDownPressed();
+                    event.accepted = true;
+                  } else if (event.key === Qt.Key_Enter) {
+                    root.activate();
+                    event.accepted = true;
+                  }
+                });
+              }
+            }
+          }
+
+          NIconButton {
+            visible: root.activePlugin === null || root.activePlugin === appsPlugin
+            icon: Settings.data.appLauncher.viewMode === "grid" ? "layout-list" : "layout-grid"
+            tooltipText: Settings.data.appLauncher.viewMode === "grid" ? I18n.tr("tooltips.list-view") : I18n.tr("tooltips.grid-view")
+            Layout.preferredWidth: searchInput.height
+            Layout.preferredHeight: searchInput.height
+            onClicked: {
+              Settings.data.appLauncher.viewMode = Settings.data.appLauncher.viewMode === "grid" ? "list" : "grid";
             }
           }
         }
@@ -821,7 +840,7 @@ SmartPanel {
                 }
               }
 
-              width: resultsList.width - Style.marginS - resultsList.scrollBarTotalWidth
+              width: resultsList.width - Style.marginS
               implicitHeight: entryHeight
               radius: Style.radiusM
               color: entry.isSelected ? Color.mHover : Color.mSurface
@@ -898,6 +917,23 @@ SmartPanel {
                       active: visible
 
                       sourceComponent: Component {
+                        Loader {
+                          anchors.fill: parent
+                          sourceComponent: Settings.data.appLauncher.iconMode === "tabler" && modelData.isTablerIcon ? tablerIconComponent : systemIconComponent
+                        }
+                      }
+
+                      Component {
+                        id: tablerIconComponent
+                        NIcon {
+                          icon: modelData.icon
+                          pointSize: Style.fontSizeXXXL
+                          visible: modelData.icon && !modelData.emojiChar
+                        }
+                      }
+
+                      Component {
+                        id: systemIconComponent
                         IconImage {
                           anchors.fill: parent
                           source: modelData.icon ? ThemeIcons.iconFromName(modelData.icon, "application-x-executable") : ""
@@ -1249,6 +1285,23 @@ SmartPanel {
                     active: visible
 
                     sourceComponent: Component {
+                      Loader {
+                        anchors.fill: parent
+                        sourceComponent: Settings.data.appLauncher.iconMode === "tabler" && modelData.isTablerIcon ? gridTablerIconComponent : gridSystemIconComponent
+                      }
+                    }
+
+                    Component {
+                      id: gridTablerIconComponent
+                      NIcon {
+                        icon: modelData.icon
+                        pointSize: Style.fontSizeXXXL
+                        visible: modelData.icon && !modelData.emojiChar
+                      }
+                    }
+
+                    Component {
+                      id: gridSystemIconComponent
                       IconImage {
                         anchors.fill: parent
                         source: modelData.icon ? ThemeIcons.iconFromName(modelData.icon, "application-x-executable") : ""

@@ -16,11 +16,13 @@ import qs.Commons
 // Modules
 import qs.Modules.Background
 import qs.Modules.Bar
+import qs.Modules.DesktopWidgets
 import qs.Modules.Dock
 import qs.Modules.LockScreen
 import qs.Modules.MainScreen
 import qs.Modules.Notification
 import qs.Modules.OSD
+import qs.Modules.Panels.Settings
 import qs.Modules.Toast
 import qs.Services.Control
 import qs.Services.Hardware
@@ -89,6 +91,7 @@ ShellRoot {
       Component.onCompleted: {
         Logger.i("Shell", "---------------------------");
         WallpaperService.init();
+        WallpaperCacheService.init();
         AppThemeService.init();
         ColorSchemeService.init();
         LocationService.init();
@@ -99,16 +102,15 @@ ShellRoot {
         IdleInhibitorService.init();
         PowerProfileService.init();
         HostService.init();
-        FontService.init();
         GitHubService.init();
-        UpdateService.init();
-        UpdateService.showLatestChangelog();
 
+        delayedInitTimer.running = true;
         checkSetupWizard();
       }
 
       Overview {}
       Background {}
+      DesktopWidgets {}
       AllScreens {}
       Dock {}
       Notification {}
@@ -117,29 +119,44 @@ ShellRoot {
 
       LockScreen {}
 
+      // Settings window mode (single window across all monitors)
+      SettingsPanelWindow {}
+
+      // Shared screen detector for IPC and plugins
+      CurrentScreenDetector {
+        id: screenDetector
+      }
+
       // IPCService is treated as a service but it must be in graphics scene.
-      IPCService {}
+      IPCService {
+        id: ipcService
+        screenDetector: screenDetector
+      }
 
       // Container for plugins Main.qml instances (must be in graphics scene)
       Item {
         id: pluginContainer
         visible: false
+
         Component.onCompleted: {
           PluginService.pluginContainer = pluginContainer;
+          PluginService.screenDetector = screenDetector;
         }
       }
+    }
+  }
 
-      // Listen for when available plugins are fetched, then check for updates
-      Connections {
-        target: PluginService
-        property bool hasCheckedOnStartup: false
-        function onAvailablePluginsUpdated() {
-          if (!hasCheckedOnStartup) {
-            hasCheckedOnStartup = true;
-            PluginService.checkForUpdates();
-          }
-        }
-      }
+  // ---------------------------------------------
+  // Delayed timer
+  // ---------------------------------------------
+  Timer {
+    id: delayedInitTimer
+    running: false
+    interval: 1500
+    onTriggered: {
+      FontService.init();
+      UpdateService.init();
+      UpdateService.showLatestChangelog();
     }
   }
 
@@ -149,7 +166,7 @@ ShellRoot {
   Timer {
     id: setupWizardTimer
     running: false
-    interval: 1000
+    interval: 2000
     onTriggered: {
       showSetupWizard();
     }

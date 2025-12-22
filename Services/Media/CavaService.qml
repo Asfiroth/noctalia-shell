@@ -9,21 +9,41 @@ import qs.Services.UI
 Singleton {
   id: root
 
-  /**
-  * Cava runs if:
-  *   - Bar has an audio visualizer
-  *   - LockScreen is opened
-  *   - A control center is open
-  */
-  property bool shouldRun: BarService.hasAudioVisualizer || PanelService.lockScreen?.active || (PanelService.openedPanel && PanelService.openedPanel.objectName.startsWith("controlCenterPanel"))
+  // Register a component that needs audio data, call this when a visualizer becomes active.
+  // Pass a unique identifier (e.g., "lockscreen", "controlcenter:screen1", "plugin:fancy-audiovisualizer")
+  function registerComponent(componentId) {
+    root.registeredComponents[componentId] = true;
+    root.registeredComponents = Object.assign({}, root.registeredComponents);
+    Logger.d("Cava", "Component registered:", componentId, "- total:", root.registeredCount);
+  }
 
-  property var values: Array(barsCount).fill(0)
+  // Unregister a component when it no longer needs audio data.
+  function unregisterComponent(componentId) {
+    delete root.registeredComponents[componentId];
+    root.registeredComponents = Object.assign({}, root.registeredComponents);
+    Logger.d("Cava", "Component unregistered:", componentId, "- total:", root.registeredCount);
+  }
+
+  // Check if a component is registered
+  function isRegistered(componentId) {
+    return root.registeredComponents[componentId] === true;
+  }
+
+  // Component registration - any component needing audio data registers here
+  property var registeredComponents: ({})
+  readonly property int registeredCount: Object.keys(registeredComponents).length
+  property bool shouldRun: registeredCount > 0
+
+  property var values: []
   property int barsCount: 32
 
   // Idle detection to reduce GPU usage when there's no audio
   property bool isIdle: true
   property int idleFrameCount: 0
   readonly property int idleThreshold: 30 // Frames of silence before considered idle (0.5s at 60fps)
+
+  // Pre-allocated array for quick parsing
+  property var _parseBuffer: new Array(barsCount)
 
   // Simple config
   property var config: ({
@@ -81,10 +101,35 @@ Singleton {
     }
     stdout: SplitParser {
       onRead: data => {
-        const newValues = data.slice(0, -1).split(";").map(v => parseInt(v, 10) / 100);
+        // Optimized parsing directly into pre-allocated buffer
+        const buffer = root._parseBuffer;
+        let idx = 0;
+        let num = 0;
+        let allZero = true;
 
-        // Check if all values are effectively zero (< 0.01)
-        const allZero = newValues.every(v => v < 0.01);
+        for (let i = 0, len = data.length - 1; i < len; i++) {
+          const c = data.charCodeAt(i);
+          if (c === 59) {
+            // semicolon
+            const val = num * 0.01;
+            buffer[idx++] = val;
+            if (val >= 0.01) {
+              allZero = false;
+            }
+            num = 0;
+          } else if (c >= 48 && c <= 57) {
+            // digit 0-9
+            num = num * 10 + (c - 48);
+          }
+        }
+        // Handle last value if no trailing semicolon
+        if (num > 0 || idx < root.barsCount) {
+          const val = num * 0.01;
+          buffer[idx++] = val;
+          if (val >= 0.01) {
+            allZero = false;
+          }
+        }
 
         if (allZero) {
           root.idleFrameCount++;
@@ -108,9 +153,9 @@ Singleton {
           }
         }
 
-        // Update values only if there's a significant change
-        if (!isIdle) {
-          root.values = newValues;
+        // Update values only if not idle - copy buffer to trigger binding updates
+        if (!root.isIdle) {
+          root.values = buffer.slice(0, idx);
         }
       }
     }

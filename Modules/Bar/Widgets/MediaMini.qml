@@ -66,6 +66,24 @@ Item {
     return showArtistFirst ? (artist ? `${artist} - ${track}` : track) : (artist ? `${track} - ${artist}` : track);
   }
 
+  // CavaService registration for visualizer
+  readonly property string cavaComponentId: "bar:mediamini:" + root.screen.name + ":" + root.section + ":" + root.sectionWidgetIndex
+  readonly property bool needsCava: root.showVisualizer && root.visualizerType !== "" && root.visualizerType !== "none"
+
+  onNeedsCavaChanged: {
+    if (root.needsCava) {
+      CavaService.registerComponent(root.cavaComponentId);
+    } else {
+      CavaService.unregisterComponent(root.cavaComponentId);
+    }
+  }
+
+  Component.onDestruction: {
+    if (root.needsCava) {
+      CavaService.unregisterComponent(root.cavaComponentId);
+    }
+  }
+
   readonly property string tooltipText: {
     var text = title;
     var controls = [];
@@ -194,6 +212,8 @@ Item {
     height: isVertical ? (isHidden ? 0 : verticalSize) : Style.capsuleHeight
     radius: Style.radiusM
     color: Style.capsuleColor
+    border.color: Style.capsuleBorderColor
+    border.width: Style.capsuleBorderWidth
 
     Behavior on width {
       NumberAnimation {
@@ -364,8 +384,7 @@ Item {
                        var popupWindow = PanelService.getPopupMenuWindow(screen);
                        if (popupWindow) {
                          popupWindow.showContextMenu(contextMenu);
-                         const pos = BarService.getContextMenuPosition(container, contextMenu.implicitWidth, contextMenu.implicitHeight);
-                         contextMenu.openAtItem(container, pos.x, pos.y);
+                         contextMenu.openAtItem(container, screen);
                        }
                      } else if (mouse.button === Qt.MiddleButton && hasPlayer && MediaService.canGoPrevious) {
                        MediaService.previous();
@@ -491,6 +510,8 @@ Item {
       id: hoverArea
       anchors.fill: parent
       hoverEnabled: true
+      acceptedButtons: Qt.NoButton
+      cursorShape: hasPlayer ? Qt.PointingHandCursor : Qt.ArrowCursor
     }
 
     function updateState() {

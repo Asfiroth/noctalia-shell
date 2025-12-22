@@ -58,6 +58,8 @@ NIconButton {
   colorFg: root.iconColor
   colorBorder: Color.transparent
   colorBorderHover: Color.transparent
+  border.color: Style.capsuleBorderColor
+  border.width: Style.capsuleBorderWidth
 
   NPopupContextMenu {
     id: contextMenu
@@ -87,8 +89,7 @@ NIconButton {
     var popupMenuWindow = PanelService.getPopupMenuWindow(screen);
     if (popupMenuWindow) {
       popupMenuWindow.showContextMenu(contextMenu);
-      const pos = BarService.getContextMenuPosition(root, contextMenu.implicitWidth, contextMenu.implicitHeight);
-      contextMenu.openAtItem(root, pos.x, pos.y);
+      contextMenu.openAtItem(root, screen);
     }
   }
 }

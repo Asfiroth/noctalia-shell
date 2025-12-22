@@ -165,6 +165,11 @@ Singleton {
           "requiresThemesFolder": false
         },
         {
+          "name": "equicord",
+          "path": "~/.config/Equicord",
+          "requiresThemesFolder": false
+        },
+        {
           "name": "lightcord",
           "path": "~/.config/lightcord",
           "requiresThemesFolder": false
@@ -189,11 +194,22 @@ Singleton {
       "clients": [
         {
           "name": "code",
-          "path": "~/.vscode/extensions/undefined_publisher.noctaliatheme-0.0.1/themes/NoctaliaTheme-color-theme.json"
+          "path": "~/.vscode/extensions/noctalia.noctaliatheme-0.0.5/themes/NoctaliaTheme-color-theme.json"
         },
         {
           "name": "codium",
-          "path": "~/.vscode-oss/extensions/undefined_publisher.noctaliatheme-0.0.1/themes/NoctaliaTheme-color-theme.json"
+          "path": "~/.vscode-oss/extensions/noctalia.noctaliatheme-0.0.5/themes/NoctaliaTheme-color-theme.json"
+        }
+      ]
+    },
+    {
+      "id": "zed",
+      "name": "Zeditor",
+      "category": "applications",
+      "input": "zed.json",
+      "outputs": [
+        {
+          "path": "~/.config/zed/themes/noctalia.json"
         }
       ]
     },
@@ -233,6 +249,17 @@ Singleton {
       "postProcess": () => `${colorsApplyScript} cava`
     },
     {
+      "id": "yazi",
+      "name": "Yazi",
+      "category": "applications",
+      "input": "yazi.toml",
+      "outputs": [
+        {
+          "path": "~/.config/yazi/flavors/noctalia.yazi/flavor.toml"
+        }
+      ]
+    },
+    {
       "id": "emacs",
       "name": "Emacs",
       "category": "applications",
@@ -258,6 +285,18 @@ Singleton {
         }
       ],
       "postProcess": () => `${colorsApplyScript} niri`
+    },
+    {
+      "id": "mango",
+      "name": "Mango",
+      "category": "compositors",
+      "input": "mango.conf",
+      "outputs": [
+        {
+          "path": "~/.config/mango/noctalia.conf"
+        }
+      ],
+      "postProcess": () => `${colorsApplyScript} mango`
     }
   ]
 

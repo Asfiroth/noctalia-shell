@@ -63,8 +63,8 @@ Loader {
       readonly property bool exclusive: displayMode === "exclusive"
       readonly property int hideDelay: 500
       readonly property int showDelay: 100
-      readonly property int hideAnimationDuration: Style.animationFast
-      readonly property int showAnimationDuration: Style.animationFast
+      readonly property int hideAnimationDuration: Math.max(0, Math.round(Style.animationFast / (Settings.data.dock.animationSpeed || 1.0)))
+      readonly property int showAnimationDuration: Math.max(0, Math.round(Style.animationFast / (Settings.data.dock.animationSpeed || 1.0)))
       readonly property int peekHeight: 1
       readonly property int iconSize: Math.round(12 + 24 * (Settings.data.dock.size ?? 1))
       readonly property int floatingMargin: Settings.data.dock.floatingRatio * Style.marginL
@@ -144,38 +144,68 @@ Loader {
         const runningApps = ToplevelManager ? (ToplevelManager.toplevels.values || []) : [];
         const pinnedApps = Settings.data.dock.pinnedApps || [];
         const combined = [];
-        const processedAppIds = new Set();
+        const processedToplevels = new Set();
+        const processedPinnedAppIds = new Set();
 
         //push an app onto combined with the given appType
         function pushApp(appType, toplevel, appId, title) {
-          if (!processedAppIds.has(appId) && !(toplevel && Settings.data.dock.onlySameOutput && toplevel.screens && !toplevel.screens.includes(modelData))) {
+          // For running apps, track by toplevel object to allow multiple instances
+          if (toplevel) {
+            if (processedToplevels.has(toplevel)) {
+              return; // Already processed this toplevel instance
+            }
+            if (Settings.data.dock.onlySameOutput && toplevel.screens && !toplevel.screens.includes(modelData)) {
+              return; // Filtered out by onlySameOutput setting
+            }
             combined.push({
                             "type": appType,
                             "toplevel": toplevel,
                             "appId": appId,
                             "title": title
                           });
-            processedAppIds.add(appId);
+            processedToplevels.add(toplevel);
+          } else {
+            // For pinned apps that aren't running, track by appId to avoid duplicates
+            if (processedPinnedAppIds.has(appId)) {
+              return; // Already processed this pinned app
+            }
+            combined.push({
+                            "type": appType,
+                            "toplevel": toplevel,
+                            "appId": appId,
+                            "title": title
+                          });
+            processedPinnedAppIds.add(appId);
           }
         }
 
         function pushRunning(first) {
           runningApps.forEach(toplevel => {
                                 if (toplevel) {
-                                  pushApp((first && pinnedApps.includes(toplevel.appId)) ? "pinned-running" : "running", toplevel, toplevel.appId, toplevel.title);
+                                  // Skip pinned apps if they were already processed (when pinnedStatic is true)
+                                  const isPinned = pinnedApps.includes(toplevel.appId);
+                                  if (!first && isPinned && processedToplevels.has(toplevel)) {
+                                    return; // Already added by pushPinned()
+                                  }
+                                  pushApp((first && isPinned) ? "pinned-running" : "running", toplevel, toplevel.appId, toplevel.title);
                                 }
                               });
         }
 
         function pushPinned() {
           pinnedApps.forEach(pinnedAppId => {
-                               var toplevel = null;
-                               for (var app of runningApps) {
-                                 if (app.appId === pinnedAppId) {
-                                   toplevel = app;
-                                 }
+                               // Find all running instances of this pinned app
+                               const matchingToplevels = runningApps.filter(app => app && app.appId === pinnedAppId);
+
+                               if (matchingToplevels.length > 0) {
+                                 // Add all running instances as pinned-running
+                                 matchingToplevels.forEach(toplevel => {
+                                                             pushApp("pinned-running", toplevel, pinnedAppId, toplevel.title);
+                                                           });
+                               } else {
+                                 // App is pinned but not running - add once
+                                 pushApp("pinned", null, pinnedAppId, pinnedAppId);
                                }
-                               pushApp(toplevel ? "pinned-running" : "pinned", toplevel, pinnedAppId, toplevel ? toplevel.title : pinnedAppId);
                              });
         }
 
@@ -649,8 +679,9 @@ Loader {
                                   const terminal = Settings.data.appLauncher.terminalCommand.split(" ");
                                   const command = terminal.concat(app.command);
                                   Quickshell.execDetached(command);
+                                } else if (app.command && app.command.length > 0) {
+                                  Quickshell.execDetached(app.command);
                                 } else if (app.execute) {
-                                  // Default execution for GUI apps
                                   app.execute();
                                 } else {
                                   Logger.w("Dock", `Could not launch: ${app.name}. No valid launch method.`);

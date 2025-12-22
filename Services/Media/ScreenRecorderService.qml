@@ -105,31 +105,43 @@ Singleton {
     killTimer.running = true;
   }
 
+  // Helper function to check if output indicates user cancellation
+  function isCancelledByUser(stdoutText, stderrText) {
+    const stdout = String(stdoutText || "").toLowerCase();
+    const stderr = String(stderrText || "").toLowerCase();
+    const combined = stdout + " " + stderr;
+    // Check for various forms of cancellation messages (case-insensitive)
+    return combined.includes("canceled by") || combined.includes("cancelled by") || combined.includes("canceled by user") || combined.includes("cancelled by user") || combined.includes("canceled by the user") || combined.includes("cancelled by the user");
+  }
+
   // Process to run and monitor gpu-screen-recorder
   Process {
     id: recorderProcess
     stdout: StdioCollector {}
     stderr: StdioCollector {}
     onExited: function (exitCode, exitStatus) {
+      const stdout = String(recorderProcess.stdout.text || "").trim();
+      const stderr = String(recorderProcess.stderr.text || "").trim();
+      const wasCancelled = isCancelledByUser(stdout, stderr);
+
       if (isPending) {
         // Process ended while we were pending - likely cancelled or error
         isPending = false;
         pendingTimer.running = false;
 
         // Check if gpu-screen-recorder is not installed
-        const stdout = String(recorderProcess.stdout.text || "").trim();
         if (stdout === "GPU_SCREEN_RECORDER_NOT_INSTALLED") {
           ToastService.showError(I18n.tr("toast.recording.not-installed"), I18n.tr("toast.recording.not-installed-desc"));
           return;
         }
 
         // If it failed to start, show a clear error toast with stderr
+        // But don't show error if user intentionally cancelled via portal
         if (exitCode !== 0) {
-          const err = String(recorderProcess.stderr.text || "").trim();
-          if (err.length > 0)
-            ToastService.showError(I18n.tr("toast.recording.failed-start"), err);
-          else
-            ToastService.showError(I18n.tr("toast.recording.failed-start"), I18n.tr("toast.recording.failed-gpu"));
+          if (stderr.length > 0 && !wasCancelled) {
+            ToastService.showError(I18n.tr("toast.recording.failed-start"), stderr);
+          }
+          // If user cancelled, silently return without error toast
         }
       } else if (isRecording) {
         // Process ended normally while recording
@@ -139,11 +151,13 @@ Singleton {
         if (exitCode === 0) {
           ToastService.showNotice(I18n.tr("toast.recording.saved"), outputPath, "settings-screen-recorder");
         } else {
-          const err2 = String(recorderProcess.stderr.text || "").trim();
-          if (err2.length > 0)
-            ToastService.showError(I18n.tr("toast.recording.failed-start"), err2);
-          else
-            ToastService.showError(I18n.tr("toast.recording.failed-start"), I18n.tr("toast.recording.failed-general"));
+          // Don't show error if user intentionally cancelled
+          if (!wasCancelled) {
+            if (stderr.length > 0)
+              ToastService.showError(I18n.tr("toast.recording.failed-start"), stderr);
+            else
+              ToastService.showError(I18n.tr("toast.recording.failed-start"), I18n.tr("toast.recording.failed-general"));
+          }
         }
       }
     }

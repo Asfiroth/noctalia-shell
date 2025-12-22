@@ -1,10 +1,11 @@
 {
-  "settingsVersion": 26,
+  "settingsVersion": 0,
   "bar": {
     "position": "top",
-    "backgroundOpacity": 1,
     "monitors": [],
     "density": "default",
+    "transparent": false,
+    "showOutline": false,
     "showCapsule": true,
     "capsuleOpacity": 1,
     "floating": false,
@@ -65,7 +66,7 @@
   },
   "general": {
     "avatarImage": "",
-    "dimmerOpacity": 0.6,
+    "dimmerOpacity": 0.2,
     "showScreenCorners": false,
     "forceBlackScreenCorners": false,
     "scaleRatio": 1,
@@ -92,9 +93,9 @@
     "fontDefaultScale": 1,
     "fontFixedScale": 1,
     "tooltipsEnabled": true,
-    "panelBackgroundOpacity": 1,
+    "panelBackgroundOpacity": 0.85,
     "panelsAttachedToBar": true,
-    "settingsPanelAttachToBar": false
+    "settingsPanelMode": "attached"
   },
   "location": {
     "name": "Tokyo",
@@ -163,6 +164,7 @@
     "wallhavenOrder": "desc",
     "wallhavenCategories": "111",
     "wallhavenPurity": "100",
+    "wallhavenRatios": "",
     "wallhavenResolutionMode": "atleast",
     "wallhavenResolutionWidth": "",
     "wallhavenResolutionHeight": ""
@@ -178,7 +180,8 @@
     "customLaunchPrefixEnabled": false,
     "customLaunchPrefix": "",
     "viewMode": "list",
-    "showCategories": true
+    "showCategories": true,
+    "iconMode": "tabler"
   },
   "controlCenter": {
     "position": "close_to_bar_button",
@@ -226,6 +229,10 @@
         "id": "audio-card"
       },
       {
+        "enabled": false,
+        "id": "brightness-card"
+      },
+      {
         "enabled": true,
         "id": "weather-card"
       },
@@ -240,12 +247,16 @@
     "cpuCriticalThreshold": 90,
     "tempWarningThreshold": 80,
     "tempCriticalThreshold": 90,
+    "gpuWarningThreshold": 80,
+    "gpuCriticalThreshold": 90,
     "memWarningThreshold": 80,
     "memCriticalThreshold": 90,
     "diskWarningThreshold": 80,
     "diskCriticalThreshold": 90,
     "cpuPollingInterval": 3000,
     "tempPollingInterval": 3000,
+    "gpuPollingInterval": 3000,
+    "enableNvidiaGpu": false,
     "memPollingInterval": 3000,
     "diskPollingInterval": 3000,
     "networkPollingInterval": 3000,
@@ -265,7 +276,8 @@
     "colorizeIcons": false,
     "pinnedStatic": false,
     "inactiveIndicators": false,
-    "deadOpacity": 0.6
+    "deadOpacity": 0.6,
+    "animationSpeed": 1
   },
   "network": {
     "wifiEnabled": true
@@ -275,6 +287,7 @@
     "countdownDuration": 10000,
     "position": "center",
     "showHeader": true,
+    "largeButtonsStyle": false,
     "powerOptions": [
       {
         "action": "lock",
@@ -332,7 +345,8 @@
     "enabledTypes": [
       0,
       1,
-      2
+      2,
+      4
     ],
     "monitors": []
   },
@@ -341,7 +355,6 @@
     "volumeOverdrive": false,
     "cavaFrameRate": 30,
     "visualizerType": "linear",
-    "visualizerQuality": "high",
     "mprisBlacklist": [],
     "preferredPlayer": "",
     "externalMixer": "pwvucontrol || pavucontrol"
@@ -379,8 +392,11 @@
     "spicetify": false,
     "telegram": false,
     "cava": false,
+    "yazi": false,
     "emacs": false,
     "niri": false,
+    "mango": false,
+    "zed": false,
     "enableUserTemplates": false
   },
   "nightLight": {
@@ -395,6 +411,15 @@
   "hooks": {
     "enabled": false,
     "wallpaperChange": "",
-    "darkModeChange": ""
+    "darkModeChange": "",
+    "screenLock": "",
+    "screenUnlock": "",
+    "performanceModeEnabled": "",
+    "performanceModeDisabled": ""
+  },
+  "desktopWidgets": {
+    "enabled": false,
+    "gridSnap": false,
+    "monitorWidgets": []
   }
 }

@@ -5,6 +5,7 @@ import QtQuick.Layouts
 import QtQuick.Window
 import Quickshell
 import Quickshell.Io
+import Quickshell.Widgets
 import qs.Commons
 import qs.Modules.Bar.Extras
 import qs.Services.Compositor
@@ -49,6 +50,36 @@ Item {
   readonly property bool followFocusedScreen: (widgetSettings.followFocusedScreen !== undefined) ? widgetSettings.followFocusedScreen : widgetMetadata.followFocusedScreen
   readonly property int characterCount: isVertical ? 2 : ((widgetSettings.characterCount !== undefined) ? widgetSettings.characterCount : widgetMetadata.characterCount)
 
+  // Grouped mode (show applications) settings
+  readonly property bool showApplications: (widgetSettings.showApplications !== undefined) ? widgetSettings.showApplications : widgetMetadata.showApplications
+  readonly property bool showLabelsOnlyWhenOccupied: (widgetSettings.showLabelsOnlyWhenOccupied !== undefined) ? widgetSettings.showLabelsOnlyWhenOccupied : widgetMetadata.showLabelsOnlyWhenOccupied
+  readonly property bool colorizeIcons: (widgetSettings.colorizeIcons !== undefined) ? widgetSettings.colorizeIcons : widgetMetadata.colorizeIcons
+  readonly property bool enableScrollWheel: (widgetSettings.enableScrollWheel !== undefined) ? widgetSettings.enableScrollWheel : widgetMetadata.enableScrollWheel
+
+  readonly property int itemSize: Math.round(Style.capsuleHeight * 0.8)
+
+  // Context menu state for grouped mode - store IDs instead of object references to avoid stale references
+  property string selectedWindowId: ""
+  property string selectedAppId: ""
+
+  // Helper to get the current window object from ID
+  function getSelectedWindow() {
+    if (!selectedWindowId)
+      return null;
+    for (var i = 0; i < localWorkspaces.count; i++) {
+      var ws = localWorkspaces.get(i);
+      if (ws && ws.windows) {
+        for (var j = 0; j < ws.windows.count; j++) {
+          var win = ws.windows.get(j);
+          if (win && (win.id === selectedWindowId || win.address === selectedWindowId)) {
+            return win;
+          }
+        }
+      }
+    }
+    return null;
+  }
+
   property bool isDestroying: false
   property bool hovered: false
 
@@ -66,16 +97,16 @@ Item {
 
   signal workspaceChanged(int workspaceId, color accentColor)
 
-  implicitWidth: isVertical ? Style.barHeight : computeWidth()
-  implicitHeight: isVertical ? computeHeight() : Style.barHeight
+  implicitWidth: showApplications ? (isVertical ? groupedGrid.implicitWidth + Style.marginM * 2 : Math.round(groupedGrid.implicitWidth + Style.marginM * 2)) : (isVertical ? Style.barHeight : computeWidth())
+  implicitHeight: showApplications ? (isVertical ? Math.round(groupedGrid.implicitHeight + Style.marginM * 2) : Style.barHeight) : (isVertical ? computeHeight() : Style.barHeight)
 
   function getWorkspaceWidth(ws) {
-    const d = Style.capsuleHeight * root.baseDimensionRatio;
+    const d = Math.round(Style.capsuleHeight * root.baseDimensionRatio);
     const factor = ws.isActive ? 2.2 : 1;
 
     // Don't calculate text width if labels are off
     if (labelMode === "none") {
-      return d * factor;
+      return Math.round(d * factor);
     }
 
     var displayText = ws.idx.toString();
@@ -90,13 +121,13 @@ Item {
 
     const textWidth = displayText.length * (d * 0.4); // Approximate width per character
     const padding = d * 0.6;
-    return Math.max(d * factor, textWidth + padding);
+    return Math.round(Math.max(d * factor, textWidth + padding));
   }
 
   function getWorkspaceHeight(ws) {
-    const d = Style.capsuleHeight * root.baseDimensionRatio;
+    const d = Math.round(Style.capsuleHeight * root.baseDimensionRatio);
     const factor = ws.isActive ? 2.2 : 1;
-    return d * factor;
+    return Math.round(d * factor);
   }
 
   function computeWidth() {
@@ -143,6 +174,42 @@ Item {
       CompositorService.switchToWorkspace(ws);
   }
 
+  // Helper function to normalize app IDs for case-insensitive matching
+  function normalizeAppId(appId) {
+    if (!appId || typeof appId !== 'string')
+      return "";
+    return appId.toLowerCase().trim();
+  }
+
+  // Helper function to check if an app is pinned
+  function isAppPinned(appId) {
+    if (!appId)
+      return false;
+    const pinnedApps = Settings.data.dock.pinnedApps || [];
+    const normalizedId = normalizeAppId(appId);
+    return pinnedApps.some(pinnedId => normalizeAppId(pinnedId) === normalizedId);
+  }
+
+  // Helper function to toggle app pin/unpin
+  function toggleAppPin(appId) {
+    if (!appId)
+      return;
+
+    const normalizedId = normalizeAppId(appId);
+    let pinnedApps = (Settings.data.dock.pinnedApps || []).slice();
+
+    const existingIndex = pinnedApps.findIndex(pinnedId => normalizeAppId(pinnedId) === normalizedId);
+    const isPinned = existingIndex >= 0;
+
+    if (isPinned) {
+      pinnedApps.splice(existingIndex, 1);
+    } else {
+      pinnedApps.push(appId);
+    }
+
+    Settings.data.dock.pinnedApps = pinnedApps;
+  }
+
   Component.onCompleted: {
     refreshWorkspaces();
   }
@@ -158,6 +225,17 @@ Item {
     target: CompositorService
     function onWorkspacesChanged() {
       refreshWorkspaces();
+      root.triggerUnifiedWave();
+    }
+    function onWindowListChanged() {
+      if (showApplications || showLabelsOnlyWhenOccupied) {
+        refreshWorkspaces();
+      }
+    }
+    function onActiveWindowChanged() {
+      if (showApplications) {
+        refreshWorkspaces();
+      }
     }
   }
 
@@ -174,12 +252,22 @@ Item {
     }
 
     if (screen !== null) {
+      const screenName = screen.name.toLowerCase();
       for (var i = 0; i < CompositorService.workspaces.count; i++) {
         const ws = CompositorService.workspaces.get(i);
-        if ((followFocusedScreen && ws.output.toLowerCase() == focusedOutput) || (!followFocusedScreen && ws.output.toLowerCase() == screen.name.toLowerCase())) {
-          if (hideUnoccupied && !ws.isOccupied && !ws.isFocused) {
-            continue;
-          }
+        const matchesScreen = (followFocusedScreen && ws.output.toLowerCase() == focusedOutput) || (!followFocusedScreen && ws.output.toLowerCase() == screenName);
+
+        if (!matchesScreen)
+          continue;
+        if (hideUnoccupied && !ws.isOccupied && !ws.isFocused)
+          continue;
+
+        if (showApplications) {
+          // For grouped mode, attach windows to each workspace
+          var workspaceData = Object.assign({}, ws);
+          workspaceData.windows = CompositorService.getWindowsForWorkspace(ws.id);
+          localWorkspaces.append(workspaceData);
+        } else {
           localWorkspaces.append(ws);
         }
       }
@@ -198,7 +286,6 @@ Item {
     for (var i = 0; i < localWorkspaces.count; i++) {
       const ws = localWorkspaces.get(i);
       if (ws.isFocused === true) {
-        root.triggerUnifiedWave();
         root.workspaceChanged(ws.id, Color.mPrimary);
         break;
       }
@@ -235,32 +322,91 @@ Item {
   NPopupContextMenu {
     id: contextMenu
 
-    model: [
-      {
-        "label": I18n.tr("context-menu.widget-settings"),
-        "action": "widget-settings",
-        "icon": "settings"
-      },
-    ]
+    model: {
+      var items = [];
+      if (root.selectedWindowId) {
+        // Focus item
+        items.push({
+                     "label": I18n.tr("dock.menu.focus"),
+                     "action": "focus",
+                     "icon": "eye"
+                   });
 
-    onTriggered: action => {
+        // Pin/Unpin item
+        const isPinned = root.isAppPinned(root.selectedAppId);
+        items.push({
+                     "label": !isPinned ? I18n.tr("dock.menu.pin") : I18n.tr("dock.menu.unpin"),
+                     "action": "pin",
+                     "icon": !isPinned ? "pin" : "pinned-off"
+                   });
+
+        // Close item
+        items.push({
+                     "label": I18n.tr("dock.menu.close"),
+                     "action": "close",
+                     "icon": "x"
+                   });
+
+        // Add desktop entry actions
+        if (typeof DesktopEntries !== 'undefined' && DesktopEntries.byId && root.selectedAppId) {
+          const entry = (DesktopEntries.heuristicLookup) ? DesktopEntries.heuristicLookup(root.selectedAppId) : DesktopEntries.byId(root.selectedAppId);
+          if (entry != null && entry.actions) {
+            entry.actions.forEach(function (action) {
+              items.push({
+                           "label": action.name,
+                           "action": "desktop-action-" + action.name,
+                           "icon": "chevron-right",
+                           "desktopAction": action
+                         });
+            });
+          }
+        }
+      }
+      items.push({
+                   "label": I18n.tr("context-menu.widget-settings"),
+                   "action": "widget-settings",
+                   "icon": "settings"
+                 });
+      return items;
+    }
+
+    onTriggered: (action, item) => {
                    var popupMenuWindow = PanelService.getPopupMenuWindow(screen);
                    if (popupMenuWindow) {
                      popupMenuWindow.close();
                    }
 
-                   if (action === "widget-settings") {
+                   const selectedWindow = root.getSelectedWindow();
+
+                   if (action === "focus" && selectedWindow) {
+                     CompositorService.focusWindow(selectedWindow);
+                   } else if (action === "pin" && selectedAppId) {
+                     root.toggleAppPin(selectedAppId);
+                   } else if (action === "close" && selectedWindow) {
+                     CompositorService.closeWindow(selectedWindow);
+                   } else if (action === "widget-settings") {
                      BarService.openWidgetSettings(screen, section, sectionWidgetIndex, widgetId, widgetSettings);
+                   } else if (action.startsWith("desktop-action-") && item && item.desktopAction) {
+                     if (item.desktopAction.command && item.desktopAction.command.length > 0) {
+                       Quickshell.execDetached(item.desktopAction.command);
+                     } else if (item.desktopAction.execute) {
+                       item.desktopAction.execute();
+                     }
                    }
+                   selectedWindowId = "";
+                   selectedAppId = "";
                  }
   }
 
   Rectangle {
     id: workspaceBackground
+    visible: !showApplications
     width: isVertical ? Style.capsuleHeight : parent.width
     height: isVertical ? parent.height : Style.capsuleHeight
     radius: Style.radiusM
     color: Style.capsuleColor
+    border.color: Style.capsuleBorderColor
+    border.width: Style.capsuleBorderWidth
 
     anchors.horizontalCenter: parent.horizontalCenter
     anchors.verticalCenter: parent.verticalCenter
@@ -273,8 +419,7 @@ Item {
                      var popupMenuWindow = PanelService.getPopupMenuWindow(screen);
                      if (popupMenuWindow) {
                        popupMenuWindow.showContextMenu(contextMenu);
-                       const pos = BarService.getContextMenuPosition(workspaceBackground, contextMenu.implicitWidth, contextMenu.implicitHeight);
-                       contextMenu.openAtItem(workspaceBackground, pos.x, pos.y);
+                       contextMenu.openAtItem(workspaceBackground, screen);
                      }
                    }
                  }
@@ -297,6 +442,7 @@ Item {
     id: wheelHandler
     target: root
     acceptedDevices: PointerDevice.Mouse | PointerDevice.TouchPad
+    enabled: root.enableScrollWheel
     onWheel: function (event) {
       if (root.wheelCooldown)
         return;
@@ -327,7 +473,7 @@ Item {
     spacing: spacingBetweenPills
     anchors.verticalCenter: workspaceBackground.verticalCenter
     x: horizontalPadding
-    visible: !isVertical
+    visible: !isVertical && !showApplications
 
     Repeater {
       id: workspaceRepeaterHorizontal
@@ -342,7 +488,7 @@ Item {
           anchors.fill: parent
 
           Loader {
-            active: (labelMode !== "none")
+            active: (labelMode !== "none") && (!root.showLabelsOnlyWhenOccupied || model.isOccupied || model.isFocused)
             sourceComponent: Component {
               NText {
                 x: (pill.width - width) / 2
@@ -389,7 +535,6 @@ Item {
 
             return Qt.alpha(Color.mSecondary, 0.3);
           }
-          scale: model.isActive ? 1.0 : 0.9
           z: 0
 
           MouseArea {
@@ -476,7 +621,7 @@ Item {
     spacing: spacingBetweenPills
     anchors.horizontalCenter: workspaceBackground.horizontalCenter
     y: horizontalPadding
-    visible: isVertical
+    visible: isVertical && !showApplications
 
     Repeater {
       id: workspaceRepeaterVertical
@@ -491,7 +636,7 @@ Item {
           anchors.fill: parent
 
           Loader {
-            active: (labelMode !== "none")
+            active: (labelMode !== "none") && (!root.showLabelsOnlyWhenOccupied || model.isOccupied || model.isFocused)
             sourceComponent: Component {
               NText {
                 x: (pillVertical.width - width) / 2
@@ -521,7 +666,7 @@ Item {
                   if (model.isOccupied)
                     return Color.mOnSecondary;
 
-                  return Color.mOnSurface;
+                  return Color.mOnSecondary;
                 }
               }
             }
@@ -536,9 +681,8 @@ Item {
             if (model.isOccupied)
               return Color.mSecondary;
 
-            return Color.mOutline;
+            return Qt.alpha(Color.mSecondary, 0.3);
           }
-          scale: model.isActive ? 1.0 : 0.9
           z: 0
 
           MouseArea {
@@ -616,6 +760,283 @@ Item {
           z: 1
         }
       }
+    }
+  }
+
+  // ========================================
+  // Grouped mode (showApplications = true)
+  // ========================================
+
+  Component {
+    id: groupedWorkspaceDelegate
+
+    Rectangle {
+      id: groupedContainer
+
+      required property var model
+      property var workspaceModel: model
+      property bool hasWindows: (workspaceModel?.windows?.count ?? 0) > 0
+
+      width: (hasWindows ? groupedIconsFlow.implicitWidth : root.itemSize) + (root.isVertical ? Style.marginXS : Style.marginXL)
+      height: (hasWindows ? groupedIconsFlow.implicitHeight : root.itemSize) + (root.isVertical ? Style.marginL : Style.marginXS)
+      color: Style.capsuleColor
+      radius: Style.radiusS
+      border.color: Settings.data.bar.showOutline ? Style.capsuleBorderColor : (workspaceModel.isFocused ? Color.mPrimary : Color.mOutline)
+      border.width: Style.borderS
+
+      MouseArea {
+        anchors.fill: parent
+        hoverEnabled: true
+        enabled: !groupedContainer.hasWindows
+        cursorShape: enabled ? Qt.PointingHandCursor : Qt.ArrowCursor
+        acceptedButtons: Qt.LeftButton | Qt.RightButton
+        preventStealing: true
+        onPressed: mouse => {
+                     if (mouse.button === Qt.LeftButton) {
+                       CompositorService.switchToWorkspace(groupedContainer.workspaceModel);
+                     }
+                   }
+        onReleased: mouse => {
+                      if (mouse.button === Qt.RightButton) {
+                        mouse.accepted = true;
+                        TooltipService.hide();
+                        root.selectedWindow = null;
+                        root.selectedAppName = "";
+                        openGroupedContextMenu(groupedContainer);
+                      }
+                    }
+      }
+
+      Flow {
+        id: groupedIconsFlow
+
+        anchors.centerIn: parent
+        spacing: 4
+        flow: root.isVertical ? Flow.TopToBottom : Flow.LeftToRight
+
+        Repeater {
+          model: groupedContainer.workspaceModel.windows
+
+          delegate: Item {
+            id: groupedTaskbarItem
+
+            property bool itemHovered: false
+
+            width: root.itemSize
+            height: root.itemSize
+
+            IconImage {
+              id: groupedAppIcon
+
+              width: parent.width
+              height: parent.height
+              source: ThemeIcons.iconForAppId(model.appId)
+              smooth: true
+              asynchronous: true
+              layer.enabled: root.colorizeIcons && !model.isFocused
+
+              Rectangle {
+                id: groupedFocusIndicator
+                anchors.bottomMargin: 0
+                anchors.bottom: parent.bottom
+                anchors.horizontalCenter: parent.horizontalCenter
+                width: model.isFocused ? 4 : 0
+                height: model.isFocused ? 4 : 0
+                color: model.isFocused ? Color.mPrimary : Color.transparent
+                radius: Math.min(Style.radiusXXS, width / 2)
+              }
+
+              layer.effect: ShaderEffect {
+                property color targetColor: Settings.data.colorSchemes.darkMode ? Color.mOnSurface : Color.mSurfaceVariant
+                property real colorizeMode: 0
+                fragmentShader: Qt.resolvedUrl(Quickshell.shellDir + "/Shaders/qsb/appicon_colorize.frag.qsb")
+              }
+            }
+
+            MouseArea {
+              anchors.fill: parent
+              hoverEnabled: true
+              cursorShape: Qt.PointingHandCursor
+              acceptedButtons: Qt.LeftButton | Qt.RightButton
+              preventStealing: true
+
+              onPressed: mouse => {
+                           if (!model)
+                           return;
+                           if (mouse.button === Qt.LeftButton) {
+                             CompositorService.focusWindow(model);
+                           }
+                         }
+
+              onReleased: mouse => {
+                            if (!model)
+                            return;
+                            if (mouse.button === Qt.RightButton) {
+                              mouse.accepted = true;
+                              TooltipService.hide();
+                              root.selectedWindowId = model.id || model.address || "";
+                              root.selectedAppId = model.appId;
+                              openGroupedContextMenu(groupedTaskbarItem);
+                            }
+                          }
+              onEntered: {
+                groupedTaskbarItem.itemHovered = true;
+                TooltipService.show(groupedTaskbarItem, model.title || model.appId || "Unknown app.", BarService.getTooltipDirection());
+              }
+              onExited: {
+                groupedTaskbarItem.itemHovered = false;
+                TooltipService.hide();
+              }
+            }
+          }
+        }
+      }
+
+      Item {
+        id: groupedWorkspaceNumberContainer
+
+        visible: root.labelMode !== "none" && (!root.showLabelsOnlyWhenOccupied || groupedContainer.hasWindows || groupedContainer.workspaceModel.isFocused)
+
+        anchors {
+          left: parent.left
+          top: parent.top
+          leftMargin: -Style.fontSizeXS * 0.55
+          topMargin: -Style.fontSizeXS * 0.25
+        }
+
+        width: Math.max(groupedWorkspaceNumber.implicitWidth + (Style.marginXS * 2), Style.fontSizeXXS * 2)
+        height: Math.max(groupedWorkspaceNumber.implicitHeight + Style.marginXS, Style.fontSizeXXS * 2)
+
+        Rectangle {
+          id: groupedWorkspaceNumberBackground
+
+          anchors.fill: parent
+          radius: width / 2
+
+          color: {
+            if (groupedContainer.workspaceModel.isFocused)
+              return Color.mPrimary;
+            if (groupedContainer.workspaceModel.isUrgent)
+              return Color.mError;
+            if (groupedContainer.hasWindows)
+              return Color.mSecondary;
+
+            if (Settings.data.colorSchemes.darkMode) {
+              return Qt.darker(Color.mSecondary, 1.5);
+            } else {
+              return Qt.lighter(Color.mSecondary, 1.5);
+            }
+          }
+
+          scale: groupedContainer.workspaceModel.isActive ? 1.0 : 0.8
+
+          Behavior on scale {
+            NumberAnimation {
+              duration: Style.animationNormal
+              easing.type: Easing.OutBack
+            }
+          }
+
+          Behavior on color {
+            ColorAnimation {
+              duration: Style.animationFast
+              easing.type: Easing.InOutCubic
+            }
+          }
+        }
+
+        // Burst effect overlay for focused workspace number
+        Rectangle {
+          id: groupedWorkspaceNumberBurst
+          anchors.centerIn: groupedWorkspaceNumberContainer
+          width: groupedWorkspaceNumberContainer.width + 12 * root.masterProgress
+          height: groupedWorkspaceNumberContainer.height + 12 * root.masterProgress
+          radius: width / 2
+          color: Color.transparent
+          border.color: root.effectColor
+          border.width: Math.max(1, Math.round((2 + 4 * (1.0 - root.masterProgress))))
+          opacity: root.effectsActive && groupedContainer.workspaceModel.isFocused ? (1.0 - root.masterProgress) * 0.7 : 0
+          visible: root.effectsActive && groupedContainer.workspaceModel.isFocused
+          z: 1
+        }
+
+        NText {
+          id: groupedWorkspaceNumber
+
+          anchors.centerIn: parent
+
+          text: {
+            if (groupedContainer.workspaceModel.name && groupedContainer.workspaceModel.name.length > 0) {
+              if (root.labelMode === "name") {
+                return groupedContainer.workspaceModel.name.substring(0, root.characterCount);
+              }
+              if (root.labelMode === "index+name") {
+                return (groupedContainer.workspaceModel.idx.toString() + groupedContainer.workspaceModel.name.substring(0, 1));
+              }
+            }
+            return groupedContainer.workspaceModel.idx.toString();
+          }
+
+          family: Settings.data.ui.fontFixed
+          font {
+            pointSize: Style.fontSizeXXS
+            weight: Style.fontWeightBold
+            capitalization: Font.AllUppercase
+          }
+          applyUiScale: false
+
+          color: {
+            if (groupedContainer.workspaceModel.isFocused)
+              return Color.mOnPrimary;
+            if (groupedContainer.workspaceModel.isUrgent)
+              return Color.mOnError;
+
+            return Color.mOnSecondary;
+          }
+
+          Behavior on opacity {
+            NumberAnimation {
+              duration: Style.animationFast
+              easing.type: Easing.InOutCubic
+            }
+          }
+        }
+
+        Behavior on opacity {
+          NumberAnimation {
+            duration: Style.animationFast
+            easing.type: Easing.InOutCubic
+          }
+        }
+      }
+    }
+  }
+
+  Flow {
+    id: groupedGrid
+    visible: showApplications
+
+    anchors.verticalCenter: isVertical ? undefined : parent.verticalCenter
+    anchors.left: isVertical ? undefined : parent.left
+    anchors.leftMargin: isVertical ? 0 : Style.marginM
+    anchors.horizontalCenter: isVertical ? parent.horizontalCenter : undefined
+    anchors.top: isVertical ? parent.top : undefined
+    anchors.topMargin: isVertical ? Style.marginM : 0
+
+    spacing: Style.marginS
+    flow: isVertical ? Flow.TopToBottom : Flow.LeftToRight
+
+    Repeater {
+      model: showApplications ? localWorkspaces : null
+      delegate: groupedWorkspaceDelegate
+    }
+  }
+
+  function openGroupedContextMenu(item) {
+    var popupMenuWindow = PanelService.getPopupMenuWindow(screen);
+    if (popupMenuWindow) {
+      popupMenuWindow.showContextMenu(contextMenu);
+      contextMenu.openAtItem(item, screen);
     }
   }
 }

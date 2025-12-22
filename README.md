@@ -8,7 +8,11 @@
 
 <p align="center">
   <a href="https://docs.noctalia.dev/getting-started/installation">
-    <img src="https://img.shields.io/badge/⚡_QUICK_INSTALL-Get_Started_Now-A8AEFF?style=for-the-badge&logoColor=FFFFFF&labelColor=0C0D11" alt="Quick Install" style="height: 50px" />
+    <img
+      src="https://img.shields.io/badge/🌙_Install_Noctalia-A8AEFF?style=for-the-badge&labelColor=0C0D11"
+      alt="Install Noctalia"
+      style="height: 50px"
+    />
   </a>
 </p>
 
@@ -34,7 +38,7 @@
 A beautiful, minimal desktop shell for Wayland that actually gets out of your way. Built on Quickshell with a warm lavender aesthetic that you can easily customize to match your vibe.
 
 **✨ Key Features:**
-- 🪟 Native support for Niri, Hyprland, Sway and MangoWC
+- 🪟 Native support for Niri, Hyprland, Sway, MangoWC and labwc
 - ⚡ Built on Quickshell for performance
 - 🎯 Minimalist design philosophy
 - 🔧 Easily customizable to match your style
@@ -62,7 +66,7 @@ https://github.com/user-attachments/assets/bf46f233-8d66-439a-a1ae-ab0446270f2d
 
 ## 📋 Requirements
 
-- Wayland compositor (Niri, Hyprland, Sway or MangoWC recommended)
+- Wayland compositor (Niri, Hyprland, Sway, MangoWC or labwc recommended)
 - Quickshell
 - Additional dependencies are listed in our [documentation](https://docs.noctalia.dev)
 
@@ -129,11 +133,13 @@ While all donations are greatly appreciated, they are completely voluntary.
 * LionHeartP
 * Nyxion ツ
 * RockDuck
+* Eynix
 * MrDowntempo
 * Tempus Thales
 * Raine
 * JustCurtis
 * llego
+* Grune
 
 ---
 
