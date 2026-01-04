@@ -55,6 +55,10 @@
           "description": "値の表示方法を選択します。",
           "label": "表示モード"
         },
+        "hide-if-not-detected": {
+          "description": "システムでバッテリーが検出されない場合は、ウィジェットを非表示にします。",
+          "label": "検出されなければ隠れる"
+        },
         "low-battery-threshold": {
           "description": "バッテリー残量がこのパーセンテージを下回ると警告を表示します。",
           "label": "低バッテリー警告の閾値"
@@ -90,6 +94,10 @@
           "label": "水平バー"
         },
         "preview": "プレビュー",
+        "tooltip-format": {
+          "description": "時計にマウスを合わせたときに表示されるツールチップのフォーマット文字列。デフォルトのツールチップを使用するには空のままにします。",
+          "label": "ツールチップ形式"
+        },
         "use-custom-font": {
           "description": "デフォルトのフォント設定を上書きし、時計にカスタムフォントを使用します。",
           "label": "カスタムフォントを使用"
@@ -134,12 +142,20 @@
           "description": "出力テキストがこの値と一致する場合、ボタンを折りたたみます。",
           "label": "折りたたみ条件"
         },
+        "color-selection": {
+          "description": "テーマカラーをアイコンとテキストに適用します。",
+          "label": "色を選択"
+        },
         "display-command-output": {
           "description": "定期的に実行するコマンドを入力します。出力の最初の行がテキストとして表示されます。",
           "label": "コマンド出力を表示",
           "stream-description": "継続的に実行するコマンドを入力します。"
         },
         "dynamic-text": "動的テキスト",
+        "enable-colorization": {
+          "description": "カスタムボタンのアイコンとテキストのカラーリングを有効にし、テーマカラーを適用します。",
+          "label": "カラーリングを有効化"
+        },
         "hide-mode": {
           "alwaysExpanded": "常に展開",
           "description": "コマンドの出力がない場合のウィジェットの表示を制御します。",
@@ -216,6 +232,16 @@
         "display-mode": {
           "description": "値の表示方法を選択します。",
           "label": "表示モード"
+        },
+        "show-icon": {
+          "description": "キーボードレイアウトのアイコンを表示します。",
+          "label": "アイコンを表示"
+        }
+      },
+      "launcher": {
+        "use-primary-color": {
+          "description": "有効にすると、強調のためにプライマリカラーが適用されます。",
+          "label": "原色を使用してください。"
         }
       },
       "lock-keys": {
@@ -299,6 +325,10 @@
         }
       },
       "system-monitor": {
+        "compact-mode": {
+          "description": "テキスト値の代わりに、ミニ棒グラフとして統計を表示します。レイアウトのずれを防ぎます。",
+          "label": "コンパクトモード"
+        },
         "cpu-temperature": {
           "description": "利用可能な場合、CPU 温度を表示します。",
           "label": "CPU 温度"
@@ -315,9 +345,13 @@
           "description": "利用可能な場合、GPU 温度を表示します。",
           "label": "GPU 温度"
         },
+        "load-average": {
+          "description": "システム負荷平均を表示します。",
+          "label": "負荷平均"
+        },
         "memory-percentage": {
           "description": "メモリ使用量を絶対値ではなくパーセンテージで表示します。",
-          "label": "メモリをパーセント表示"
+          "label": "メモリをパーセントで表示"
         },
         "memory-usage": {
           "description": "現在の RAM 使用量を表示します。",
@@ -330,6 +364,10 @@
         "storage-usage": {
           "description": "ストレージの使用状況を表示します。",
           "label": "ストレージ使用量"
+        },
+        "use-monospace-font": {
+          "description": "```\nタイプライター体で翻訳します。\n\n```",
+          "label": "等幅フォント"
         }
       },
       "taskbar": {
@@ -409,6 +447,10 @@
           "description": "バーが配置されている画面ではなく、現在フォーカスされている画面のワークスペースを表示します。",
           "label": "フォーカス中の画面に追従"
         },
+        "grouped-border-opacity": {
+          "description": "ワークスペースコンテナのボーダーの不透明度を設定します。",
+          "label": "境界線の不透明度"
+        },
         "hide-unoccupied": {
           "description": "ウィンドウがないワークスペースを表示しません。",
           "label": "空のワークスペースを隠す"
@@ -424,6 +466,10 @@
         "show-labels-only-when-occupied": {
           "description": "ウィンドウが開いているワークスペースにのみラベルを表示します。",
           "label": "ウィンドウがある時のみラベルを表示"
+        },
+        "unfocused-icons-opacity": {
+          "description": "フォーカスされていないアプリのアイコンの不透明度を設定します。",
+          "label": "フォーカスされていないアイコンの不透明度"
         }
       }
     }
@@ -457,17 +503,28 @@
       "device-address": "デバイスアドレス",
       "disabled": "Bluetooth は無効です",
       "disconnect": "切断",
+      "disconnecting": "切断中...",
       "discoverable": "発見可能",
       "enable-message": "利用可能なデバイスを表示するには Bluetooth を有効にしてください。",
-      "info": "情報 (Jōhō)",
+      "info": "情報",
       "known-devices": "登録済みデバイス",
+      "no-devices": "利用可能なデバイスはありません",
       "pair": "ペア",
       "paired": "ペアリング済み",
       "paired-devices": "ペアリングされたデバイス",
       "pairing": "ペアリング中...",
       "pairing-mode": "デバイスがペアリングモードになっていることを確認してください。",
+      "refresh-devices": "デバイスを更新",
       "scanning": "デバイスをスキャン中...",
-      "signal": "信号 (shingō)",
+      "signal": "信号",
+      "signal-text": {
+        "excellent": "信号: 良好",
+        "fair": "合図：可",
+        "good": "信号: 良し",
+        "poor": "信号：弱い",
+        "unknown": "信号：不明",
+        "very-poor": "信号：非常に悪い"
+      },
       "title": "Bluetooth",
       "trusted": "信頼できる",
       "unpair": "ペアリング解除"
@@ -522,7 +579,7 @@
     }
   },
   "clock": {
-    "tooltip": "時計"
+    "tooltip": "カレンダー"
   },
   "common": {
     "add": "追加",
@@ -539,7 +596,7 @@
     "close-app": "{app} を閉じる",
     "connect-vpn": "{name} に接続",
     "cycle-visualizer": "ビジュアライザーを切り替える",
-    "delete": "削除 (Sakujo)",
+    "delete": "削除",
     "disable-bluetooth": "Bluetooth を無効化",
     "disable-dnd": "おやすみモードを無効化",
     "disable-wifi": "Wi-Fi を無効化",
@@ -547,6 +604,8 @@
     "enable-bluetooth": "Bluetooth を有効化",
     "enable-dnd": "おやすみモードを有効化",
     "enable-wifi": "Wi-Fi を有効化",
+    "launcher-settings": "ランチャー設定",
+    "lower-to-bottom": "一番下まで下げてください。",
     "next": "次へ",
     "open-calendar": "カレンダーを開く",
     "open-display-settings": "ディスプレイ設定",
@@ -556,7 +615,9 @@
     "pause": "一時停止",
     "play": "再生",
     "previous": "前へ",
+    "raise-to-top": "一番上に移動",
     "random-wallpaper": "壁紙をランダムに変更",
+    "reset": "リセット",
     "toggle-mute": "ミュート切り替え",
     "widget-settings": "ウィジェット設定"
   },
@@ -580,6 +641,18 @@
       "chat": "チャット",
       "development": "開発",
       "education": "教育",
+      "emoji": {
+        "activity": "アクティビティ",
+        "animals": "動物",
+        "flags": "旗",
+        "food": "食べ物・飲み物",
+        "nature": "自然",
+        "objects": "物",
+        "people": "人と体",
+        "recent": "最近使用",
+        "symbols": "記号",
+        "travel": "旅行と場所"
+      },
       "game": "ゲーム",
       "graphics": "グラフィックス",
       "misc": "その他",
@@ -591,6 +664,32 @@
     },
     "delete": "削除",
     "pin": "ピン留め",
+    "providers": {
+      "applications": "アプリケーション",
+      "calculator": "電卓",
+      "calculator-deprecated": ">calc コマンドは非推奨となり、まもなく削除されます。代わりに、検索で数式を直接入力してください。",
+      "calculator-description": "電卓 — 数式を計算します",
+      "calculator-enter-expression": "数式を入力",
+      "calculator-error": "エラー",
+      "calculator-name": "電卓",
+      "clipboard": "クリップボード履歴",
+      "clipboard-clear-description": "クリップボード履歴をすべて消去",
+      "clipboard-clear-description-full": "クリップボード履歴からすべての項目を削除します",
+      "clipboard-clear-history": "クリップボード履歴を消去",
+      "clipboard-delete": "クリップボードの項目を削除",
+      "clipboard-history-disabled": "クリップボード履歴は無効です",
+      "clipboard-history-disabled-description": "設定で履歴を有効にするか、cliphist をインストールしてください",
+      "clipboard-loading": "クリップボード履歴を読み込み中...",
+      "clipboard-loading-description": "お待ちください",
+      "clipboard-search-description": "クリップボード履歴を検索",
+      "command": "コマンド",
+      "command-description": "シェルコマンドを実行する",
+      "command-name": "コマンド",
+      "emoji": "絵文字選択",
+      "emoji-loading": "絵文字を読み込み中...",
+      "emoji-loading-description": "お待ちください",
+      "emoji-search-description": "絵文字を検索してコピー"
+    },
     "unpin": "ピン留め解除"
   },
   "lock-screen": {
@@ -631,7 +730,8 @@
         "comfortable": "ゆったり",
         "compact": "コンパクト",
         "default": "標準",
-        "mini": "ミニ"
+        "mini": "ミニ",
+        "spacious": "広々とした"
       },
       "position": {
         "bottom": "下",
@@ -641,7 +741,7 @@
       }
     },
     "colors": {
-      "error": "エラー (Error)",
+      "error": "エラー",
       "none": "なし",
       "onSurface": "文字・アイコン (On Surface)",
       "primary": "メインカラー (Primary)",
@@ -688,7 +788,7 @@
         "center": "中央",
         "center_left": "左側中央",
         "center_right": "右側中央",
-        "follow_bar": "バーに追従 (デフォルト)",
+        "follow_bar": "バーに追従",
         "top_center": "上部中央",
         "top_left": "左上",
         "top_right": "右上"
@@ -710,6 +810,7 @@
       "audio-sources": {
         "both": "システム出力 + マイク入力",
         "microphone-input": "マイク入力",
+        "none": "No audio",
         "system-output": "システム出力"
       },
       "color-range": {
@@ -731,6 +832,10 @@
       "always": "常にスクロール",
       "hover": "ホバー時にスクロール",
       "never": "スクロールしない"
+    },
+    "session-menu-grid-layout": {
+      "grid": "グリッド",
+      "single-row": "単一行"
     },
     "settings-panel-mode": {
       "attached": "バーに吸着",
@@ -780,31 +885,6 @@
     "search-wallpapers": "壁紙を検索して絞り込む...",
     "select": "選択",
     "test": "テスト"
-  },
-  "plugins": {
-    "applications": "アプリケーション",
-    "calculator": "電卓",
-    "calculator-description": "電卓 — 数式を計算します",
-    "calculator-enter-expression": "数式を入力",
-    "calculator-error": "エラー",
-    "calculator-name": "電卓",
-    "clipboard": "クリップボード履歴",
-    "clipboard-clear-description": "クリップボード履歴をすべて消去",
-    "clipboard-clear-description-full": "クリップボード履歴からすべての項目を削除します",
-    "clipboard-clear-history": "クリップボード履歴を消去",
-    "clipboard-delete": "クリップボードの項目を削除",
-    "clipboard-history-disabled": "クリップボード履歴は無効です",
-    "clipboard-history-disabled-description": "設定で履歴を有効にするか、cliphist をインストールしてください",
-    "clipboard-loading": "クリップボード履歴を読み込み中...",
-    "clipboard-loading-description": "お待ちください",
-    "clipboard-search-description": "クリップボード履歴を検索",
-    "command": "コマンド",
-    "command-description": "シェルコマンドを実行する",
-    "command-name": "コマンド",
-    "emoji": "絵文字選択",
-    "emoji-loading": "絵文字を読み込み中...",
-    "emoji-loading-description": "お待ちください",
-    "emoji-search-description": "絵文字を検索してコピー"
   },
   "quickSettings": {
     "bluetooth": {
@@ -1009,6 +1089,10 @@
     },
     "bar": {
       "appearance": {
+        "background-opacity": {
+          "description": "バーの背景の不透明度を特に設定します。",
+          "label": "バーの背景の不透明度"
+        },
         "capsule-opacity": {
           "description": "カプセル表示時のウィジェット背景の不透明度を設定します。",
           "label": "カプセルの不透明度"
@@ -1047,9 +1131,9 @@
           "description": "すべてのウィジェットの周囲に枠線を表示します。",
           "label": "ウィジェットの枠線を表示"
         },
-        "transparent": {
-          "description": "これを有効にすると、パネルはバーに吸着されなくなります。",
-          "label": "背景の透明化"
+        "use-separate-opacity": {
+          "description": "バーの背景に別の不透明度の値を使用できるようにする。",
+          "label": "バーの不透明度を個別に設定"
         }
       },
       "monitors": {
@@ -1161,14 +1245,15 @@
       "templates": {
         "compositors": {
           "description": "コンポジタのテーマ設定",
+          "hyprland": {
+            "description": "{filepath} を書き込んでください。"
+          },
           "label": "コンポジタ",
           "mango": {
-            "description": "{filepath} を書き込みます。mango が必要です。",
-            "description-missing": "{app} のインストールが必要です。"
+            "description": "{filepath} を書き込みます。Mango が必要です。"
           },
           "niri": {
-            "description": "{filepath} を書き込みます。niri v25.11+ が必要です。",
-            "description-missing": "{app} のインストールが必要です。"
+            "description": "{filepath} を書き込みます。Niri v25.11+ が必要です。"
           }
         },
         "misc": {
@@ -1181,54 +1266,46 @@
         },
         "programs": {
           "cava": {
-            "description": "{filepath} を書き込みます。",
-            "description-missing": "{app} のインストールが必要です。"
+            "description": "{filepath} を書き込みます。"
           },
           "code": {
-            "description": "{filepath} を書き込みます。HyprLuna テーマを手動でインストールして有効化する必要があります。",
-            "description-missing": "Code クライアントが検出されません。VSCode または VSCodium をインストールしてください。"
+            "description": "{filepath} を書き込みます。",
+            "description-detected": "デフォルトプロファイルに適用されました。検出: {clients}",
+            "description-missing": "コードエディタが検出されませんでした（VSCode または VSCodium）"
           },
           "description": "アプリケーションごとのテーマ設定",
           "discord": {
-            "description": "{client} 用に {filepath} を書き込みます。HyprLuna テーマを手動でインストールして有効化する必要があります。",
-            "description-missing": "Discord クライアントが検出されません。vencord、vesktop、webcord、armcord、equibop、lightcord、dorion のいずれかをインストールしてください。"
+            "description": "{client} 用に {filepath} を書き込みます。テーマを手動で有効化する必要があります。",
+            "description-detected": "検出: {clients}",
+            "description-missing": "Discord クライアントが検出されませんでした"
           },
           "emacs": {
-            "description": "Doom: ~/.config/doom/themes/noctalia.el<br>標準: ~/.emacs.d/themes/noctalia.el<br>手動で適用: (load-theme 'noctalia t)",
-            "description-missing": "{app} のインストールが必要です。"
+            "description": "Doom: ~/.config/doom/themes/noctalia.el<br>標準: ~/.emacs.d/themes/noctalia.el"
           },
           "fuzzel": {
-            "description": "{filepath} を書き込み、リロードします。",
-            "description-missing": "{app} のインストールが必要です。"
+            "description": "{filepath} を書き込み、リロードします。"
           },
           "label": "プログラム",
           "pywalfox": {
-            "description": "{filepath} を書き込み、pywalfox update を実行します。",
-            "description-missing": "{app} のインストールが必要です。"
+            "description": "{filepath} を書き込み、pywalfox update を実行します。"
           },
           "spicetify": {
-            "description": "{filepath} を書き込みます。Comfy テーマを手動でインストールして有効化する必要があります。",
-            "description-missing": "{app} のインストールが必要です。"
+            "description": "{filepath} を書き込みます。Comfy テーマを手動でインストールして有効化する必要があります。"
           },
           "telegram": {
-            "description": "{filepath} を書き込みます。",
-            "description-missing": "{app} のインストールが必要です。"
+            "description": "{filepath} を書き込みます。"
           },
           "vicinae": {
-            "description": "{filepath} を書き込み、リロードします。",
-            "description-missing": "{app} のインストールが必要です。"
+            "description": "{filepath} を書き込み、リロードします。"
           },
           "walker": {
-            "description": "{filepath} を書き込み、テーマを noctalia に設定します。",
-            "description-missing": "{app} のインストールが必要です。"
+            "description": "{filepath} を書き込み、テーマを noctalia に設定します。"
           },
           "yazi": {
-            "description": "{filepath} を書き込みます。フレーバーは手動で有効化する必要があります。",
-            "description-missing": "{app} のインストールが必要です。"
+            "description": "{filepath} を書き込みます。フレーバーは手動で有効化する必要があります。"
           },
           "zed": {
-            "description": "{filepath} を書き込み、リロードします。",
-            "description-missing": "{app} のインストールが必要です。"
+            "description": "{filepath} を書き込み、リロードします。"
           }
         },
         "section": {
@@ -1237,26 +1314,21 @@
         },
         "terminal": {
           "alacritty": {
-            "description": "{filepath} を書き込み、リロードします。",
-            "description-missing": "{app} のインストールが必要です。"
+            "description": "{filepath} を書き込み、リロードします。"
           },
           "description": "ターミナルエミュレータのテーマ設定",
           "foot": {
-            "description": "{filepath} を書き込み、リロードします。",
-            "description-missing": "{app} のインストールが必要です。"
+            "description": "{filepath} を書き込み、リロードします。"
           },
           "ghostty": {
-            "description": "{filepath} を書き込み、リロードします。",
-            "description-missing": "{app} のインストールが必要です。"
+            "description": "{filepath} を書き込み、リロードします。"
           },
           "kitty": {
-            "description": "{filepath} を書き込み、リロードします。",
-            "description-missing": "{app} のインストールが必要です。"
+            "description": "{filepath} を書き込み、リロードします。"
           },
           "label": "ターミナル",
           "wezterm": {
-            "description": "{filepath} を書き込み、リロードします。",
-            "description-missing": "{app} のインストールが必要です。"
+            "description": "{filepath} を書き込み、リロードします。"
           }
         },
         "ui": {
@@ -1352,6 +1424,10 @@
         "sectionLeft": "左",
         "sectionRight": "右"
       },
+      "system-monitor-disk-path": {
+        "description": "コントロールセンターのシステムモニターカードが監視するディスクのマウントポイントを選択します。",
+        "label": "システムモニターのディスクパス"
+      },
       "title": "コントロールセンター"
     },
     "desktop-widgets": {
@@ -1383,6 +1459,10 @@
           "label": "ミニマルモード"
         },
         "preview": "プレビュー",
+        "rounded-corners": {
+          "description": "ウィジェットの背景を角丸にしてください。",
+          "label": "角を丸くする"
+        },
         "show-background": {
           "description": "時計ウィジェットの背景コンテナを表示します。",
           "label": "背景を表示"
@@ -1397,6 +1477,7 @@
         },
         "style": {
           "analog": "アナログ",
+          "binary": "バイナリ",
           "description": "時計の表示スタイルを選択します。",
           "digital": "デジタル",
           "label": "時計のスタイル",
@@ -1448,6 +1529,14 @@
           "description": "再生中のメディアがない場合のウィジェットの動作を制御します。",
           "label": "非表示モード"
         },
+        "rounded-corners": {
+          "description": "ウィジェットの端を丸くする。",
+          "label": "角を丸くする"
+        },
+        "show-album-art": {
+          "description": "アルバムのアートワークとトラック情報（タイトルとアーティスト）を表示してください。",
+          "label": "アルバムアートとタイトルを表示"
+        },
         "show-background": {
           "description": "メディアプレーヤーウィジェットの背景コンテナを表示します。",
           "label": "背景を表示"
@@ -1456,13 +1545,13 @@
           "description": "メディアプレーヤーウィジェットにメディアコントロールボタン（再生/一時停止、前へ、次へ）を表示します。",
           "label": "ボタンを表示"
         },
+        "show-visualizer": {
+          "description": "オーディオビジュアライザーのオーバーレイを表示する。",
+          "label": "ビジュアライザーを表示"
+        },
         "visualizer-type": {
           "description": "デスクトップメディアプレーヤーの背景に使用するビジュアライザーの種類を選択します。",
           "label": "ビジュアライザーの種類"
-        },
-        "visualizer-visibility": {
-          "description": "オーディオビジュアライザーを表示するタイミングを制御します。",
-          "label": "ビジュアライザーの表示設定"
         }
       },
       "title": "デスクトップウィジェット",
@@ -1735,6 +1824,11 @@
     },
     "launcher": {
       "settings": {
+        "annotation-tool": {
+          "description": "クリップボード履歴のアノテーションボタンをクリックしたときに実行するコマンド。画像はこのコマンドにパイプされます。",
+          "label": "注釈ツール",
+          "placeholder": "グラディア、サッティ -f -"
+        },
         "clip-preview": {
           "description": ">clip コマンド使用時に、クリップボードの内容をプレビュー表示します。",
           "label": "クリップボードのプレビューを有効化"
@@ -1759,6 +1853,10 @@
           "description": "Tablerアイコンではなく、ネイティブのシステムアイコンを使用します。",
           "label": "ネイティブアイコンを使用"
         },
+        "ignore-mouse-input": {
+          "description": "ランチャーでのマウス操作とスクロールホイールを無効にする。",
+          "label": "マウス入力を無視する"
+        },
         "position": {
           "description": "ランチャーパネルの表示位置を選択します。",
           "label": "表示位置"
@@ -1770,6 +1868,10 @@
         "show-categories": {
           "description": "アプリケーションを絞り込むためのカテゴリタブを表示します。",
           "label": "カテゴリを表示"
+        },
+        "show-icon-background": {
+          "description": "アイコンの背面に角丸の長方形の背景を表示する。",
+          "label": "アイコンの背景を表示"
         },
         "sort-by-usage": {
           "description": "有効にすると、よく使うアプリがリストの上位に表示されます。",
@@ -1885,7 +1987,11 @@
     "network": {
       "bluetooth": {
         "description": "Bluetooth の管理を有効にします。",
-        "label": "Bluetooth を有効化"
+        "label": "Bluetooth を有効化",
+        "rssi-polling": {
+          "description": "bluetoothctl 経由で接続されたデバイスのRSSIを定期的にサンプリングします。 すべてのデバイスで利用できるとは限りません。 有効にすると、最小限のリソースを使用します。",
+          "label": "Bluetooth信号ポーリング"
+        }
       },
       "section": {
         "description": "Wi-Fi と Bluetooth 接続を管理します。"
@@ -1918,6 +2024,24 @@
         "section": {
           "description": "緊急度レベルに基づいて、通知の表示時間を設定します。",
           "label": "通知の表示時間"
+        }
+      },
+      "history": {
+        "critical-urgency": {
+          "description": "緊急優先度の通知を履歴に保存します。",
+          "label": "緊急度: 重大を履歴に保存"
+        },
+        "low-urgency": {
+          "description": "低優先度の通知を履歴に保存します。",
+          "label": "低緊急度を履歴に保存"
+        },
+        "normal-urgency": {
+          "description": "通常優先度の通知を履歴に保存します。",
+          "label": "通常緊急度を履歴に保存"
+        },
+        "section": {
+          "description": "緊急度レベルに基づいて、履歴に保存する通知を制御します。",
+          "label": "履歴"
         }
       },
       "monitors": {
@@ -2098,6 +2222,11 @@
         "no-plugins-description": "プラグインのソースを確認するか、リストを更新してください。",
         "no-plugins-label": "利用可能なプラグインはありません"
       },
+      "collision": {
+        "already-installed": "このプラグインはすでにインストールされています。",
+        "custom-version-exists": "\"{source}\" 発 の カスタム版 は 既に インストール されています。",
+        "official-version-exists": "このプラグインの公式バージョンはすでにインストールされています。"
+      },
       "filter": {
         "all": "すべて",
         "downloaded": "ダウンロード済み",
@@ -2118,6 +2247,7 @@
         "no-plugins-label": "インストールされているプラグインはありません"
       },
       "installing": "{plugin} をインストール中...",
+      "open-plugins-tab": "プラグイン設定を開く",
       "plugin-settings-title": "{plugin} の設定",
       "refresh": {
         "refreshing": "プラグインリストを更新中...",
@@ -2128,6 +2258,10 @@
       },
       "settings-error-not-loaded": "プラグインは読み込まれていません",
       "settings-saved": "プラグイン設定を保存しました",
+      "source": {
+        "custom": "カスタムソース",
+        "official": "公式"
+      },
       "sources": {
         "add-custom": "カスタムリポジトリを追加",
         "add-dialog": {
@@ -2159,6 +2293,7 @@
       "update-all": "すべてアップデート ({count})",
       "update-all-success": "すべてのプラグインをアップデートしました。",
       "update-available": "{count} 件のプラグインアップデートがあります",
+      "update-available_plural": "{count} 個のプラグインアップデートがあります",
       "update-error": "プラグインのアップデートに失敗しました: {plugin}: {error}",
       "update-incompatible": "Noctalia v{version} 以降が必要です。",
       "update-success": "{plugin} を v{version} にアップデートしました。",
@@ -2181,6 +2316,10 @@
         }
       },
       "general": {
+        "copy-to-clipboard": {
+          "description": "録画終了後、ファイルをクリップボードにコピーします。",
+          "label": "クリップボードにコピー"
+        },
         "output-folder": {
           "description": "画面録画ファイルを保存するフォルダ。",
           "label": "出力フォルダ",
@@ -2262,6 +2401,10 @@
           "label": "一般"
         }
       },
+      "large-buttons-layout": {
+        "description": "セッションメニューのボタンの表示方法を選択してください。",
+        "label": "大きなボタンのレイアウト"
+      },
       "large-buttons-style": {
         "description": "セッションメニューを、グリッド配置の大きなボタンで表示します。",
         "label": "大きなボタンのスタイル"
@@ -2273,6 +2416,10 @@
       "show-header": {
         "description": "セッションメニューの上部にタイトルと閉じるボタンを表示します。",
         "label": "ヘッダーを表示"
+      },
+      "show-number-labels": {
+        "description": "ボタンに数字ラベル（1-2-3-4...）を表示し、クイック選択用の数字キーバインドを有効にします。",
+        "label": "数字ラベルを表示"
       },
       "title": "セッションメニュー"
     },
@@ -2286,12 +2433,21 @@
       "custom-highlight-colors-title": {
         "label": "カスタムハイライト色"
       },
+      "disk-path": {
+        "description": "監視するディスクのマウントポイントを選択します。",
+        "label": "ディスクパス"
+      },
       "disk-section": {
         "label": "ストレージ使用量"
       },
-      "enable-nvidia-gpu": {
-        "description": "警告: これにより NVIDIA GPU が起動状態になるため、ハイブリッドグラフィックス搭載のノート PC ではバッテリー駆動時間に大きな影響を与える可能性があります。",
-        "label": "NVIDIA GPU モニタリングを有効にする"
+      "enable-dgpu-monitoring": {
+        "description": "警告: これにより外部GPU (NVIDIA/AMD) が起動状態になるため、ハイブリッドグラフィックス搭載のノート PC ではバッテリー駆動時間に大きな影響を与える可能性があります。",
+        "label": "外部GPUモニタリングを有効にする"
+      },
+      "external-monitor": {
+        "description": "外部システムモニターアプリケーションを起動する際に実行するコマンドまたはアプリケーションパスを入力してください。",
+        "label": "外部システムモニターコマンド",
+        "placeholder": "resources || missioncenter || jdsystemmonitor || corestats || system-monitoring-center || gnome-system-monitor || plasma-systemmonitor || mate-system-monitor || ukui-system-monitor || deepin-system-monitor || pantheon-system-monitor"
       },
       "general": {
         "section": {
@@ -2304,6 +2460,9 @@
       },
       "highlight-colors-section": {
         "label": "ハイライト色"
+      },
+      "load-average-section": {
+        "label": "負荷平均"
       },
       "memory-section": {
         "label": "メモリ使用量"
@@ -2347,6 +2506,10 @@
         "description": "全体のアニメーション速度を調整します。",
         "label": "アニメーション速度",
         "reset": "アニメーション速度をリセット"
+      },
+      "box-border": {
+        "description": "コンテンツ領域の周りにアウトラインを表示します。",
+        "label": "コンテナの輪郭"
       },
       "box-border-radius": {
         "description": "サイドバー、カード、コンテンツパネルなど、主要なレイアウト部分の角の丸みを調整します。",
@@ -2408,6 +2571,12 @@
     },
     "wallpaper": {
       "automation": {
+        "change-mode": {
+          "alphabetical": "アルファベット順",
+          "description": "自動変更時に壁紙を選択する方法を選択します。",
+          "label": "変更モード",
+          "random": "ランダム"
+        },
         "custom-interval": {
           "description": "時間を HH:MM 形式で入力してください（例: 01:30）。",
           "label": "カスタム間隔"
@@ -2419,6 +2588,10 @@
         "random-wallpaper": {
           "description": "一定間隔でランダムに壁紙を変更します。",
           "label": "ランダム変更"
+        },
+        "scheduled-change": {
+          "description": "一定間隔で壁紙を自動的に変更します。",
+          "label": "スケジュール変更"
         },
         "section": {
           "label": "自動化"
@@ -2464,8 +2637,8 @@
           "tooltip": "壁紙フォルダ"
         },
         "hide-wallpaper-filenames": {
-          "description": "壁紙選択パネル内で、壁紙のファイル名を非表示にします。",
-          "label": "ファイル名を非表示"
+          "tooltip-hide": "ファイル名を隠す",
+          "tooltip-show": "ファイル名を表示"
         },
         "monitor-specific": {
           "description": "ディスプレイごとに異なる壁紙フォルダを設定します。",
@@ -2541,6 +2714,19 @@
     "welcome-back": "おかえりなさい、",
     "widget-settings-title": "{widget} の設定"
   },
+  "system-monitor": {
+    "cpu-temp": "CPU温度",
+    "cpu-usage": "CPU使用率",
+    "disk": "ディスク",
+    "download": "ダウンロード",
+    "download-speed": "ダウンロード速度",
+    "gpu-temp": "GPU温度",
+    "load-average": "負荷平均",
+    "memory": "メモリ",
+    "title": "システムモニター",
+    "upload": "アップロード",
+    "upload-speed": "アップロード速度"
+  },
   "toast": {
     "airplane-mode": {
       "disabled": "無効",
@@ -2552,6 +2738,7 @@
       "low-desc": "バッテリー残量が {percent}% です。充電器を接続してください。"
     },
     "bluetooth": {
+      "address-copied": "アドレスをクリップボードにコピーしました。",
       "confirm-code": "別のデバイスでコード{value}を確認してください。",
       "connect-failed": "デバイスに接続できませんでした。",
       "disabled": "無効",
@@ -2594,7 +2781,8 @@
       "enabled": "有効"
     },
     "keyboard-layout": {
-      "changed": "キーボードレイアウトを {layout} に変更しました"
+      "changed": "キーボードレイアウトを {layout} に変更しました",
+      "title": "キーボード"
     },
     "kofi": {
       "opened": "ブラウザで Ko-fi ページを開きました"
@@ -2668,6 +2856,7 @@
     "close": "閉じる",
     "collapse": "サイドバーを折りたたむ",
     "connect-disconnect-devices": "Bluetooth デバイス",
+    "copy-address": "アドレスをコピー",
     "delete-notification": "通知を削除",
     "disable-keep-awake": "スリープ防止",
     "do-not-disturb-disabled": "おやすみモード",
@@ -2690,6 +2879,7 @@
     "move-to-center-section": "中央セクション",
     "move-to-left-section": "左セクション",
     "move-to-right-section": "右セクション",
+    "move-to-section": "{section} に移動",
     "mute": "ミュート",
     "next-media": "次のトラック",
     "next-month": "翌月",
@@ -2699,6 +2889,7 @@
     "night-light-not-installed": "夜間モード（利用不可）",
     "noctalia-performance-disabled": "Noctalia パフォーマンスモード",
     "noctalia-performance-enabled": "Noctalia パフォーマンスモード",
+    "open-annotation-tool": "注釈ツールで開く",
     "open-control-center": "コントロールセンター",
     "open-notification-history-disable-dnd": "通知履歴",
     "open-notification-history-enable-dnd": "通知履歴",
@@ -2743,6 +2934,11 @@
     "no-match": "一致する項目がありません。",
     "no-wallpaper": "壁紙が見つかりません。",
     "panel": {
+      "apikey": {
+        "help": "成人向けコンテンツにアクセスするには、APIキーが必要です。",
+        "label": "APIキー",
+        "placeholder": "Wallhaven APIキーを入力してください。"
+      },
       "apply-all-monitors": {
         "description": "選択した壁紙をすべてのディスプレイに適用します。",
         "label": "全ディスプレイに適用"
@@ -2761,6 +2957,7 @@
       "purity": {
         "all": "すべて",
         "label": "コンテンツフィルタ",
+        "nsfw": "R-18",
         "sfw": "SFW（全年齢）",
         "sketchy": "Sketchy（際どい）"
       },
@@ -2777,6 +2974,9 @@
         }
       },
       "search": "検索",
+      "solid-color": {
+        "tooltip": "無地"
+      },
       "sorting": {
         "date_added": "追加日",
         "favorites": "お気に入り数",
@@ -2908,6 +3108,7 @@
   },
   "wifi": {
     "panel": {
+      "action-required": "アクションが必要",
       "available-networks": "利用可能なネットワーク",
       "connect": "接続",
       "connected": "接続済み",
@@ -2920,8 +3121,9 @@
       "forget": "削除",
       "forget-network": "このネットワーク設定を削除しますか？",
       "forgetting": "削除中...",
+      "frequency": "周波数",
       "gateway": "ゲートウェイ",
-      "info": "情報 (Jōhō)",
+      "info": "情報",
       "internet": "インターネット",
       "internet-connected": "インターネット接続",
       "internet-limited": "インターネットなし",
@@ -2935,6 +3137,14 @@
       "searching": "近くのネットワークを検索中...",
       "security": "セキュリティ",
       "title": "Wi-Fi"
+    },
+    "signal": {
+      "excellent": "優秀",
+      "fair": "普通",
+      "good": "良い",
+      "poor": "悪い",
+      "very-good": "とても良い",
+      "weak": "弱い"
     }
   }
 }

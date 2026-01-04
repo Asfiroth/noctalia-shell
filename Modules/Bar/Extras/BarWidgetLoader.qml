@@ -11,9 +11,6 @@ Item {
   required property var widgetScreen
   required property var widgetProps
 
-  property string barDensity: "default"
-  readonly property real scaling: barDensity === "mini" ? 0.8 : (barDensity === "compact" ? 0.9 : 1.0)
-
   // Extract section info from widgetProps
   readonly property string section: widgetProps ? (widgetProps.section || "") : ""
   readonly property int sectionIndex: widgetProps ? (widgetProps.sectionWidgetIndex || 0) : 0
@@ -79,13 +76,6 @@ Item {
       // Set screen property
       if (item.hasOwnProperty("screen")) {
         item.screen = widgetScreen;
-      }
-
-      // Set scaling property
-      if (item.hasOwnProperty("scaling")) {
-        item.scaling = Qt.binding(function () {
-          return root.scaling;
-        });
       }
 
       // Inject plugin API for plugin widgets

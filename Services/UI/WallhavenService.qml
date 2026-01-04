@@ -28,6 +28,10 @@ Singleton {
   property string resolutions: "" // e.g., "1920x1080,1920x1200"
   property string ratios: "" // e.g., "16x9,16x10"
   property string colors: "" // Color hex codes
+  // API Key Priority: Environment Variable > Local Settings
+  readonly property string envApiKey: Quickshell.env("NOCTALIA_WALLHAVEN_API_KEY") || ""
+  readonly property string apiKey: envApiKey !== "" ? envApiKey : (Settings.data.wallpaper.wallhavenApiKey || "")
+  readonly property bool apiKeyManagedByEnv: envApiKey !== ""
 
   // Signals
   signal searchCompleted(var results, var meta)
@@ -61,7 +65,9 @@ Singleton {
     }
 
     params.push("categories=" + categories);
-    params.push("purity=" + purity);
+    // Safety: Force SFW if no purity selected to prevent API error
+    var safePurity = (purity === "000") ? "100" : purity;
+    params.push("purity=" + safePurity);
     params.push("sorting=" + sorting);
     params.push("order=" + order);
 
@@ -87,6 +93,10 @@ Singleton {
 
     if (colors) {
       params.push("colors=" + colors);
+    }
+
+    if (apiKey) {
+      params.push("apikey=" + apiKey);
     }
 
     params.push("page=" + currentPage);
@@ -130,6 +140,11 @@ Singleton {
           var errorMsg = "Rate limit exceeded (45 requests/minute)";
           lastError = errorMsg;
           Logger.w("Wallhaven", errorMsg);
+          searchFailed(errorMsg);
+        } else if (xhr.status === 401) {
+          var errorMsg = "Invalid API Key. Please check your settings.";
+          lastError = errorMsg;
+          Logger.e("Wallhaven", errorMsg);
           searchFailed(errorMsg);
         } else {
           var errorMsg = "API error: " + xhr.status;

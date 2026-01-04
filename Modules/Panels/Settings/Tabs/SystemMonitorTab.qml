@@ -10,6 +10,8 @@ import qs.Widgets
 ColumnLayout {
   id: root
 
+  property var screen
+
   spacing: Style.marginL
 
   NHeader {
@@ -21,12 +23,12 @@ ColumnLayout {
   NToggle {
     Layout.fillWidth: true
     Layout.topMargin: Style.marginM
-    label: I18n.tr("settings.system-monitor.enable-nvidia-gpu.label")
-    description: I18n.tr("settings.system-monitor.enable-nvidia-gpu.description")
-    checked: Settings.data.systemMonitor.enableNvidiaGpu
+    label: I18n.tr("settings.system-monitor.enable-dgpu-monitoring.label")
+    description: I18n.tr("settings.system-monitor.enable-dgpu-monitoring.description")
+    checked: Settings.data.systemMonitor.enableDgpuMonitoring
     isSettings: true
-    defaultValue: Settings.getDefaultValue("systemMonitor.enableNvidiaGpu")
-    onToggled: checked => Settings.data.systemMonitor.enableNvidiaGpu = checked
+    defaultValue: Settings.getDefaultValue("systemMonitor.enableDgpuMonitoring")
+    onToggled: checked => Settings.data.systemMonitor.enableDgpuMonitoring = checked
   }
 
   // Colors Section
@@ -40,18 +42,18 @@ ColumnLayout {
       checked: Settings.data.systemMonitor.useCustomColors
       isSettings: true
       defaultValue: Settings.getDefaultValue("systemMonitor.useCustomColors")
-      onToggled: {
-        // If enabling custom colors and no custom color is saved, persist current theme colors
-        if (checked) {
-          if (!Settings.data.systemMonitor.warningColor || Settings.data.systemMonitor.warningColor === "") {
-            Settings.data.systemMonitor.warningColor = Color.mTertiary.toString();
-          }
-          if (!Settings.data.systemMonitor.criticalColor || Settings.data.systemMonitor.criticalColor === "") {
-            Settings.data.systemMonitor.criticalColor = Color.mError.toString();
-          }
-        }
-        Settings.data.systemMonitor.useCustomColors = checked;
-      }
+      onToggled: checked => {
+                   // If enabling custom colors and no custom color is saved, persist current theme colors
+                   if (checked) {
+                     if (!Settings.data.systemMonitor.warningColor || Settings.data.systemMonitor.warningColor === "") {
+                       Settings.data.systemMonitor.warningColor = Color.mTertiary.toString();
+                     }
+                     if (!Settings.data.systemMonitor.criticalColor || Settings.data.systemMonitor.criticalColor === "") {
+                       Settings.data.systemMonitor.criticalColor = Color.mError.toString();
+                     }
+                   }
+                   Settings.data.systemMonitor.useCustomColors = checked;
+                 }
     }
   }
 
@@ -70,13 +72,12 @@ ColumnLayout {
       }
 
       NColorPicker {
+        screen: root.screen
         Layout.preferredWidth: Style.sliderWidth
         Layout.preferredHeight: Style.baseWidgetSize
         enabled: Settings.data.systemMonitor.useCustomColors
         selectedColor: Settings.data.systemMonitor.warningColor || Color.mTertiary
-        onColorSelected: function (color) {
-          Settings.data.systemMonitor.warningColor = color;
-        }
+        onColorSelected: color => Settings.data.systemMonitor.warningColor = color
       }
     }
 
@@ -90,13 +91,12 @@ ColumnLayout {
       }
 
       NColorPicker {
+        screen: root.screen
         Layout.preferredWidth: Style.sliderWidth
         Layout.preferredHeight: Style.baseWidgetSize
         enabled: Settings.data.systemMonitor.useCustomColors
         selectedColor: Settings.data.systemMonitor.criticalColor || Color.mError
-        onColorSelected: function (color) {
-          Settings.data.systemMonitor.criticalColor = color;
-        }
+        onColorSelected: color => Settings.data.systemMonitor.criticalColor = color
       }
     }
   }
@@ -384,6 +384,43 @@ ColumnLayout {
     }
   }
 
+  // Load Average
+  NText {
+    Layout.fillWidth: true
+    Layout.topMargin: Style.marginM
+    text: I18n.tr("settings.system-monitor.load-average-section.label")
+    pointSize: Style.fontSizeM
+  }
+
+  RowLayout {
+    Layout.fillWidth: true
+    spacing: Style.marginM
+
+    ColumnLayout {
+      Layout.fillWidth: true
+      spacing: Style.marginM
+
+      NText {
+        Layout.alignment: Qt.AlignHCenter
+        horizontalAlignment: Text.AlignHCenter
+        text: I18n.tr("settings.system-monitor.polling-interval.label")
+        pointSize: Style.fontSizeS
+      }
+
+      NSpinBox {
+        Layout.alignment: Qt.AlignHCenter
+        from: 250
+        to: 10000
+        stepSize: 250
+        value: Settings.data.systemMonitor.loadAvgPollingInterval
+        isSettings: true
+        defaultValue: Settings.getDefaultValue("systemMonitor.loadAvgPollingInterval")
+        onValueChanged: Settings.data.systemMonitor.loadAvgPollingInterval = value
+        suffix: " ms"
+      }
+    }
+  }
+
   // Memory Usage
   NText {
     Layout.fillWidth: true
@@ -599,6 +636,16 @@ ColumnLayout {
         suffix: " ms"
       }
     }
+  }
+
+  NTextInput {
+    label: I18n.tr("settings.system-monitor.external-monitor.label")
+    description: I18n.tr("settings.system-monitor.external-monitor.description")
+    placeholderText: I18n.tr("settings.system-monitor.external-monitor.placeholder")
+    text: Settings.data.systemMonitor.externalMonitor
+    isSettings: true
+    defaultValue: Settings.getDefaultValue("systemMonitor.externalMonitor")
+    onTextChanged: Settings.data.systemMonitor.externalMonitor = text
   }
 
   NDivider {

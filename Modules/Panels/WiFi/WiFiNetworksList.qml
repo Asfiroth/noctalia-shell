@@ -21,8 +21,8 @@ NBox {
   // Currently expanded info panel for a connected SSID
   property string infoSsid: ""
   // Local layout toggle for details: true = grid (2 cols), false = rows (1 col)
-  // Persisted under Settings.data.ui.wifiDetailsViewMode
-  property bool detailsGrid: (Settings.data && Settings.data.ui && Settings.data.ui.wifiDetailsViewMode !== undefined) ? (Settings.data.ui.wifiDetailsViewMode === "grid") : true
+  // Persisted under Settings.data.network.wifiDetailsViewMode
+  property bool detailsGrid: (Settings.data && Settings.data.ui && Settings.data.network.wifiDetailsViewMode !== undefined) ? (Settings.data.network.wifiDetailsViewMode === "grid") : true
 
   signal passwordRequested(string ssid)
   signal passwordSubmitted(string ssid, string password)
@@ -70,27 +70,22 @@ NBox {
         font.weight: Style.fontWeightBold
         Layout.fillWidth: true
       }
-
-      // (moved) details view toggle is now inside the info box
     }
 
     Repeater {
       model: root.displayModel
 
-      Rectangle {
+      NBox {
         id: networkItem
 
         Layout.fillWidth: true
         Layout.leftMargin: Style.marginXS
         Layout.rightMargin: Style.marginXS
         implicitHeight: netColumn.implicitHeight + (Style.marginM * 2)
-        radius: Style.radiusM
-        border.width: Style.borderS
-        border.color: modelData.connected ? Color.mPrimary : Color.mOutline
 
         opacity: (NetworkService.disconnectingFrom === modelData.ssid || NetworkService.forgettingNetwork === modelData.ssid) ? 0.6 : 1.0
 
-        color: modelData.connected ? Qt.rgba(Color.mPrimary.r, Color.mPrimary.g, Color.mPrimary.b, 0.05) : Color.mSurface
+        color: modelData.connected ? Qt.rgba(Color.mPrimary.r, Color.mPrimary.g, Color.mPrimary.b, 0.08) : Color.mSurface
 
         Behavior on opacity {
           NumberAnimation {
@@ -113,7 +108,7 @@ NBox {
             NIcon {
               icon: NetworkService.signalIcon(modelData.signal, modelData.connected)
               pointSize: Style.fontSizeXXL
-              color: modelData.connected ? Color.mPrimary : Color.mOnSurface
+              color: modelData.connected ? (NetworkService.internetConnectivity ? Color.mPrimary : Color.mError) : Color.mOnSurface
             }
 
             ColumnLayout {
@@ -133,21 +128,16 @@ NBox {
                 spacing: Style.marginXS
 
                 NText {
-                  text: "Signal: " + modelData.signal + "%"
+                  text: NetworkService.getSignalStrengthLabel(modelData.signal) + " (" + modelData.signal + "%)"
                   pointSize: Style.fontSizeXXS
                   color: Color.mOnSurfaceVariant
                 }
 
-                NText {
-                  text: "•"
+                NIcon {
+                  icon: "lock-off"
                   pointSize: Style.fontSizeXXS
                   color: Color.mOnSurfaceVariant
-                }
-
-                NText {
-                  text: NetworkService.isSecured(modelData.security) ? modelData.security : "Open"
-                  pointSize: Style.fontSizeXXS
-                  color: Color.mOnSurfaceVariant
+                  visible: !NetworkService.isSecured(modelData.security)
                 }
 
                 Item {
@@ -157,7 +147,7 @@ NBox {
                 // Status badges
                 Rectangle {
                   visible: modelData.connected && NetworkService.disconnectingFrom !== modelData.ssid
-                  color: Color.mPrimary
+                  color: NetworkService.internetConnectivity ? Color.mPrimary : Color.mError
                   radius: height * 0.5
                   width: connectedText.implicitWidth + (Style.marginS * 2)
                   height: connectedText.implicitHeight + (Style.marginXXS * 2)
@@ -165,7 +155,21 @@ NBox {
                   NText {
                     id: connectedText
                     anchors.centerIn: parent
-                    text: I18n.tr("wifi.panel.connected")
+                    text: {
+                      switch (NetworkService.networkConnectivity) {
+                      case "full":
+                        return I18n.tr("wifi.panel.connected");
+                      case "limited":
+                        return I18n.tr("wifi.panel.internet-limited");
+                      case "portal":  // Where Captive Portal is detected (User intervention needed)
+                        return I18n.tr("wifi.panel.action-required");
+                        // I assume unknown is for connecting/disconnecting state where connectivity hasn't been determined yet (Shouldn't be visible for long enough to matter)
+                        // and none is for no connectivity at all.
+                        // None and Unknown will return direct output of NetworkService.networkConnectivity
+                      default:
+                        return NetworkService.networkConnectivity;
+                      }
+                    }
                     pointSize: Style.fontSizeXXS
                     color: Color.mOnPrimary
                   }
@@ -239,7 +243,6 @@ NBox {
                 visible: modelData.connected && NetworkService.disconnectingFrom !== modelData.ssid
                 icon: "info-circle"
                 tooltipText: I18n.tr("wifi.panel.info")
-                baseSize: Style.baseWidgetSize * 0.8
                 onClicked: {
                   if (root.infoSsid === modelData.ssid) {
                     root.infoSsid = "";
@@ -254,7 +257,6 @@ NBox {
                 visible: (modelData.existing || modelData.cached) && !modelData.connected && NetworkService.connectingTo !== modelData.ssid && NetworkService.forgettingNetwork !== modelData.ssid && NetworkService.disconnectingFrom !== modelData.ssid
                 icon: "trash"
                 tooltipText: I18n.tr("tooltips.forget-network")
-                baseSize: Style.baseWidgetSize * 0.8
                 onClicked: root.forgetRequested(modelData.ssid)
               }
 
@@ -320,7 +322,7 @@ NBox {
               onClicked: {
                 root.detailsGrid = !root.detailsGrid;
                 if (Settings.data && Settings.data.ui) {
-                  Settings.data.ui.wifiDetailsViewMode = root.detailsGrid ? "grid" : "list";
+                  Settings.data.network.wifiDetailsViewMode = root.detailsGrid ? "grid" : "list";
                 }
               }
               z: 1
@@ -344,8 +346,7 @@ NBox {
               }
 
               // Icons only; values have labels as tooltips on hover
-
-              // Row 1: Security | Internet
+              // Row 1: Security | Band
               RowLayout {
                 Layout.fillWidth: true
                 spacing: Style.marginXS
@@ -353,6 +354,7 @@ NBox {
                   icon: NetworkService.isSecured(modelData.security) ? "lock" : "lock-open"
                   pointSize: Style.fontSizeXS
                   color: Color.mOnSurface
+                  Layout.alignment: Qt.AlignVCenter
                   // Tooltip on hover when using icons-only mode
                   MouseArea {
                     anchors.fill: parent
@@ -366,9 +368,10 @@ NBox {
                   pointSize: Style.fontSizeXS
                   color: Color.mOnSurface
                   Layout.fillWidth: true
-                  wrapMode: implicitWidth > width ? Text.WrapAtWordBoundaryOrAnywhere : Text.NoWrap
-                  elide: Text.ElideNone
-                  maximumLineCount: 4
+                  Layout.alignment: Qt.AlignVCenter
+                  wrapMode: root.detailsGrid ? Text.NoWrap : Text.WrapAtWordBoundaryOrAnywhere
+                  elide: root.detailsGrid ? Text.ElideRight : Text.ElideNone
+                  maximumLineCount: root.detailsGrid ? 1 : 6
                   clip: true
                 }
               }
@@ -376,24 +379,25 @@ NBox {
                 Layout.fillWidth: true
                 spacing: Style.marginXS
                 NIcon {
-                  icon: NetworkService.internetConnectivity ? "world" : "world-off"
+                  icon: "router"
                   pointSize: Style.fontSizeXS
                   color: NetworkService.internetConnectivity ? Color.mOnSurface : Color.mError
+                  Layout.alignment: Qt.AlignVCenter
                   MouseArea {
                     anchors.fill: parent
                     hoverEnabled: true
-                    onEntered: TooltipService.show(parent, I18n.tr("wifi.panel.internet"))
+                    onEntered: TooltipService.show(parent, I18n.tr("wifi.panel.frequency"))
                     onExited: TooltipService.hide()
                   }
                 }
                 NText {
-                  text: NetworkService.internetConnectivity ? I18n.tr("wifi.panel.internet-connected") : I18n.tr("wifi.panel.internet-limited")
+                  text: NetworkService.activeWifiDetails.band || "-"
                   pointSize: Style.fontSizeXS
-                  color: NetworkService.internetConnectivity ? Color.mOnSurface : Color.mError
                   Layout.fillWidth: true
-                  wrapMode: implicitWidth > width ? Text.WrapAtWordBoundaryOrAnywhere : Text.NoWrap
-                  elide: Text.ElideNone
-                  maximumLineCount: 4
+                  Layout.alignment: Qt.AlignVCenter
+                  wrapMode: root.detailsGrid ? Text.NoWrap : Text.WrapAtWordBoundaryOrAnywhere
+                  elide: root.detailsGrid ? Text.ElideRight : Text.ElideNone
+                  maximumLineCount: root.detailsGrid ? 1 : 6
                   clip: true
                 }
               }
@@ -406,6 +410,7 @@ NBox {
                   icon: "gauge"
                   pointSize: Style.fontSizeXS
                   color: Color.mOnSurface
+                  Layout.alignment: Qt.AlignVCenter
                   MouseArea {
                     anchors.fill: parent
                     hoverEnabled: true
@@ -418,9 +423,10 @@ NBox {
                   pointSize: Style.fontSizeXS
                   color: Color.mOnSurface
                   Layout.fillWidth: true
-                  wrapMode: implicitWidth > width ? Text.WrapAtWordBoundaryOrAnywhere : Text.NoWrap
-                  elide: Text.ElideNone
-                  maximumLineCount: 4
+                  Layout.alignment: Qt.AlignVCenter
+                  wrapMode: root.detailsGrid ? Text.NoWrap : Text.WrapAtWordBoundaryOrAnywhere
+                  elide: root.detailsGrid ? Text.ElideRight : Text.ElideNone
+                  maximumLineCount: root.detailsGrid ? 1 : 6
                   clip: true
                 }
               }
@@ -432,6 +438,7 @@ NBox {
                   icon: "network"
                   pointSize: Style.fontSizeXS
                   color: Color.mOnSurface
+                  Layout.alignment: Qt.AlignVCenter
                   MouseArea {
                     anchors.fill: parent
                     hoverEnabled: true
@@ -444,9 +451,10 @@ NBox {
                   pointSize: Style.fontSizeXS
                   color: Color.mOnSurface
                   Layout.fillWidth: true
-                  wrapMode: implicitWidth > width ? Text.WrapAtWordBoundaryOrAnywhere : Text.NoWrap
-                  elide: Text.ElideNone
-                  maximumLineCount: 4
+                  Layout.alignment: Qt.AlignVCenter
+                  wrapMode: root.detailsGrid ? Text.NoWrap : Text.WrapAtWordBoundaryOrAnywhere
+                  elide: root.detailsGrid ? Text.ElideRight : Text.ElideNone
+                  maximumLineCount: root.detailsGrid ? 1 : 6
                   clip: true
                 }
               }
@@ -459,6 +467,7 @@ NBox {
                   icon: "router"
                   pointSize: Style.fontSizeXS
                   color: Color.mOnSurface
+                  Layout.alignment: Qt.AlignVCenter
                   MouseArea {
                     anchors.fill: parent
                     hoverEnabled: true
@@ -471,9 +480,10 @@ NBox {
                   pointSize: Style.fontSizeXS
                   color: Color.mOnSurface
                   Layout.fillWidth: true
-                  wrapMode: implicitWidth > width ? Text.WrapAtWordBoundaryOrAnywhere : Text.NoWrap
-                  elide: Text.ElideNone
-                  maximumLineCount: 4
+                  Layout.alignment: Qt.AlignVCenter
+                  wrapMode: root.detailsGrid ? Text.NoWrap : Text.WrapAtWordBoundaryOrAnywhere
+                  elide: root.detailsGrid ? Text.ElideRight : Text.ElideNone
+                  maximumLineCount: root.detailsGrid ? 1 : 6
                   clip: true
                 }
               }
@@ -485,6 +495,7 @@ NBox {
                   icon: "world"
                   pointSize: Style.fontSizeXS
                   color: Color.mOnSurface
+                  Layout.alignment: Qt.AlignVCenter
                   MouseArea {
                     anchors.fill: parent
                     hoverEnabled: true
@@ -497,9 +508,10 @@ NBox {
                   pointSize: Style.fontSizeXS
                   color: Color.mOnSurface
                   Layout.fillWidth: true
-                  wrapMode: implicitWidth > width ? Text.WrapAtWordBoundaryOrAnywhere : Text.NoWrap
-                  elide: Text.ElideNone
-                  maximumLineCount: 6
+                  Layout.alignment: Qt.AlignVCenter
+                  wrapMode: root.detailsGrid ? Text.NoWrap : Text.WrapAtWordBoundaryOrAnywhere
+                  elide: root.detailsGrid ? Text.ElideRight : Text.ElideNone
+                  maximumLineCount: root.detailsGrid ? 1 : 6
                   clip: true
                 }
               }
@@ -514,7 +526,7 @@ NBox {
             color: Color.mSurfaceVariant
             border.color: Color.mOutline
             border.width: Style.borderS
-            radius: Style.radiusS
+            radius: Style.iRadiusXS
 
             RowLayout {
               id: passwordRow
@@ -525,7 +537,7 @@ NBox {
               Rectangle {
                 Layout.fillWidth: true
                 Layout.fillHeight: true
-                radius: Style.radiusXS
+                radius: Style.iRadiusXS
                 color: Color.mSurface
                 border.color: pwdInput.activeFocus ? Color.mSecondary : Color.mOutline
                 border.width: Style.borderS
@@ -573,7 +585,7 @@ NBox {
 
               NIconButton {
                 icon: "close"
-                baseSize: Style.baseWidgetSize * 0.8
+                baseSize: Style.baseWidgetSize
                 onClicked: root.passwordCancelled()
               }
             }
@@ -621,7 +633,7 @@ NBox {
 
               NIconButton {
                 icon: "close"
-                baseSize: Style.baseWidgetSize * 0.8
+                baseSize: Style.baseWidgetSize
                 onClicked: root.forgetCancelled()
               }
             }

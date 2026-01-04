@@ -2,9 +2,11 @@ import QtQuick
 import "../../../../Helpers/AdvancedMath.js" as AdvancedMath
 import qs.Commons
 
+// Legacy calculator plugin for >calc command
+// TODO: Remove this plugin in 2-3 bussiness days
 Item {
   property var launcher: null
-  property string name: I18n.tr("plugins.calculator")
+  property string name: I18n.tr("launcher.providers.calculator")
   property string iconMode: Settings.data.appLauncher.iconMode
 
   function handleCommand(query) {
@@ -16,8 +18,8 @@ Item {
     return [
           {
             "name": ">calc",
-            "description": I18n.tr("plugins.calculator-description"),
-            "icon": iconMode === "tabler" ? "calculator" : "accessories-calculator",
+            "description": I18n.tr("launcher.providers.calculator-deprecated"),
+            "icon": "alert-triangle",
             "isTablerIcon": true,
             "isImage": false,
             "onActivate": function () {
@@ -41,9 +43,9 @@ Item {
     if (!expression) {
       return [
             {
-              "name": I18n.tr("plugins.calculator-name"),
-              "description": I18n.tr("plugins.calculator-enter-expression"),
-              "icon": iconMode === "tabler" ? "calculator" : "accessories-calculator",
+              "name": I18n.tr("launcher.providers.calculator-name"),
+              "description": I18n.tr("launcher.providers.calculator-deprecated"),
+              "icon": "alert-triangle",
               "isTablerIcon": true,
               "isImage": false,
               "onActivate": function () {}
@@ -70,7 +72,7 @@ Item {
     } catch (error) {
       return [
             {
-              "name": I18n.tr("plugins.calculator-error"),
+              "name": I18n.tr("launcher.providers.calculator-error"),
               "description": error.message || "Invalid expression",
               "icon": iconMode === "tabler" ? "circle-x" : "dialog-error",
               "isTablerIcon": true,

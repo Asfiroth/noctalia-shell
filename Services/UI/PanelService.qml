@@ -1,5 +1,6 @@
 pragma Singleton
 
+import QtQuick
 import Quickshell
 import qs.Commons
 
@@ -12,8 +13,27 @@ Singleton {
   // Panels
   property var registeredPanels: ({})
   property var openedPanel: null
+  property var closingPanel: null
+  property bool closedImmediately: false
+  // Brief window after panel opens where Exclusive keyboard is allowed on Hyprland
+  // This allows text inputs to receive focus, then switches to OnDemand for click-to-close
+  property bool isInitializingKeyboard: false
   signal willOpen
   signal didClose
+
+  // Background slot assignments for dynamic panel background rendering
+  // Slot 0: currently opening/open panel, Slot 1: closing panel
+  property var backgroundSlotAssignments: [null, null]
+  signal slotAssignmentChanged(int slotIndex, var panel)
+
+  function assignToSlot(slotIndex, panel) {
+    if (backgroundSlotAssignments[slotIndex] !== panel) {
+      var newAssignments = backgroundSlotAssignments.slice();
+      newAssignments[slotIndex] = panel;
+      backgroundSlotAssignments = newAssignments;
+      slotAssignmentChanged(slotIndex, panel);
+    }
+  }
 
   // Popup menu windows (one per screen) - used for both tray menus and context menus
   property var popupMenuWindows: ({})
@@ -71,12 +91,34 @@ Singleton {
     return name in registeredPanels;
   }
 
+  // Timer to switch from Exclusive to OnDemand keyboard focus on Hyprland
+  Timer {
+    id: keyboardInitTimer
+    interval: 100
+    repeat: false
+    onTriggered: {
+      root.isInitializingKeyboard = false;
+    }
+  }
+
   // Helper to keep only one panel open at any time
   function willOpenPanel(panel) {
     if (openedPanel && openedPanel !== panel) {
+      // Move current panel to closing slot before closing it
+      closingPanel = openedPanel;
+      assignToSlot(1, closingPanel);
       openedPanel.close();
     }
+
+    // Assign new panel to open slot
     openedPanel = panel;
+    assignToSlot(0, panel);
+
+    // Start keyboard initialization period (for Hyprland workaround)
+    if (panel.exclusiveKeyboard) {
+      isInitializingKeyboard = true;
+      keyboardInitTimer.restart();
+    }
 
     // emit signal
     willOpen();
@@ -85,7 +127,17 @@ Singleton {
   function closedPanel(panel) {
     if (openedPanel && openedPanel === panel) {
       openedPanel = null;
+      assignToSlot(0, null);
     }
+
+    if (closingPanel && closingPanel === panel) {
+      closingPanel = null;
+      assignToSlot(1, null);
+    }
+
+    // Reset keyboard init state
+    isInitializingKeyboard = false;
+    keyboardInitTimer.stop();
 
     // emit signal
     didClose();

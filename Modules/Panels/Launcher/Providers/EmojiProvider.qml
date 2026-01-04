@@ -6,8 +6,8 @@ import qs.Services.Keyboard
 Item {
   id: root
 
-  // Plugin metadata
-  property string name: I18n.tr("plugins.emoji")
+  // Provider metadata
+  property string name: I18n.tr("launcher.providers.emoji")
   property var launcher: null
   property string iconMode: Settings.data.appLauncher.iconMode
   property bool handleSearch: false
@@ -30,6 +30,22 @@ Item {
 
   property var categories: ["recent", "people", "animals", "nature", "food", "activity", "travel", "objects", "symbols", "flags"]
 
+  function getCategoryName(category) {
+    const names = {
+      "recent": I18n.tr("launcher.categories.emoji.recent"),
+      "people": I18n.tr("launcher.categories.emoji.people"),
+      "animals": I18n.tr("launcher.categories.emoji.animals"),
+      "nature": I18n.tr("launcher.categories.emoji.nature"),
+      "food": I18n.tr("launcher.categories.emoji.food"),
+      "activity": I18n.tr("launcher.categories.emoji.activity"),
+      "travel": I18n.tr("launcher.categories.emoji.travel"),
+      "objects": I18n.tr("launcher.categories.emoji.objects"),
+      "symbols": I18n.tr("launcher.categories.emoji.symbols"),
+      "flags": I18n.tr("launcher.categories.emoji.flags")
+    };
+    return names[category] || category;
+  }
+
   // Force update results when emoji service loads
   Connections {
     target: EmojiService
@@ -40,9 +56,9 @@ Item {
     }
   }
 
-  // Initialize plugin
+  // Initialize provider
   function init() {
-    Logger.i("EmojiPlugin", "Initialized");
+    Logger.d("EmojiProvider", "Initialized");
   }
 
   function selectCategory(category) {
@@ -57,7 +73,7 @@ Item {
     selectedCategory = "recent";
   }
 
-  // Check if this plugin handles the command
+  // Check if this provider handles the command
   function handleCommand(searchText) {
     return searchText.startsWith(">emoji");
   }
@@ -67,7 +83,7 @@ Item {
     return [
           {
             "name": ">emoji",
-            "description": I18n.tr("plugins.emoji-search-description"),
+            "description": I18n.tr("launcher.providers.emoji-search-description"),
             "icon": iconMode === "tabler" ? "mood-smile" : "face-smile",
             "isTablerIcon": true,
             "isImage": false,
@@ -87,8 +103,8 @@ Item {
     if (!EmojiService.loaded) {
       return [
             {
-              "name": I18n.tr("plugins.emoji-loading"),
-              "description": I18n.tr("plugins.emoji-loading-description"),
+              "name": I18n.tr("launcher.providers.emoji-loading"),
+              "description": I18n.tr("launcher.providers.emoji-loading-description"),
               "icon": iconMode === "tabler" ? "refresh" : "view-refresh",
               "isTablerIcon": true,
               "isImage": false,

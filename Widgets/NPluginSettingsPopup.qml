@@ -92,7 +92,7 @@ Popup {
               settingsLoader.item.saveSettings();
               root.close();
               if (root.showToastOnSave) {
-                ToastService.showNotice(I18n.tr("settings.plugins.settings-saved"));
+                ToastService.showNotice(I18n.tr("settings.plugins.title"), I18n.tr("settings.plugins.settings-saved"));
               }
             }
           }
@@ -115,7 +115,7 @@ Popup {
     if (!currentPluginApi) {
       Logger.e("NPluginSettingsPopup", "Cannot open settings: plugin not loaded:", pluginManifest.id);
       if (showToastOnSave) {
-        ToastService.showNotice(I18n.tr("settings.plugins.settings-error-not-loaded"));
+        ToastService.showError(I18n.tr("settings.plugins.title"), I18n.tr("settings.plugins.settings-error-not-loaded"));
       }
       return;
     }
@@ -123,9 +123,10 @@ Popup {
     // Get plugin directory
     var pluginDir = PluginRegistry.getPluginDir(pluginManifest.id);
     var settingsPath = pluginDir + "/" + pluginManifest.entryPoints.settings;
+    var loadVersion = PluginRegistry.pluginLoadVersions[pluginManifest.id] || 0;
 
-    // Load settings component
-    settingsLoader.setSource("file://" + settingsPath, {
+    // Load settings component (use version counter to avoid caching)
+    settingsLoader.setSource("file://" + settingsPath + "?v=" + loadVersion, {
                                "pluginApi": currentPluginApi
                              });
 

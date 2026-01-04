@@ -50,7 +50,6 @@ NIconButton {
 
   baseSize: Style.capsuleHeight
   applyUiScale: false
-  density: Settings.data.bar.density
   customRadius: Style.radiusL
   icon: NotificationService.doNotDisturb ? "bell-off" : "bell"
   tooltipText: NotificationService.doNotDisturb ? I18n.tr("tooltips.open-notification-history-disable-dnd") : I18n.tr("tooltips.open-notification-history-enable-dnd")
@@ -62,6 +61,7 @@ NIconButton {
   border.color: Style.capsuleBorderColor
   border.width: Style.capsuleBorderWidth
   visible: count > 0 || !hideWhenZero
+  opacity: (count > 0 || !hideWhenZero) ? 1.0 : 0.0
 
   NPopupContextMenu {
     id: contextMenu

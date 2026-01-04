@@ -13,6 +13,9 @@ import qs.Widgets
 Item {
   id: root
 
+  // Screen reference for child components
+  property var screen
+
   // Input: which tab to show initially
   property int requestedTab: 0
 
@@ -338,7 +341,7 @@ Item {
       spacing: Style.marginL
 
       // Sidebar
-      Rectangle {
+      NBox {
         id: sidebar
 
         readonly property bool panelVeryTransparent: Settings.data.ui.panelBackgroundOpacity <= 0.75
@@ -350,8 +353,7 @@ Item {
 
         radius: sidebar.panelVeryTransparent ? Style.radiusM : 0
         color: sidebar.panelVeryTransparent ? Color.mSurfaceVariant : Color.transparent
-        border.width: sidebar.panelVeryTransparent ? Style.borderS : 0
-        border.color: sidebar.panelVeryTransparent ? Color.mOutline : Color.transparent
+        border.color: sidebar.panelVeryTransparent ? Style.boxBorderColor : Color.transparent
 
         Behavior on Layout.preferredWidth {
           NumberAnimation {
@@ -360,12 +362,13 @@ Item {
           }
         }
 
-        // Sidebar toggle button
+        // Sidebar content
         ColumnLayout {
           anchors.fill: parent
           spacing: Style.marginS
           anchors.margins: sidebar.panelVeryTransparent ? Style.marginM : 0
 
+          // Sidebar toggle button
           Item {
             id: toggleContainer
             Layout.fillWidth: true
@@ -395,7 +398,7 @@ Item {
 
                 NIcon {
                   icon: root.sidebarExpanded ? "layout-sidebar-right-expand" : "layout-sidebar-left-expand"
-                  color: Color.mOnSurface
+                  color: toggleMouseArea.containsMouse ? Color.mOnHover : Color.mOnSurface
                   pointSize: Style.fontSizeXL
                 }
               }
@@ -542,6 +545,7 @@ Item {
             }
           }
         }
+
         // Overlay gradient for sidebar scrolling
         Rectangle {
           anchors.fill: parent
@@ -549,6 +553,15 @@ Item {
           radius: Style.radiusM
           color: Color.transparent
           visible: sidebarList.verticalScrollBarActive
+          opacity: (sidebarList.contentY + sidebarList.height >= sidebarList.contentHeight - 10) ? 0 : 1
+
+          Behavior on opacity {
+            NumberAnimation {
+              duration: Style.animationFast
+              easing.type: Easing.InOutQuad
+            }
+          }
+
           gradient: Gradient {
             GradientStop {
               position: 0.0
@@ -567,15 +580,13 @@ Item {
       }
 
       // Content pane
-      Rectangle {
+      NBox {
         id: contentPane
         Layout.fillWidth: true
         Layout.fillHeight: true
         Layout.alignment: Qt.AlignTop
         radius: Style.radiusM
         color: Color.mSurfaceVariant
-        border.color: Color.mOutline
-        border.width: Style.borderS
 
         ColumnLayout {
           id: contentLayout
@@ -620,6 +631,8 @@ Item {
           Rectangle {
             Layout.fillWidth: true
             Layout.fillHeight: true
+            Layout.leftMargin: -Style.marginM
+            Layout.rightMargin: -Style.marginL
             color: Color.transparent
 
             Repeater {
@@ -656,6 +669,11 @@ Item {
                       active: true
                       sourceComponent: root.tabsModel[index]?.source
                       width: scrollView.availableWidth
+                      onLoaded: {
+                        if (item && item.hasOwnProperty("screen")) {
+                          item.screen = root.screen;
+                        }
+                      }
                     }
                   }
                 }
@@ -667,6 +685,20 @@ Item {
               anchors.fill: parent
               color: Color.transparent
               visible: root.activeScrollView && root.activeScrollView.ScrollBar.vertical && root.activeScrollView.ScrollBar.vertical.size < 1.0
+              opacity: {
+                if (!root.activeScrollView)
+                  return 1;
+                const scrollBar = root.activeScrollView.ScrollBar.vertical;
+                return (scrollBar.position + scrollBar.size >= 0.99) ? 0 : 1;
+              }
+
+              Behavior on opacity {
+                NumberAnimation {
+                  duration: Style.animationFast
+                  easing.type: Easing.InOutQuad
+                }
+              }
+
               gradient: Gradient {
                 GradientStop {
                   position: 0.0
