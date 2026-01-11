@@ -39,13 +39,13 @@ ColumnLayout {
       text: I18n.tr("common.look")
       tabIndex: 1
       checked: subTabBar.currentIndex === 1
-      visible: Settings.data.wallpaper.enabled
+      visible: Settings.data.wallpaper.enabled && Settings.data.wallpaper.engine !== "hyprpaper"
     }
     NTabButton {
       text: I18n.tr("common.automation")
       tabIndex: 2
       checked: subTabBar.currentIndex === 2
-      visible: Settings.data.wallpaper.enabled
+      visible: Settings.data.wallpaper.enabled && Settings.data.wallpaper.engine !== "hyprpaper"
     }
   }
 
