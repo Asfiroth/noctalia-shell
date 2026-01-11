@@ -94,14 +94,20 @@
       "maxWidth": 145,
       "useFixedWidth": false,
       "hideWhenIdle": false,
-      "showAlbumArt": false,
+      "showAlbumArt": true,
       "showArtistFirst": true,
       "showVisualizer": false,
       "showProgressRing": true,
-      "visualizerType": "linear"
+      "visualizerType": "linear",
+      "compactMode": false,
+      "panelShowAlbumArt": true,
+      "panelShowVisualizer": true,
+      "compactShowAlbumArt": true,
+      "compactShowVisualizer": false
     },
     "Microphone": {
-      "displayMode": "onhover"
+      "displayMode": "onhover",
+      "middleClickCommand": "pwvucontrol || pavucontrol"
     },
     "NotificationHistory": {
       "showUnreadBadge": true,
@@ -152,6 +158,9 @@
     "WiFi": {
       "displayMode": "onhover"
     },
+    "Network": {
+      "displayMode": "onhover"
+    },
     "Workspace": {
       "labelMode": "index",
       "followFocusedScreen": false,
@@ -166,7 +175,8 @@
       "iconScale": 0.8
     },
     "Volume": {
-      "displayMode": "onhover"
+      "displayMode": "onhover",
+      "middleClickCommand": "pwvucontrol || pavucontrol"
     }
   },
   "controlCenter": {

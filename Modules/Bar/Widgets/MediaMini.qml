@@ -49,6 +49,7 @@ Item {
   readonly property int artSize: Style.toOdd(Style.capsuleHeight * 0.75)
   readonly property int iconSize: Style.toOdd(Style.capsuleHeight * 0.75)
   readonly property int verticalSize: Style.toOdd(Style.capsuleHeight * 0.85)
+  readonly property int progressWidth: 2
 
   // State
   readonly property bool hasPlayer: MediaService.currentPlayer !== null
@@ -59,7 +60,7 @@ Item {
   // Title
   readonly property string title: {
     if (!hasPlayer)
-      return I18n.tr("bar.widget-settings.media-mini.no-active-player");
+      return I18n.tr("bar.media-mini.no-active-player");
     var artist = MediaService.trackArtist;
     var track = MediaService.trackTitle;
     return showArtistFirst ? (artist ? `${artist} - ${track}` : track) : (artist ? `${track} - ${artist}` : track);
@@ -86,7 +87,7 @@ Item {
   readonly property string tooltipText: {
     var text = title;
     var controls = [];
-    // Right click now opens options, including player selection
+    controls.push("Left click to open player.");
     controls.push("Right click for options.");
     if (MediaService.canGoPrevious)
       controls.push("Middle click for previous.");
@@ -157,21 +158,21 @@ Item {
       var items = [];
       if (hasPlayer && MediaService.canPlay) {
         items.push({
-                     "label": MediaService.isPlaying ? I18n.tr("context-menu.pause") : I18n.tr("context-menu.play"),
+                     "label": MediaService.isPlaying ? I18n.tr("common.pause") : I18n.tr("common.play"),
                      "action": "play-pause",
                      "icon": MediaService.isPlaying ? "media-pause" : "media-play"
                    });
       }
       if (hasPlayer && MediaService.canGoPrevious) {
         items.push({
-                     "label": I18n.tr("context-menu.previous"),
+                     "label": I18n.tr("common.previous"),
                      "action": "previous",
                      "icon": "media-prev"
                    });
       }
       if (hasPlayer && MediaService.canGoNext) {
         items.push({
-                     "label": I18n.tr("context-menu.next"),
+                     "label": I18n.tr("common.next"),
                      "action": "next",
                      "icon": "media-next"
                    });
@@ -193,7 +194,7 @@ Item {
       }
 
       items.push({
-                   "label": I18n.tr("context-menu.widget-settings"),
+                   "label": I18n.tr("actions.widget-settings"),
                    "action": "widget-settings",
                    "icon": "settings"
                  });
@@ -281,17 +282,6 @@ Item {
         visible: !isVertical
         z: 1
 
-        // Icon (when no player or features disabled)
-        NIcon {
-          visible: !hasPlayer || (!showAlbumArt && !showProgressRing)
-          icon: hasPlayer ? (MediaService.isPlaying ? "media-pause" : "media-play") : "disc"
-          color: hasPlayer ? Color.mOnSurface : Color.mOnSurfaceVariant
-          pointSize: iconSize * 0.85
-          Layout.preferredWidth: iconSize
-          Layout.preferredHeight: iconSize
-          Layout.alignment: Qt.AlignVCenter
-        }
-
         // Album art / Progress ring
         Item {
           visible: hasPlayer && (showAlbumArt || showProgressRing)
@@ -304,32 +294,17 @@ Item {
             anchors.fill: parent
             visible: showProgressRing
             progress: MediaService.trackLength > 0 ? MediaService.currentPosition / MediaService.trackLength : 0
-            lineWidth: 2
+            lineWidth: root.progressWidth
           }
 
-          Item {
+          NImageRounded {
+            visible: showAlbumArt && hasPlayer
             anchors.fill: parent
-            anchors.margins: showProgressRing ? (3) : 0.5
-
-            NImageRounded {
-              visible: showAlbumArt && hasPlayer
-              anchors.fill: parent
-              anchors.margins: showProgressRing ? 0 : -1
-              radius: width / 2
-              imagePath: MediaService.trackArtUrl
-              fallbackIcon: MediaService.isPlaying ? "media-pause" : "media-play"
-              fallbackIconSize: showProgressRing ? 10 : 12
-              borderWidth: 0
-            }
-
-            NIcon {
-              visible: !showAlbumArt && showProgressRing && hasPlayer
-              x: Style.pixelAlignCenter(parent.width, width)
-              y: Style.pixelAlignCenter(parent.height, contentHeight)
-              icon: MediaService.isPlaying ? "media-pause" : "media-play"
-              color: Color.mOnSurface
-              pointSize: Style.barFontSize
-            }
+            anchors.margins: showProgressRing ? root.progressWidth * 2 : 0
+            radius: width / 2
+            imagePath: MediaService.trackArtUrl
+            borderWidth: 0
+            imageFillMode: Image.PreserveAspectCrop
           }
         }
 
@@ -373,27 +348,17 @@ Item {
           anchors.fill: parent
           visible: showProgressRing
           progress: MediaService.trackLength > 0 ? MediaService.currentPosition / MediaService.trackLength : 0
-          lineWidth: Style.toOdd(2)
+          lineWidth: root.progressWidth
         }
 
         NImageRounded {
           visible: showAlbumArt && hasPlayer
           anchors.fill: parent
-          anchors.margins: showProgressRing ? Style.toOdd(verticalSize * 0.2) : 0
+          anchors.margins: showProgressRing ? root.progressWidth * 2 : 0
           radius: width / 2
           imagePath: MediaService.trackArtUrl
-          fallbackIcon: MediaService.isPlaying ? "media-pause" : "media-play"
-          fallbackIconSize: Style.toOdd(verticalSize * 0.65)
           borderWidth: 0
-        }
-
-        NIcon {
-          visible: !showAlbumArt || !hasPlayer
-          x: Style.pixelAlignCenter(parent.width, contentWidth)
-          y: Style.pixelAlignCenter(parent.height, contentHeight)
-          icon: hasPlayer ? (MediaService.isPlaying ? "media-pause" : "media-play") : "disc"
-          color: hasPlayer ? Color.mOnSurface : Color.mOnSurfaceVariant
-          pointSize: Style.toOdd(verticalSize * 0.5)
+          imageFillMode: Image.PreserveAspectCrop
         }
       }
 
@@ -401,12 +366,12 @@ Item {
       MouseArea {
         anchors.fill: parent
         hoverEnabled: true
-        cursorShape: hasPlayer ? Qt.PointingHandCursor : Qt.ArrowCursor
+        cursorShape: Qt.PointingHandCursor
         acceptedButtons: Qt.LeftButton | Qt.RightButton | Qt.MiddleButton
 
         onClicked: mouse => {
-                     if (mouse.button === Qt.LeftButton && hasPlayer && MediaService.canPlay) {
-                       MediaService.playPause();
+                     if (mouse.button === Qt.LeftButton) {
+                       PanelService.getPanel("mediaPlayerPanel", screen)?.toggle(container);
                      } else if (mouse.button === Qt.RightButton) {
                        TooltipService.hide();
                        var popupWindow = PanelService.getPopupMenuWindow(screen);
@@ -414,8 +379,8 @@ Item {
                          popupWindow.showContextMenu(contextMenu);
                          contextMenu.openAtItem(container, screen);
                        }
-                     } else if (mouse.button === Qt.MiddleButton && hasPlayer && MediaService.canGoPrevious) {
-                       MediaService.previous();
+                     } else if (mouse.button === Qt.MiddleButton && hasPlayer) {
+                       MediaService.playPause();
                        TooltipService.hide();
                      }
                    }
@@ -468,7 +433,7 @@ Item {
   // Progress Ring Component
   component ProgressRing: Canvas {
     property real progress: 0
-    property real lineWidth: 2.5
+    property real lineWidth: 2
 
     onProgressChanged: requestPaint()
     Component.onCompleted: requestPaint()

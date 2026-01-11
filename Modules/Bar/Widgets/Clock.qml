@@ -61,7 +61,7 @@ Rectangle {
       anchors.centerIn: parent
       sourceComponent: ColumnLayout {
         anchors.centerIn: parent
-        spacing: Settings.data.bar.showCapsule ? -4 : -2
+        spacing: Settings.data.bar.showCapsule ? -5 : -3
         Repeater {
           id: repeater
           model: I18n.locale.toString(now, formatHorizontal.trim()).split("\\n")
@@ -72,9 +72,14 @@ Rectangle {
             Binding on pointSize {
               value: {
                 if (repeater.model.length == 1) {
+                  // Single line: Full size
                   return Style.barFontSize;
+                } else if (repeater.model.length == 2) {
+                  // Two lines: First line is bigger than the second
+                  return (index == 0) ? Math.round(Style.barFontSize * 0.9) : Math.round(Style.barFontSize * 0.75);
                 } else {
-                  return (index == 0) ? Style.barFontSize * 0.9 : Style.barFontSize * 0.75;
+                  // More than two lines: Make it small!
+                  return Math.round(Style.barFontSize * 0.75);
                 }
               }
             }
@@ -117,12 +122,12 @@ Rectangle {
 
     model: [
       {
-        "label": I18n.tr("context-menu.open-calendar"),
+        "label": I18n.tr("actions.open-calendar"),
         "action": "open-calendar",
         "icon": "calendar"
       },
       {
-        "label": I18n.tr("context-menu.widget-settings"),
+        "label": I18n.tr("actions.widget-settings"),
         "action": "widget-settings",
         "icon": "settings"
       },
@@ -148,7 +153,7 @@ Rectangle {
       return I18n.locale.toString(now, tooltipFormat.trim());
     }
     // Fallback to default if no format is set
-    return I18n.tr("clock.tooltip"); // Defaults to "Calendar"
+    return I18n.tr("common.calendar"); // Defaults to "Calendar"
   }
 
   MouseArea {

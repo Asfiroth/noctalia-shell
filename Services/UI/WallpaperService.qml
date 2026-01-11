@@ -165,7 +165,7 @@ Singleton {
     // Populate fillModeModel with translated names
     fillModeModel.append({
                            "key": "center",
-                           "name": I18n.tr("wallpaper.fill-modes.center"),
+                           "name": I18n.tr("positions.center"),
                            "uniform": 0.0
                          });
     fillModeModel.append({
@@ -187,11 +187,11 @@ Singleton {
     // Populate transitionsModel with translated names
     transitionsModel.append({
                               "key": "none",
-                              "name": I18n.tr("wallpaper.transitions.none")
+                              "name": I18n.tr("common.none")
                             });
     transitionsModel.append({
                               "key": "random",
-                              "name": I18n.tr("wallpaper.transitions.random")
+                              "name": I18n.tr("common.random")
                             });
     transitionsModel.append({
                               "key": "fade",
@@ -328,9 +328,12 @@ Singleton {
       _setWallpaper(screenName, path);
     } else {
       // If no screenName specified change for all screens
+      // Merge connected screens and cached screens to include disconnected monitors
+      var allScreenNames = new Set(Object.keys(currentWallpapers));
       for (var i = 0; i < Quickshell.screens.length; i++) {
-        _setWallpaper(Quickshell.screens[i].name, path);
+        allScreenNames.add(Quickshell.screens[i].name);
       }
+      allScreenNames.forEach(name => _setWallpaper(name, path));
     }
   }
 
@@ -646,6 +649,7 @@ Singleton {
 
       folder: "file://" + currentDirectory
       nameFilters: ImageCacheService.imageFilters
+      caseSensitive: false
       showDirs: false
       sortField: FolderListModel.Name
 

@@ -77,7 +77,7 @@ Rectangle {
     }
 
     // Memory
-    lines.push(`${I18n.tr("system-monitor.memory")}: ${Math.round(SystemStatService.memPercent)}% (${SystemStatService.formatMemoryGb(SystemStatService.memGb)})`);
+    lines.push(`${I18n.tr("common.memory")}: ${Math.round(SystemStatService.memPercent)}% (${SystemStatService.formatMemoryGb(SystemStatService.memGb)})`);
 
     // Network
     lines.push(`${I18n.tr("system-monitor.download-speed")}: ${SystemStatService.formatSpeed(SystemStatService.rxSpeed)}`);
@@ -121,7 +121,7 @@ Rectangle {
 
     model: [
       {
-        "label": I18n.tr("context-menu.widget-settings"),
+        "label": I18n.tr("actions.widget-settings"),
         "action": "widget-settings",
         "icon": "settings"
       },
@@ -270,14 +270,7 @@ Rectangle {
         // Text mode
         NText {
           visible: !compactMode
-          text: {
-            let usage = Math.round(SystemStatService.cpuUsage);
-            if (usage < 100) {
-              return `${usage}%`;
-            } else {
-              return usage;
-            }
-          }
+          text: `${Math.round(SystemStatService.cpuUsage)}%`
           family: fontFamily
           pointSize: Style.barFontSize
           applyUiScale: false

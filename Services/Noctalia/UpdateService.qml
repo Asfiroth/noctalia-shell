@@ -11,7 +11,7 @@ Singleton {
   id: root
 
   // Version properties
-  readonly property string baseVersion: "3.8.2"
+  readonly property string baseVersion: "4.0.0"
   readonly property bool isDevelopment: true
   readonly property string developmentSuffix: "-git"
   readonly property string currentVersion: `v${!isDevelopment ? baseVersion : baseVersion + developmentSuffix}`
@@ -40,6 +40,17 @@ Singleton {
   property bool saveInProgress: false
   property bool pendingSave: false
   property int saveDebounceTimer: 0
+
+  Connections {
+    target: PanelService
+    function onPopupMenuWindowRegistered(screen) {
+      if (popupScheduled) {
+        if (!viewChangelogTargetScreen || viewChangelogTargetScreen.name === screen.name) {
+          openWhenReady();
+        }
+      }
+    }
+  }
 
   signal popupQueued(string fromVersion, string toVersion)
 
@@ -110,11 +121,6 @@ Singleton {
     // Use the last seen version, or default to v3.0.0 if this is a fresh install
     let from = fromVersion || changelogLastSeenVersion || "v3.0.0";
     let to = toVersion;
-
-    // Remove potential legacy -dev stuff
-    // TODO: remove in 2026!
-    from = from.replace("-dev", "");
-    to = to.replace("-dev", "");
 
     // Strip suffix from versions
     from = from.replace(root.developmentSuffix, "");
@@ -214,66 +220,60 @@ Singleton {
     return entries;
   }
 
-  function isVersionLine(text) {
-    return /^v?\d/i.test(text);
-  }
-
-  function cleanEntry(text) {
-    if (!text)
-      return "";
-
-    var cleaned = text;
-
-    // Strip markdown links [label](url)
-    cleaned = cleaned.replace(/\[([^\]]+)\]\(([^)]+)\)/g, "$1").trim();
-
-    // Drop bare URLs or parentheses wrapping URLs
-    cleaned = cleaned.replace(/\((https?:\/\/[^)]+)\)/gi, "").trim();
-
-    cleaned = cleaned.replace(/\([0-9a-f]{7,}\)/gi, "").trim();
-    cleaned = cleaned.replace(/\s+by\s+[A-Za-z0-9_-]+$/i, "").trim();
-    cleaned = cleaned.replace(/\s{2,}/g, " ");
-
-    if (cleaned.toLowerCase().startsWith("merge branch")) {
-      const ofIndex = cleaned.indexOf(" of ");
-      if (ofIndex > -1) {
-        cleaned = cleaned.substring(0, ofIndex).trim();
-      }
-    }
-
-    return cleaned;
-  }
-
-  function isIgnoredEntry(text) {
-    const lower = text.toLowerCase();
-    if (lower.startsWith("release v"))
-      return true;
-    if (lower.includes("autoformat") || lower.includes("auto-formatting"))
-      return true;
-    if (lower.includes("qmlfmt"))
-      return true;
-    return false;
-  }
-
   function openWhenReady() {
     if (!popupScheduled)
       return;
 
     if (!Quickshell.screens || Quickshell.screens.length === 0) {
-      Qt.callLater(openWhenReady);
       return;
     }
 
-    const targetScreen = Quickshell.screens[0];
+    const monitors = Settings.data.bar.monitors || [];
+    const allowPanelsOnScreenWithoutBar = Settings.data.general.allowPanelsOnScreenWithoutBar;
+
+    function canShowPanelsOnScreen(screen) {
+      const name = screen?.name || "";
+      return allowPanelsOnScreenWithoutBar || monitors.length === 0 || monitors.includes(name);
+    }
+
+    let targetScreen = viewChangelogTargetScreen;
+
+    if (targetScreen) {
+      // Explicit screen requested - validate it
+      if (!canShowPanelsOnScreen(targetScreen)) {
+        Logger.w("UpdateService", "Changelog cannot be shown on screen without bar:", targetScreen.name);
+        popupScheduled = false;
+        viewChangelogTargetScreen = null;
+        return;
+      }
+    } else {
+      // No explicit screen - find one that can show panels
+      for (let i = 0; i < Quickshell.screens.length; i++) {
+        if (canShowPanelsOnScreen(Quickshell.screens[i])) {
+          targetScreen = Quickshell.screens[i];
+          break;
+        }
+      }
+
+      if (!targetScreen) {
+        Logger.w("UpdateService", "No screen available to show changelog");
+        popupScheduled = false;
+        return;
+      }
+    }
+
     const panel = PanelService.getPanel("changelogPanel", targetScreen);
     if (!panel) {
-      Qt.callLater(openWhenReady);
+      // Panel not found yet. Wait for popupMenuWindowRegistered signal.
+      // This avoids the memory leak (#1306).
+      Logger.d("UpdateService", "Waiting for changelogPanel on screen:", targetScreen.name);
       return;
     }
 
     panel.open();
     popupScheduled = false;
     lastShownVersion = changelogCurrentVersion;
+    viewChangelogTargetScreen = null;
   }
 
   function openDiscord() {
@@ -292,6 +292,10 @@ Singleton {
     if (!currentVersion)
       return;
 
+    if (!Settings.data.general.showChangelogOnStartup) {
+      return;
+    }
+
     if (!changelogStateLoaded) {
       pendingShowRequest = true;
       return;
@@ -305,6 +309,29 @@ Singleton {
     changelogToVersion = currentVersion;
     changelogPending = true;
     handleChangelogRequest();
+  }
+
+  // View changelog without checking seen state (for manual viewing)
+  property var viewChangelogTargetScreen: null
+
+  function viewChangelog(screen) {
+    if (!currentVersion)
+      return;
+
+    // Calculate one minor version back as starting point
+    const parts = parseVersionParts(currentVersion);
+    let fromVersion = "v3.0.0";
+    if (parts.length >= 2) {
+      const major = parts[0];
+      const minor = Math.max(0, parts[1] - 1);
+      fromVersion = `v${major}.${minor}.0`;
+    }
+
+    previousVersion = fromVersion;
+    changelogCurrentVersion = currentVersion;
+    viewChangelogTargetScreen = screen || null;
+    popupScheduled = true;
+    fetchUpgradeLog(fromVersion, currentVersion);
   }
 
   function clearChangelogRequest() {

@@ -4,7 +4,6 @@ import QtQuick.Controls
 import QtQuick.Layouts
 import Quickshell
 import Quickshell.Io
-import "../Helpers/FuzzySort.js" as FuzzySort
 import qs.Commons
 import qs.Widgets
 
@@ -143,7 +142,7 @@ Popup {
     id: filePickerPanel
     anchors.fill: parent
     anchors.margins: Style.marginL
-    color: Color.transparent
+    color: "transparent"
 
     property string filterText: ""
     property var currentSelection: []
@@ -203,7 +202,7 @@ Popup {
 
         NIconButton {
           icon: "filepicker-refresh"
-          tooltipText: I18n.tr("tooltips.refresh")
+          tooltipText: I18n.tr("common.refresh")
           onClicked: {
             // Force a proper refresh by resetting the folder
             const currentFolder = folderModel.folder;
@@ -214,7 +213,7 @@ Popup {
         }
         NIconButton {
           icon: "filepicker-close"
-          tooltipText: I18n.tr("tooltips.close")
+          tooltipText: I18n.tr("common.close")
           onClicked: {
             root.cancelled();
             root.close();
@@ -268,7 +267,7 @@ Popup {
 
           NIconButton {
             icon: filePickerPanel.showSearchBar ? "filepicker-x" : "filepicker-search"
-            tooltipText: filePickerPanel.showSearchBar ? I18n.tr("tooltips.search-close") : I18n.tr("tooltips.search")
+            tooltipText: filePickerPanel.showSearchBar ? I18n.tr("tooltips.search-close") : I18n.tr("common.search")
             baseSize: Style.baseWidgetSize * 0.8
             onClicked: {
               filePickerPanel.showSearchBar = !filePickerPanel.showSearchBar;
@@ -339,7 +338,7 @@ Popup {
           }
           NIconButton {
             icon: root.showHiddenFiles ? "filepicker-eye-off" : "filepicker-eye"
-            tooltipText: root.showHiddenFiles ? I18n.tr("tooltips.hidden-files-hide") : I18n.tr("tooltips.hidden-files-show")
+            tooltipText: root.showHiddenFiles ? I18n.tr("tooltips.hidden-files-hide") : I18n.tr("tooltips.hidden-files-hide")
             baseSize: Style.baseWidgetSize * 0.8
             onClicked: {
               root.showHiddenFiles = !root.showHiddenFiles;
@@ -428,7 +427,7 @@ Popup {
             background: Rectangle {
               implicitWidth: 6
               implicitHeight: 100
-              color: Color.transparent
+              color: "transparent"
               opacity: parent.policy === ScrollBar.AlwaysOn || parent.active ? 0.3 : 0.0
               radius: (Style.iRadiusM) / 2
               Behavior on opacity {
@@ -472,14 +471,14 @@ Popup {
             id: gridItem
             width: gridView.itemSize
             height: gridView.cellHeight
-            color: Color.transparent
+            color: "transparent"
             radius: Style.iRadiusM
 
             property bool isSelected: filePickerPanel.currentSelection.includes(model.filePath)
 
             Rectangle {
               anchors.fill: parent
-              color: Color.transparent
+              color: "transparent"
               radius: parent.radius
               border.color: isSelected ? Color.mSecondary : Color.mSurface
               border.width: Style.borderL
@@ -492,9 +491,9 @@ Popup {
 
             Rectangle {
               anchors.fill: parent
-              color: (mouseArea.containsMouse && !isSelected) ? Color.mHover : Color.transparent
+              color: (mouseArea.containsMouse && !isSelected) ? Color.mHover : "transparent"
               radius: parent.radius
-              border.color: (mouseArea.containsMouse && !isSelected) ? Color.mHover : Color.transparent
+              border.color: (mouseArea.containsMouse && !isSelected) ? Color.mHover : "transparent"
               border.width: Style.borderS
               Behavior on color {
                 ColorAnimation {
@@ -517,7 +516,7 @@ Popup {
                 id: iconContainer
                 Layout.fillWidth: true
                 Layout.preferredHeight: Math.round(gridView.itemSize * 0.67)
-                color: Color.transparent
+                color: "transparent"
 
                 property bool isImage: {
                   if (model.fileIsDir)
@@ -671,7 +670,7 @@ Popup {
                 return Color.mSecondary;
               if (mouseArea.containsMouse)
                 return Color.mHover;
-              return Color.transparent;
+              return "transparent";
             }
             radius: Style.iRadiusS
             Behavior on color {
@@ -775,7 +774,7 @@ Popup {
         }
 
         NButton {
-          text: I18n.tr("widgets.file-picker.cancel")
+          text: I18n.tr("common.cancel")
           outlined: true
           onClicked: {
             root.cancelled();

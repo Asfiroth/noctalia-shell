@@ -10,9 +10,17 @@ Item {
   property string name: I18n.tr("launcher.providers.clipboard")
   property var launcher: null
   property string iconMode: Settings.data.appLauncher.iconMode
+  property string supportedLayouts: "list" // List view for clipboard content
 
   // Provider capabilities
   property bool handleSearch: false // Don't handle regular search
+
+  // Preview support
+  property bool hasPreview: true
+  property string previewComponentPath: "./ClipboardPreview.qml"
+
+  // Image handling - expose revision for reactive updates in delegates
+  readonly property int imageRevision: ClipboardService.revision
 
   // Internal state
   property bool isWaitingForData: false
@@ -138,7 +146,7 @@ Item {
       return [
             {
               "name": I18n.tr("launcher.providers.clipboard-loading"),
-              "description": I18n.tr("launcher.providers.clipboard-loading-description"),
+              "description": I18n.tr("launcher.providers.emoji-loading-description"),
               "icon": iconMode === "tabler" ? "refresh" : "view-refresh",
               "isTablerIcon": true,
               "isImage": false,
@@ -157,7 +165,7 @@ Item {
       return [
             {
               "name": I18n.tr("launcher.providers.clipboard-loading"),
-              "description": I18n.tr("launcher.providers.clipboard-loading-description"),
+              "description": I18n.tr("launcher.providers.emoji-loading-description"),
               "icon": iconMode === "tabler" ? "refresh" : "view-refresh",
               "isTablerIcon": true,
               "isImage": false,
@@ -188,8 +196,15 @@ Item {
 
       // Add activation handler
       entry.onActivate = function () {
-        ClipboardService.copyToClipboard(item.id);
-        launcher.close();
+        if (Settings.data.appLauncher.autoPasteClipboard) {
+          launcher.closeImmediately();
+          Qt.callLater(() => {
+                         ClipboardService.pasteFromClipboard(item.id, item.mime);
+                       });
+        } else {
+          ClipboardService.copyToClipboard(item.id);
+          launcher.close();
+        }
       };
 
       results.push(entry);
@@ -213,7 +228,7 @@ Item {
   }
 
   function formatImageEntry(item) {
-    const meta = parseImageMeta(item.preview);
+    const meta = ClipboardService.parseImageMeta(item.preview);
 
     return {
       "name": meta ? `Image ${meta.w}×${meta.h}` : "Image",
@@ -225,7 +240,8 @@ Item {
       "imageHeight": meta ? meta.h : 0,
       "clipboardId": item.id,
       "mime": item.mime,
-      "preview": item.preview
+      "preview": item.preview,
+      "provider": root
     };
   }
 
@@ -245,9 +261,14 @@ Item {
         description = description.substring(0, 77) + "...";
       }
     } else {
-      const chars = preview.length;
-      const words = preview.split(/\s+/).length;
-      description = `${chars} characters, ${words} word${words !== 1 ? 's' : ''}`;
+      // Preview is truncated at ~100 chars, so we can't show exact count
+      if (preview.length >= 100) {
+        description = I18n.tr("toast.clipboard.long-text");
+      } else {
+        const chars = preview.length;
+        const words = preview.split(/\s+/).length;
+        description = `${chars} characters, ${words} word${words !== 1 ? 's' : ''}`;
+      }
     }
 
     return {
@@ -257,27 +278,91 @@ Item {
       "isTablerIcon": true,
       "isImage": false,
       "clipboardId": item.id,
-      "preview": preview
-    };
-  }
-
-  function parseImageMeta(preview) {
-    const re = /\[\[\s*binary data\s+([\d\.]+\s*(?:KiB|MiB|GiB|B))\s+(\w+)\s+(\d+)x(\d+)\s*\]\]/i;
-    const match = (preview || "").match(re);
-
-    if (!match) {
-      return null;
-    }
-
-    return {
-      "size": match[1],
-      "fmt": (match[2] || "").toUpperCase(),
-      "w": Number(match[3]),
-      "h": Number(match[4])
+      "preview": preview,
+      "provider": root
     };
   }
 
   function getImageForItem(clipboardId) {
     return ClipboardService.getImageData ? ClipboardService.getImageData(clipboardId) : null;
+  }
+
+  // -------------------------
+  // Item actions for launcher delegate
+  function getItemActions(item) {
+    if (!item || !item.clipboardId)
+      return [];
+
+    var actions = [];
+
+    // Annotation tool for images
+    if (item.isImage && Settings.data.appLauncher.screenshotAnnotationTool !== "") {
+      actions.push({
+                     "icon": "pencil",
+                     "tooltip": I18n.tr("tooltips.open-annotation-tool"),
+                     "action": function () {
+                       var tool = Settings.data.appLauncher.screenshotAnnotationTool;
+                       Quickshell.execDetached(["sh", "-c", "cliphist decode " + item.clipboardId + " | " + tool]);
+                       if (launcher)
+                         launcher.close();
+                     }
+                   });
+    }
+
+    // Delete action
+    actions.push({
+                   "icon": "trash",
+                   "tooltip": I18n.tr("launcher.providers.clipboard-delete"),
+                   "action": function () {
+                     deleteItem(item);
+                   }
+                 });
+
+    return actions;
+  }
+
+  function canDeleteItem(item) {
+    return item && !!item.clipboardId;
+  }
+
+  function deleteItem(item) {
+    if (!item || !item.clipboardId)
+      return;
+
+    // Set provider state before deletion so refresh works
+    gotResults = false;
+    isWaitingForData = true;
+    lastSearchText = launcher ? launcher.searchText : "";
+
+    // Delete the item
+    ClipboardService.deleteById(String(item.clipboardId));
+  }
+
+  // Prepare item for display (handles image decoding)
+  function prepareItem(item) {
+    if (item && item.isImage && item.clipboardId) {
+      if (!ClipboardService.getImageData(item.clipboardId)) {
+        ClipboardService.decodeToDataUrl(item.clipboardId, item.mime, null);
+      }
+    }
+  }
+
+  // Get image URL for item (used by delegates)
+  function getImageUrl(item) {
+    if (!item || !item.clipboardId)
+      return "";
+    return ClipboardService.getImageData(item.clipboardId) || "";
+  }
+
+  // Get preview data for the preview panel
+  function getPreviewData(item) {
+    if (!item)
+      return null;
+    return {
+      "clipboardId": item.clipboardId,
+      "isImage": item.isImage,
+      "mime": item.mime,
+      "preview": item.preview
+    };
   }
 }

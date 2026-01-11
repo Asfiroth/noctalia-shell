@@ -48,7 +48,7 @@ Variants {
       WlrLayershell.layer: (Settings.data.notifications?.overlayLayer) ? WlrLayer.Overlay : WlrLayer.Top
       WlrLayershell.exclusionMode: ExclusionMode.Ignore
 
-      color: Color.transparent
+      color: "transparent"
 
       // Make shadow area click-through, only notification content is clickable
       mask: Region {
@@ -86,28 +86,28 @@ Variants {
       readonly property int barOffsetTop: {
         if (barPos !== "top")
           return 0;
-        const floatMarginV = isFloating ? Math.ceil(Settings.data.bar.marginVertical * Style.marginXL) : 0;
+        const floatMarginV = isFloating ? Math.ceil(Settings.data.bar.marginVertical) : 0;
         return Style.barHeight + floatMarginV;
       }
 
       readonly property int barOffsetBottom: {
         if (barPos !== "bottom")
           return 0;
-        const floatMarginV = isFloating ? Math.ceil(Settings.data.bar.marginVertical * Style.marginXL) : 0;
+        const floatMarginV = isFloating ? Math.ceil(Settings.data.bar.marginVertical) : 0;
         return Style.barHeight + floatMarginV;
       }
 
       readonly property int barOffsetLeft: {
         if (barPos !== "left")
           return 0;
-        const floatMarginH = isFloating ? Math.ceil(Settings.data.bar.marginHorizontal * Style.marginXL) : 0;
+        const floatMarginH = isFloating ? Math.ceil(Settings.data.bar.marginHorizontal) : 0;
         return Style.barHeight + floatMarginH;
       }
 
       readonly property int barOffsetRight: {
         if (barPos !== "right")
           return 0;
-        const floatMarginH = isFloating ? Math.ceil(Settings.data.bar.marginHorizontal * Style.marginXL) : 0;
+        const floatMarginH = isFloating ? Math.ceil(Settings.data.bar.marginHorizontal) : 0;
         return Style.barHeight + floatMarginH;
       }
 
@@ -230,7 +230,7 @@ Variants {
                 anchors.left: parent.left
                 anchors.right: parent.right
                 height: 2
-                color: Color.transparent
+                color: "transparent"
 
                 readonly property real availableWidth: parent.width - (2 * parent.radius)
 
@@ -422,7 +422,7 @@ Variants {
                   Layout.alignment: Qt.AlignVCenter
                   radius: Math.min(Style.radiusL, Layout.preferredWidth / 2)
                   imagePath: model.originalImage || ""
-                  borderColor: Color.transparent
+                  borderColor: "transparent"
                   borderWidth: 0
                   fallbackIcon: "bell"
                   fallbackIconSize: 24
@@ -466,7 +466,7 @@ Variants {
                   }
 
                   NText {
-                    text: model.summary || I18n.tr("general.no-summary")
+                    text: model.summary || I18n.tr("common.no-summary")
                     pointSize: Style.fontSizeM
                     font.weight: Style.fontWeightMedium
                     color: Color.mOnSurface
@@ -545,7 +545,7 @@ Variants {
             // Close button
             NIconButton {
               icon: "close"
-              tooltipText: I18n.tr("tooltips.close")
+              tooltipText: I18n.tr("common.close")
               baseSize: Style.baseWidgetSize * 0.6
               anchors.top: cardBackground.top
               anchors.topMargin: Style.marginM

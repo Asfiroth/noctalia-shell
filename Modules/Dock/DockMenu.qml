@@ -28,7 +28,7 @@ PopupWindow {
 
   implicitWidth: menuContentWidth + (Style.marginM * 2)
   implicitHeight: contextMenuColumn.implicitHeight + (Style.marginM * 2)
-  color: Color.transparent
+  color: "transparent"
   visible: false
 
   // Hidden text element for measuring text width
@@ -82,7 +82,7 @@ PopupWindow {
       // Focus item
       next.push({
                   "icon": "eye",
-                  "text": I18n.tr("dock.menu.focus"),
+                  "text": I18n.tr("common.focus"),
                   "action": function () {
                     handleFocus();
                   }
@@ -92,7 +92,7 @@ PopupWindow {
     // Pin/Unpin item
     next.push({
                 "icon": !isPinned ? "pin" : "unpin",
-                "text": !isPinned ? I18n.tr("dock.menu.pin") : I18n.tr("dock.menu.unpin"),
+                "text": !isPinned ? I18n.tr("common.pin") : I18n.tr("common.unpin"),
                 "action": function () {
                   handlePin();
                 }
@@ -102,7 +102,7 @@ PopupWindow {
       // Close item
       next.push({
                   "icon": "close",
-                  "text": I18n.tr("dock.menu.close"),
+                  "text": I18n.tr("common.close"),
                   "action": function () {
                     handleClose();
                   }
@@ -210,9 +210,38 @@ PopupWindow {
     Settings.data.dock.pinnedApps = pinnedApps;
   }
 
+  // Dock position for context menu placement
+  property string dockPosition: "bottom"
+
   anchor.item: anchorItem
-  anchor.rect.x: anchorItem ? (anchorItem.width - implicitWidth) / 2 : 0
-  anchor.rect.y: anchorItem ? -implicitHeight - (Style.marginM) : 0
+  // Position menu on opposite side of dock with comfortable spacing
+  anchor.rect.x: {
+    if (!anchorItem)
+      return 0;
+    switch (dockPosition) {
+    case "left":
+      return anchorItem.width + Style.marginL; // Open to right of dock
+    case "right":
+      return -implicitWidth - Style.marginL; // Open to left of dock
+    default:
+      return (anchorItem.width - implicitWidth) / 2; // Center horizontally
+    }
+  }
+  anchor.rect.y: {
+    if (!anchorItem)
+      return 0;
+    switch (dockPosition) {
+    case "top":
+      return anchorItem.height + Style.marginL; // Open below dock
+    case "bottom":
+      return -implicitHeight - Style.marginL; // Open above dock (default)
+    case "left":
+    case "right":
+      return (anchorItem.height - implicitHeight) / 2; // Center vertically
+    default:
+      return -implicitHeight - Style.marginL;
+    }
+  }
 
   function show(item, toplevelData) {
     if (!item) {
@@ -360,7 +389,7 @@ PopupWindow {
         Rectangle {
           Layout.fillWidth: true
           height: 32
-          color: root.hoveredItem === index ? Color.mHover : Color.transparent
+          color: root.hoveredItem === index ? Color.mHover : "transparent"
           radius: Style.radiusXS
 
           Row {

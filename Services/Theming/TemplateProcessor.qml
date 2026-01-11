@@ -30,6 +30,12 @@ Singleton {
                                           "wezterm": "~/.config/wezterm/colors/Noctalia.toml"
                                         })
 
+  function escapeTomlString(value) {
+    if (!value)
+      return "";
+    return value.replace(/\\/g, "\\\\").replace(/"/g, '\\"');
+  }
+
   /**
   * Process wallpaper colors using matugen CLI
   * Dual-path architecture (wallpaper uses matugen CLI)
@@ -42,7 +48,7 @@ Singleton {
     const script = buildMatugenScript(content, wp, mode);
 
     generateProcess.generator = "matugen";
-    generateProcess.command = ["bash", "-lc", script];
+    generateProcess.command = ["sh", "-lc", script];
     generateProcess.running = true;
   }
 
@@ -110,7 +116,7 @@ Singleton {
     const item = templateQueue.shift();
     currentTemplateContext = item;
 
-    templateProcess.command = ["bash", "-lc", item.script];
+    templateProcess.command = ["sh", "-lc", item.script];
     templateProcess.running = true;
   }
 
@@ -134,6 +140,7 @@ Singleton {
   }
 
   function addWallpaperTemplates(lines, mode) {
+    const homeDir = Quickshell.env("HOME");
     // Noctalia colors JSON
     lines.push("[templates.noctalia]");
     lines.push('input_path = "' + Quickshell.shellDir + '/Assets/MatugenTemplates/noctalia.json"');
@@ -144,14 +151,17 @@ Singleton {
                                          if (Settings.data.templates[terminal.id]) {
                                            lines.push(`\n[templates.${terminal.id}]`);
                                            lines.push(`input_path = "${Quickshell.shellDir}/Assets/MatugenTemplates/${terminal.matugenPath}"`);
-                                           lines.push(`output_path = "${terminal.outputPath}"`);
+                                           const outputPath = terminal.outputPath.replace("~", homeDir);
+                                           lines.push(`output_path = "${outputPath}"`);
                                            const postHook = terminal.postHook || `${TemplateRegistry.colorsApplyScript} ${terminal.id}`;
-                                           lines.push(`post_hook = "${postHook}"`);
+                                           const postHookEsc = escapeTomlString(postHook);
+                                           lines.push(`post_hook = "${postHookEsc}"`);
                                          }
                                        });
   }
 
   function addApplicationTemplates(lines, mode) {
+    const homeDir = Quickshell.env("HOME");
     TemplateRegistry.applications.forEach(app => {
                                             if (app.id === "discord") {
                                               // Handle Discord clients specially
@@ -161,14 +171,14 @@ Singleton {
                                                                       if (isDiscordClientEnabled(client.name)) {
                                                                         lines.push(`\n[templates.discord_${client.name}]`);
                                                                         lines.push(`input_path = "${Quickshell.shellDir}/Assets/MatugenTemplates/${app.input}"`);
-                                                                        lines.push(`output_path = "${client.path}/themes/noctalia.theme.css"`);
+                                                                        const outputPath = client.path.replace("~", homeDir) + "/themes/noctalia.theme.css";
+                                                                        lines.push(`output_path = "${outputPath}"`);
                                                                       }
                                                                     });
                                               }
                                             } else if (app.id === "code") {
                                               // Handle Code clients specially
                                               if (Settings.data.templates.code) {
-                                                const homeDir = Quickshell.env("HOME");
                                                 app.clients.forEach(client => {
                                                                       // Check if this specific client is detected
                                                                       if (isCodeClientEnabled(client.name)) {
@@ -181,7 +191,6 @@ Singleton {
                                               }
                                             } else if (app.id === "emacs" && app.checkDoomFirst) {
                                               if (Settings.data.templates.emacs) {
-                                                const homeDir = Quickshell.env("HOME");
                                                 const doomPathTemplate = app.outputs[0].path; // ~/.config/doom/themes/noctalia-theme.el
                                                 const standardPathTemplate = app.outputs[1].path; // ~/.emacs.d/themes/noctalia-theme.el
                                                 const doomPath = doomPathTemplate.replace("~", homeDir);
@@ -191,20 +200,25 @@ Singleton {
 
                                                 lines.push(`\n[templates.emacs]`);
                                                 lines.push(`input_path = "${Quickshell.shellDir}/Assets/MatugenTemplates/${app.input}"`);
-                                                lines.push(`output_path = "${standardPathTemplate}"`);
+                                                lines.push(`output_path = "${standardPath}"`);
                                                 // Move to doom if doom exists, then remove empty .emacs.d/themes and .emacs.d directories
                                                 // Check directories are empty before removing
-                                                lines.push(`post_hook = "sh -c 'if [ -d \\"${doomConfigDir}\\" ] && [ -f \\"${standardPath}\\" ]; then mkdir -p \\"${doomDir}\\" && mv \\"${standardPath}\\" \\"${doomPath}\\" && rmdir \\"${homeDir}/.emacs.d/themes\\" 2>/dev/null && rmdir \\"${homeDir}/.emacs.d\\" 2>/dev/null || true; fi'"`);
+                                                const postHook = `sh -c 'if [ -d "${doomConfigDir}" ] && [ -f "${standardPath}" ]; then mkdir -p "${doomDir}" && mv "${standardPath}" "${doomPath}" && rmdir "${homeDir}/.emacs.d/themes" 2>/dev/null && rmdir "${homeDir}/.emacs.d" 2>/dev/null || true; fi'`;
+                                                const postHookEsc = escapeTomlString(postHook);
+                                                lines.push(`post_hook = "${postHookEsc}"`);
                                               }
                                             } else {
                                               // Handle regular apps
                                               if (Settings.data.templates[app.id]) {
                                                 app.outputs.forEach((output, idx) => {
                                                                       lines.push(`\n[templates.${app.id}_${idx}]`);
-                                                                      lines.push(`input_path = "${Quickshell.shellDir}/Assets/MatugenTemplates/${app.input}"`);
-                                                                      lines.push(`output_path = "${output.path}"`);
+                                                                      const inputFile = output.input || app.input;
+                                                                      lines.push(`input_path = "${Quickshell.shellDir}/Assets/MatugenTemplates/${inputFile}"`);
+                                                                      const outputPath = output.path.replace("~", homeDir);
+                                                                      lines.push(`output_path = "${outputPath}"`);
                                                                       if (app.postProcess) {
-                                                                        lines.push(`post_hook = "${app.postProcess(mode)}"`);
+                                                                        const postHook = escapeTomlString(app.postProcess(mode));
+                                                                        lines.push(`post_hook = "${postHook}"`);
                                                                       }
                                                                     });
                                               }
@@ -240,7 +254,12 @@ Singleton {
     // Use heredoc for wallpaper path to avoid all escaping issues
     let script = `cat > '${pathEsc}' << '${delimiter}'\n${content}\n${delimiter}\n`;
     script += `NOCTALIA_WP_PATH=$(cat << '${wpDelimiter}'\n${wallpaper}\n${wpDelimiter}\n)\n`;
-    script += `matugen image "$NOCTALIA_WP_PATH" --config '${pathEsc}' --mode ${mode} --type ${Settings.data.colorSchemes.matugenSchemeType}`;
+    script += 'matugen ';
+    if (ProgramCheckerService.matugenVersion >= "3.1.0") {
+      // Matugen 3.1.0+ supports --continue-on-error to process all templates even if some fail
+      script += '--continue-on-error ';
+    }
+    script += `image "$NOCTALIA_WP_PATH" --config '${pathEsc}' --mode ${mode} --type ${Settings.data.colorSchemes.matugenSchemeType}`;
     script += buildUserTemplateCommand("$NOCTALIA_WP_PATH", mode);
 
     return script + "\n";
@@ -358,7 +377,8 @@ Singleton {
 
                             let script = "";
                             script += `mkdir -p ${outputDir}\n`;
-                            script += `cp '${templatePath}' '${outputPath}'\n`;
+                            const templateFile = output.input ? `${Quickshell.shellDir}/Assets/MatugenTemplates/${output.input}` : templatePath;
+                            script += `cp '${templateFile}' '${outputPath}'\n`;
                             script += replaceColorsInFile(outputPath, palette);
                             if (hasDualModePatterns && darkPalette && lightPalette) {
                               script += replaceColorsInFileWithMode(outputPath, darkPalette, lightPalette);
@@ -454,7 +474,7 @@ Singleton {
                                        });
 
     if (commands.length > 0) {
-      copyProcess.command = ["bash", "-lc", commands.join('; ')];
+      copyProcess.command = ["sh", "-lc", commands.join('; ')];
       copyProcess.running = true;
     }
   }
