@@ -23,7 +23,7 @@ NIconButton {
   property var widgetMetadata: BarWidgetRegistry.widgetMetadata[widgetId]
   property var widgetSettings: {
     if (section && sectionWidgetIndex >= 0) {
-      var widgets = Settings.data.bar.widgets[section];
+      var widgets = Settings.getBarWidgetsForScreen(screen?.name)[section];
       if (widgets && sectionWidgetIndex < widgets.length) {
         return widgets[sectionWidgetIndex];
       }
@@ -32,6 +32,7 @@ NIconButton {
   }
   readonly property bool showUnreadBadge: (widgetSettings.showUnreadBadge !== undefined) ? widgetSettings.showUnreadBadge : widgetMetadata.showUnreadBadge
   readonly property bool hideWhenZero: (widgetSettings.hideWhenZero !== undefined) ? widgetSettings.hideWhenZero : widgetMetadata.hideWhenZero
+  readonly property bool hideWhenZeroUnread: (widgetSettings.hideWhenZeroUnread !== undefined) ? widgetSettings.hideWhenZeroUnread : widgetMetadata.hideWhenZeroUnread
 
   function computeUnreadCount() {
     var since = NotificationService.lastSeenTs;
@@ -48,20 +49,20 @@ NIconButton {
 
   readonly property int count: computeUnreadCount()
 
-  baseSize: Style.capsuleHeight
+  baseSize: Style.getCapsuleHeightForScreen(screen?.name)
   applyUiScale: false
   customRadius: Style.radiusL
   icon: NotificationService.doNotDisturb ? "bell-off" : "bell"
   tooltipText: NotificationService.doNotDisturb ? I18n.tr("tooltips.open-notification-history-enable-dnd") : I18n.tr("tooltips.open-notification-history-enable-dnd")
-  tooltipDirection: BarService.getTooltipDirection()
+  tooltipDirection: BarService.getTooltipDirection(screen?.name)
   colorBg: Style.capsuleColor
   colorFg: Color.mOnSurface
   colorBorder: "transparent"
   colorBorderHover: "transparent"
   border.color: Style.capsuleBorderColor
   border.width: Style.capsuleBorderWidth
-  visible: count > 0 || !hideWhenZero
-  opacity: (count > 0 || !hideWhenZero) ? 1.0 : 0.0
+  visible: !((hideWhenZero && NotificationService.historyList.count === 0) || (hideWhenZeroUnread && count === 0))
+  opacity: !((hideWhenZero && NotificationService.historyList.count === 0) || (hideWhenZeroUnread && count === 0)) ? 1.0 : 0.0
 
   NPopupContextMenu {
     id: contextMenu

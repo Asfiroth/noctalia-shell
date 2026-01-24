@@ -18,39 +18,18 @@ Scope {
   property string errorMessage: ""
   property string infoMessage: ""
   property bool pamAvailable: typeof PamContext !== "undefined"
+  property bool fprintdAvailable: false
 
-  // Determine PAM config based on OS
-  // On NixOS: use /etc/pam.d/login
-  // Otherwise: use generated config in configDir
-  readonly property string pamConfigDirectory: {
-    if (HostService.isReady && HostService.isNixOS) {
-      return "/etc/pam.d";
-    }
-    return Settings.configDir + "pam";
-  }
-  readonly property string pamConfig: {
-    if (HostService.isReady && HostService.isNixOS) {
-      return "login";
-    }
-    return "password.conf";
-  }
+  readonly property string pamConfigDirectory: Quickshell.env("NOCTALIA_PAM_CONFIG") ? "/etc/pam.d" : Settings.configDir + "pam"
+  readonly property string pamConfig: Quickshell.env("NOCTALIA_PAM_CONFIG") || "password.conf"
 
   Component.onCompleted: {
-    if (HostService.isReady) {
-      if (HostService.isNixOS) {
-        Logger.i("LockContext", "NixOS detected, using system PAM config: /etc/pam.d/login");
-      } else {
-        Logger.i("LockContext", "Using generated PAM config:", pamConfigDirectory + "/" + pamConfig);
-      }
+    checkFprintdProc.running = true;
+
+    if (Quickshell.env("NOCTALIA_PAM_CONFIG")) {
+      Logger.i("LockContext", "NOCTALIA_PAM_CONFIG is set, using system PAM config: /etc/pam.d/" + pamConfig);
     } else {
-      // Wait for HostService to be ready
-      HostService.isReadyChanged.connect(function () {
-        if (HostService.isNixOS) {
-          Logger.i("LockContext", "NixOS detected, using system PAM config: /etc/pam.d/login");
-        } else {
-          Logger.i("LockContext", "Using generated PAM config:", pamConfigDirectory + "/" + pamConfig);
-        }
-      });
+      Logger.i("LockContext", "Using generated PAM config:", pamConfigDirectory + "/" + pamConfig);
     }
   }
 
@@ -60,9 +39,15 @@ Scope {
       infoMessage = "";
       showFailure = false;
       errorMessage = "";
-      occupyFingerprintSensorProc.running = true;
+      if (!waitingForPassword) {
+        pam.abort();
+      }
+      if (fprintdAvailable) {
+        occupyFingerprintSensorProc.running = true;
+      }
     } else {
       occupyFingerprintSensorProc.running = false;
+      pam.start();
     }
   }
 
@@ -75,22 +60,25 @@ Scope {
 
     if (waitingForPassword) {
       pam.respond(currentText);
+      unlockInProgress = true;
       waitingForPassword = false;
       showInfo = false;
       return;
     }
 
-    if (root.unlockInProgress) {
-      Logger.i("LockContext", "Unlock already in progress, ignoring duplicate attempt");
-      return;
-    }
-
-    root.unlockInProgress = true;
     errorMessage = "";
     showFailure = false;
 
     Logger.i("LockContext", "Starting PAM authentication for user:", pam.user);
     pam.start();
+  }
+
+  Process {
+    id: checkFprintdProc
+    command: ["sh", "-c", "command -v fprintd-verify"]
+    onExited: function (exitCode) {
+      fprintdAvailable = (exitCode === 0);
+    }
   }
 
   Process {
@@ -100,9 +88,6 @@ Scope {
 
   PamContext {
     id: pam
-    // Use custom PAM config to ensure predictable password-only authentication
-    // On NixOS: uses /etc/pam.d/login
-    // Otherwise: uses config created in Settings.qml and stored in configDir/pam/
     configDirectory: root.pamConfigDirectory
     config: root.pamConfig
     user: HostService.username

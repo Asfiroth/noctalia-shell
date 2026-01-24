@@ -19,12 +19,14 @@ Item {
   property int sectionWidgetIndex: -1
   property int sectionWidgetsCount: 0
 
-  readonly property bool isVerticalBar: (Settings.data.bar.position === "left" || Settings.data.bar.position === "right")
+  readonly property string barPosition: Settings.getBarPositionForScreen(screen?.name)
+  readonly property bool isVerticalBar: barPosition === "left" || barPosition === "right"
+  readonly property real capsuleHeight: Style.getCapsuleHeightForScreen(screen?.name)
 
   property var widgetMetadata: BarWidgetRegistry.widgetMetadata[widgetId]
   property var widgetSettings: {
     if (section && sectionWidgetIndex >= 0) {
-      var widgets = Settings.data.bar.widgets[section];
+      var widgets = Settings.getBarWidgetsForScreen(screen?.name)[section];
       if (widgets && sectionWidgetIndex < widgets.length) {
         return widgets[sectionWidgetIndex];
       }
@@ -72,8 +74,8 @@ Item {
     }
   }
 
-  implicitWidth: !shouldShow ? 0 : isVerticalBar ? Style.capsuleHeight : visualizerWidth
-  implicitHeight: !shouldShow ? 0 : isVerticalBar ? visualizerWidth : Style.capsuleHeight
+  implicitWidth: !shouldShow ? 0 : isVerticalBar ? capsuleHeight : visualizerWidth
+  implicitHeight: !shouldShow ? 0 : isVerticalBar ? visualizerWidth : capsuleHeight
   visible: shouldShow
   opacity: shouldShow ? 1.0 : 0.0
 
@@ -190,7 +192,7 @@ Item {
       fillColor: root.fillColor
       showMinimumSignal: true
       vertical: root.isVerticalBar
-      barPosition: Settings.data.bar.position
+      barPosition: root.barPosition
     }
   }
 

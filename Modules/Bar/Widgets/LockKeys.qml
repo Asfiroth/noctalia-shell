@@ -23,7 +23,7 @@ Rectangle {
   property var widgetMetadata: BarWidgetRegistry.widgetMetadata[widgetId]
   property var widgetSettings: {
     if (section && sectionWidgetIndex >= 0) {
-      var widgets = Settings.data.bar.widgets[section];
+      var widgets = Settings.getBarWidgetsForScreen(screen?.name)[section];
       if (widgets && sectionWidgetIndex < widgets.length) {
         return widgets[sectionWidgetIndex];
       }
@@ -31,8 +31,9 @@ Rectangle {
     return {};
   }
 
-  readonly property string barPosition: Settings.data.bar.position
+  readonly property string barPosition: Settings.getBarPositionForScreen(screen?.name)
   readonly property bool isVertical: barPosition === "left" || barPosition === "right"
+  readonly property real capsuleHeight: Style.getCapsuleHeightForScreen(screen?.name)
 
   readonly property bool showCaps: (widgetSettings.showCapsLock !== undefined) ? widgetSettings.showCapsLock : widgetMetadata.showCapsLock
   readonly property bool showNum: (widgetSettings.showNumLock !== undefined) ? widgetSettings.showNumLock : widgetMetadata.showNumLock
@@ -42,8 +43,10 @@ Rectangle {
   readonly property string numIcon: widgetSettings.numLockIcon !== undefined ? widgetSettings.numLockIcon : widgetMetadata.numLockIcon
   readonly property string scrollIcon: widgetSettings.scrollLockIcon !== undefined ? widgetSettings.scrollLockIcon : widgetMetadata.scrollLockIcon
 
-  implicitWidth: isVertical ? Style.capsuleHeight : Math.round(layout.implicitWidth + Style.marginM * 2)
-  implicitHeight: isVertical ? Math.round(layout.implicitHeight + Style.marginM * 2) : Style.capsuleHeight
+  readonly property bool hideWhenOff: (widgetSettings.hideWhenOff !== undefined) ? widgetSettings.hideWhenOff : (widgetMetadata.hideWhenOff !== undefined ? widgetMetadata.hideWhenOff : false)
+
+  implicitWidth: isVertical ? capsuleHeight : Math.round(layout.implicitWidth + Style.marginXL)
+  implicitHeight: isVertical ? Math.round(layout.implicitHeight + Style.marginXL) : capsuleHeight
 
   Layout.alignment: Qt.AlignVCenter
 
@@ -103,17 +106,17 @@ Rectangle {
       spacing: 0
 
       NIcon {
-        visible: root.showCaps
+        visible: root.showCaps && (!root.hideWhenOff || LockKeysService.capsLockOn)
         icon: root.capsIcon
         color: LockKeysService.capsLockOn ? Color.mTertiary : Qt.alpha(Color.mOnSurfaceVariant, 0.3)
       }
       NIcon {
-        visible: root.showNum
+        visible: root.showNum && (!root.hideWhenOff || LockKeysService.numLockOn)
         icon: root.numIcon
         color: LockKeysService.numLockOn ? Color.mTertiary : Qt.alpha(Color.mOnSurfaceVariant, 0.3)
       }
       NIcon {
-        visible: root.showScroll
+        visible: root.showScroll && (!root.hideWhenOff || LockKeysService.scrollLockOn)
         icon: root.scrollIcon
         color: LockKeysService.scrollLockOn ? Color.mTertiary : Qt.alpha(Color.mOnSurfaceVariant, 0.3)
       }
@@ -125,17 +128,17 @@ Rectangle {
       spacing: 0
 
       NIcon {
-        visible: root.showCaps
+        visible: root.showCaps && (!root.hideWhenOff || LockKeysService.capsLockOn)
         icon: root.capsIcon
         color: LockKeysService.capsLockOn ? Color.mTertiary : Qt.alpha(Color.mOnSurfaceVariant, 0.3)
       }
       NIcon {
-        visible: root.showNum
+        visible: root.showNum && (!root.hideWhenOff || LockKeysService.numLockOn)
         icon: root.numIcon
         color: LockKeysService.numLockOn ? Color.mTertiary : Qt.alpha(Color.mOnSurfaceVariant, 0.3)
       }
       NIcon {
-        visible: root.showScroll
+        visible: root.showScroll && (!root.hideWhenOff || LockKeysService.scrollLockOn)
         icon: root.scrollIcon
         color: LockKeysService.scrollLockOn ? Color.mTertiary : Qt.alpha(Color.mOnSurfaceVariant, 0.3)
       }

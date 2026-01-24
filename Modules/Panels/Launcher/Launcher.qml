@@ -20,8 +20,7 @@ SmartPanel {
     var provider = activeProvider;
     if (!provider || !provider.hasPreview)
       return false;
-    if (!Settings.data.appLauncher.enableClipPreview)
-      return false;
+
     return selectedIndex >= 0 && results && !!results[selectedIndex];
   }
 
@@ -36,12 +35,13 @@ SmartPanel {
   preferredHeightRatio: 0.5
 
   // Positioning
+  readonly property string screenBarPosition: Settings.getBarPositionForScreen(screen?.name)
   readonly property string panelPosition: {
     if (Settings.data.appLauncher.position === "follow_bar") {
-      if (Settings.data.bar.position === "left" || Settings.data.bar.position === "right") {
-        return `center_${Settings.data.bar.position}`;
+      if (screenBarPosition === "left" || screenBarPosition === "right") {
+        return `center_${screenBarPosition}`;
       } else {
-        return `${Settings.data.bar.position}_center`;
+        return `${screenBarPosition}_center`;
       }
     } else {
       return Settings.data.appLauncher.position;
@@ -62,7 +62,23 @@ SmartPanel {
   property var activeProvider: null
   property bool resultsReady: false
   property var pluginProviderInstances: ({}) // Track plugin provider instances
-  property bool ignoreMouseHover: Settings.data.appLauncher.ignoreMouseInput
+  property bool ignoreMouseHover: true // Transient flag, should always be true on init
+
+  // Global mouse tracking for movement detection across delegates
+  property real globalLastMouseX: 0
+  property real globalLastMouseY: 0
+  property bool globalMouseInitialized: false
+  property bool mouseTrackingReady: false // Delay tracking until panel is settled
+
+  Timer {
+    id: mouseTrackingDelayTimer
+    interval: Style.animationNormal + 50 // Wait for panel animation to complete + safety margin
+    repeat: false
+    onTriggered: {
+      root.mouseTrackingReady = true;
+      root.globalMouseInitialized = false; // Reset so we get fresh initial position
+    }
+  }
 
   // Default provider for regular search (applications)
   readonly property var defaultProvider: appsProvider
@@ -70,7 +86,7 @@ SmartPanel {
   readonly property var currentProvider: activeProvider || defaultProvider
 
   readonly property int badgeSize: Math.round(Style.baseWidgetSize * 1.6 * Style.uiScaleRatio)
-  readonly property int entryHeight: Math.round(badgeSize + Style.marginM * 2)
+  readonly property int entryHeight: Math.round(badgeSize + Style.marginXL)
   // Whether current provider is showing categorized view (vs filtered search results)
   readonly property bool providerShowsCategories: {
     return currentProvider.showsCategories === true;
@@ -181,6 +197,9 @@ SmartPanel {
   onOpened: {
     resultsReady = false;
     ignoreMouseHover = true;
+    globalMouseInitialized = false;
+    mouseTrackingReady = false;
+    mouseTrackingDelayTimer.restart();
 
     // Sync plugin providers first
     syncPluginProviders();
@@ -423,7 +442,6 @@ SmartPanel {
             // Use fuzzy search to filter commands
             const fuzzyResults = FuzzySort.go(query, allCommands, {
                                                 "keys": ["name"],
-                                                "threshold": -1000,
                                                 "limit": 50
                                               });
 
@@ -441,12 +459,23 @@ SmartPanel {
       }
     } else {
       // Regular search - let providers contribute results
+      let allResults = [];
       for (let provider of providers) {
         if (provider.handleSearch) {
           const providerResults = provider.getResults(searchText);
-          results = results.concat(providerResults);
+          allResults = allResults.concat(providerResults);
         }
       }
+
+      // Sort by _score (higher = better match), items without _score go first
+      if (searchText.trim() !== "") {
+        allResults.sort((a, b) => {
+                          const sa = a._score !== undefined ? a._score : 0;
+                          const sb = b._score !== undefined ? b._score : 0;
+                          return sb - sa;
+                        });
+      }
+      results = allResults;
     }
 
     // Update activeProvider only after computing new state to avoid UI flicker
@@ -454,16 +483,42 @@ SmartPanel {
     selectedIndex = 0;
   }
 
+  // Check if current provider allows wrap navigation (default true)
+  readonly property bool allowWrapNavigation: {
+    var provider = activeProvider || currentProvider;
+    return provider && provider.wrapNavigation !== undefined ? provider.wrapNavigation : true;
+  }
+
   // Navigation functions
+  function selectNext() {
+    if (results.length > 0 && selectedIndex < results.length - 1) {
+      selectedIndex++;
+    }
+  }
+
+  function selectPrevious() {
+    if (results.length > 0 && selectedIndex > 0) {
+      selectedIndex--;
+    }
+  }
+
   function selectNextWrapped() {
     if (results.length > 0) {
-      selectedIndex = (selectedIndex + 1) % results.length;
+      if (allowWrapNavigation) {
+        selectedIndex = (selectedIndex + 1) % results.length;
+      } else {
+        selectNext();
+      }
     }
   }
 
   function selectPreviousWrapped() {
     if (results.length > 0) {
-      selectedIndex = (((selectedIndex - 1) % results.length) + results.length) % results.length;
+      if (allowWrapNavigation) {
+        selectedIndex = (((selectedIndex - 1) % results.length) + results.length) % results.length;
+      } else {
+        selectPrevious();
+      }
     }
   }
 
@@ -668,6 +723,14 @@ SmartPanel {
     }
   }
 
+  SettingsProvider {
+    id: settingsProvider
+    Component.onCompleted: {
+      registerProvider(this);
+      Logger.d("Launcher", "Registered: SettingsProvider");
+    }
+  }
+
   // ---------------------------------------------------
   panelContent: Rectangle {
     id: ui
@@ -742,40 +805,28 @@ SmartPanel {
       }
     }
 
-    MouseArea {
-      id: mouseMovementDetector
-      anchors.fill: parent
-      z: -999
-      hoverEnabled: true
-      propagateComposedEvents: true
-      acceptedButtons: Qt.NoButton
+    HoverHandler {
+      id: globalHoverHandler
       enabled: !Settings.data.appLauncher.ignoreMouseInput
 
-      property real lastX: 0
-      property real lastY: 0
-      property bool initialized: false
+      onPointChanged: {
+        if (!root.mouseTrackingReady) {
+          return;
+        }
 
-      onPositionChanged: mouse => {
-                           if (!initialized) {
-                             lastX = mouse.x;
-                             lastY = mouse.y;
-                             initialized = true;
-                             return;
-                           }
+        if (!root.globalMouseInitialized) {
+          root.globalLastMouseX = point.position.x;
+          root.globalLastMouseY = point.position.y;
+          root.globalMouseInitialized = true;
+          return;
+        }
 
-                           const deltaX = Math.abs(mouse.x - lastX);
-                           const deltaY = Math.abs(mouse.y - lastY);
-                           if (deltaX > 1 || deltaY > 1) {
-                             root.ignoreMouseHover = false;
-                             lastX = mouse.x;
-                             lastY = mouse.y;
-                           }
-                         }
-
-      Connections {
-        target: root
-        function onOpened() {
-          mouseMovementDetector.initialized = false;
+        const deltaX = Math.abs(point.position.x - root.globalLastMouseX);
+        const deltaY = Math.abs(point.position.y - root.globalLastMouseY);
+        if (deltaX + deltaY >= 5) {
+          root.ignoreMouseHover = false;
+          root.globalLastMouseX = point.position.x;
+          root.globalLastMouseY = point.position.y;
         }
       }
     }
@@ -837,10 +888,10 @@ SmartPanel {
                   } else if (event.key === Qt.Key_Backtab) {
                     root.onBackTabPressed();
                     event.accepted = true;
-                  } else if (event.key === Qt.Key_Left) {
+                  } else if (event.key === Qt.Key_Left && root.isGridView) {
                     root.onLeftPressed();
                     event.accepted = true;
-                  } else if (event.key === Qt.Key_Right) {
+                  } else if (event.key === Qt.Key_Right && root.isGridView) {
                     root.onRightPressed();
                     event.accepted = true;
                   } else if (event.key === Qt.Key_Up) {
@@ -997,7 +1048,7 @@ SmartPanel {
                     NImageRounded {
                       id: imagePreview
                       anchors.fill: parent
-                      visible: modelData.isImage && !modelData.displayString
+                      visible: !!modelData.isImage && !modelData.displayString
                       radius: Style.radiusXS
                       borderColor: Color.mOnSurface
                       borderWidth: Style.borderM
@@ -1042,7 +1093,7 @@ SmartPanel {
                       anchors.fill: parent
                       anchors.margins: Style.marginXS
 
-                      visible: (!modelData.isImage && !modelData.displayString) || (modelData.isImage && imagePreview.status === Image.Error)
+                      visible: (!modelData.isImage && !modelData.displayString) || (!!modelData.isImage && imagePreview.status === Image.Error)
                       active: visible
 
                       sourceComponent: Component {
@@ -1058,6 +1109,7 @@ SmartPanel {
                           icon: modelData.icon
                           pointSize: Style.fontSizeXXXL
                           visible: modelData.icon && !modelData.displayString
+                          color: (entry.isSelected && !Settings.data.appLauncher.showIconBackground) ? Color.mOnHover : Color.mOnSurface
                         }
                       }
 
@@ -1076,7 +1128,7 @@ SmartPanel {
                     NText {
                       id: stringDisplay
                       anchors.centerIn: parent
-                      visible: modelData.displayString || (!imagePreview.visible && !iconLoader.visible)
+                      visible: !!modelData.displayString || (!imagePreview.visible && !iconLoader.visible)
                       text: modelData.displayString ? modelData.displayString : modelData.name.charAt(0).toUpperCase()
                       pointSize: modelData.displayString ? (modelData.displayStringSize || Style.fontSizeXXXL) : Style.fontSizeXXL
                       font.weight: Style.fontWeightBold
@@ -1085,11 +1137,11 @@ SmartPanel {
 
                     // Image type indicator overlay
                     Rectangle {
-                      visible: modelData.isImage && imagePreview.visible
+                      visible: !!modelData.isImage && imagePreview.visible
                       anchors.bottom: parent.bottom
                       anchors.right: parent.right
                       anchors.margins: 2
-                      width: formatLabel.width + Style.marginXXS * 2
+                      width: formatLabel.width + Style.marginXS
                       height: formatLabel.height + Style.marginXXS
                       color: Color.mSurfaceVariant
                       radius: Style.radiusXXS
@@ -1177,36 +1229,12 @@ SmartPanel {
                 hoverEnabled: true
                 cursorShape: Qt.PointingHandCursor
                 enabled: !Settings.data.appLauncher.ignoreMouseInput
-
-                property real entryX: 0
-                property real entryY: 0
-                property bool capturingMovement: false
-
                 onEntered: {
-                  if (root.ignoreMouseHover) {
-                    entryX = mouseX;
-                    entryY = mouseY;
-                    capturingMovement = true;
-                  } else {
+                  if (!root.ignoreMouseHover) {
                     selectedIndex = index;
                   }
                 }
-
-                onPositionChanged: mouse => {
-                                     if (root.ignoreMouseHover && capturingMovement) {
-                                       if (Math.abs(mouse.x - entryX) > 5 || Math.abs(mouse.y - entryY) > 5) {
-                                         root.ignoreMouseHover = false;
-                                         capturingMovement = false;
-                                         selectedIndex = index;
-                                       }
-                                     } else if (!root.ignoreMouseHover && selectedIndex !== index) {
-                                       selectedIndex = index;
-                                     }
-                                   }
-
                 onClicked: mouse => {
-                             root.ignoreMouseHover = false;
-                             capturingMovement = false;
                              if (mouse.button === Qt.LeftButton) {
                                selectedIndex = index;
                                root.activate();
@@ -1404,7 +1432,7 @@ SmartPanel {
                     NImageRounded {
                       id: gridImagePreview
                       anchors.fill: parent
-                      visible: modelData.isImage && !modelData.displayString
+                      visible: !!modelData.isImage && !modelData.displayString
                       radius: Style.radiusM
 
                       // Use provider's image revision for reactive updates
@@ -1446,7 +1474,7 @@ SmartPanel {
                       anchors.fill: parent
                       anchors.margins: Style.marginXS
 
-                      visible: (!modelData.isImage && !modelData.displayString) || (modelData.isImage && gridImagePreview.status === Image.Error)
+                      visible: (!modelData.isImage && !modelData.displayString) || (!!modelData.isImage && gridImagePreview.status === Image.Error)
                       active: visible
 
                       sourceComponent: Settings.data.appLauncher.iconMode === "tabler" && modelData.isTablerIcon ? gridTablerIconComponent : gridSystemIconComponent
@@ -1457,6 +1485,7 @@ SmartPanel {
                           icon: modelData.icon
                           pointSize: Style.fontSizeXXXL
                           visible: modelData.icon && !modelData.displayString
+                          color: (gridEntryContainer.isSelected && !Settings.data.appLauncher.showIconBackground) ? Color.mOnHover : Color.mOnSurface
                         }
                       }
 
@@ -1475,7 +1504,7 @@ SmartPanel {
                     NText {
                       id: gridStringDisplay
                       anchors.centerIn: parent
-                      visible: modelData.displayString || (!gridImagePreview.visible && !gridIconLoader.visible)
+                      visible: !!modelData.displayString || (!gridImagePreview.visible && !gridIconLoader.visible)
                       text: modelData.displayString ? modelData.displayString : modelData.name.charAt(0).toUpperCase()
                       pointSize: {
                         if (modelData.displayString) {
@@ -1572,35 +1601,12 @@ SmartPanel {
                 cursorShape: Qt.PointingHandCursor
                 enabled: !Settings.data.appLauncher.ignoreMouseInput
 
-                property real entryX: 0
-                property real entryY: 0
-                property bool capturingMovement: false
-
                 onEntered: {
-                  if (root.ignoreMouseHover) {
-                    entryX = mouseX;
-                    entryY = mouseY;
-                    capturingMovement = true;
-                  } else {
+                  if (!root.ignoreMouseHover) {
                     selectedIndex = index;
                   }
                 }
-
-                onPositionChanged: mouse => {
-                                     if (root.ignoreMouseHover && capturingMovement) {
-                                       if (Math.abs(mouse.x - entryX) > 5 || Math.abs(mouse.y - entryY) > 5) {
-                                         root.ignoreMouseHover = false;
-                                         capturingMovement = false;
-                                         selectedIndex = index;
-                                       }
-                                     } else if (!root.ignoreMouseHover && selectedIndex !== index) {
-                                       selectedIndex = index;
-                                     }
-                                   }
-
                 onClicked: mouse => {
-                             root.ignoreMouseHover = false;
-                             capturingMovement = false;
                              if (mouse.button === Qt.LeftButton) {
                                selectedIndex = index;
                                root.activate();
@@ -1632,7 +1638,7 @@ SmartPanel {
               return "";
             }
             var prefix = activeProvider && activeProvider.name ? activeProvider.name + ": " : "";
-            return prefix + results.length + " result" + (results.length !== 1 ? 's' : '');
+            return prefix + I18n.trp("common.result-count", results.length);
           }
           pointSize: Style.fontSizeXS
           color: Color.mOnSurfaceVariant

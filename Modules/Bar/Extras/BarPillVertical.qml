@@ -39,11 +39,12 @@ Item {
   property bool shouldAnimateHide: false
 
   // Sizing logic for vertical bars
-  readonly property int buttonSize: Style.capsuleHeight
+  readonly property int buttonSize: Style.getCapsuleHeightForScreen(screen?.name)
+  readonly property real barFontSize: Style.getBarFontSizeForScreen(screen?.name)
   readonly property int pillHeight: buttonSize
   readonly property int pillOverlap: Math.round(buttonSize * 0.5)
-  readonly property int maxPillWidth: rotateText ? Math.max(buttonSize, Math.round(textItem.implicitHeight + Style.marginM * 2)) : buttonSize
-  readonly property int maxPillHeight: rotateText ? Math.max(1, Math.round(textItem.implicitWidth + Style.marginM * 2 + Math.round(iconCircle.height / 4))) : Math.max(1, Math.round(textItem.implicitHeight + Style.marginM * 2))
+  readonly property int maxPillWidth: rotateText ? Math.max(buttonSize, Math.round(textItem.implicitHeight + Style.marginXL)) : buttonSize
+  readonly property int maxPillHeight: rotateText ? Math.max(1, Math.round(textItem.implicitWidth + Style.marginXL + Math.round(iconCircle.height / 4))) : Math.max(1, Math.round(textItem.implicitHeight + Style.marginXL))
 
   // Determine pill direction based on section position
   readonly property bool openDownward: oppositeDirection
@@ -97,6 +98,7 @@ Item {
     anchors.horizontalCenter: parent.horizontalCenter
 
     Behavior on color {
+      enabled: !Color.isTransitioning
       ColorAnimation {
         duration: Style.animationFast
         easing.type: Easing.InOutQuad
@@ -137,7 +139,7 @@ Item {
       rotation: rotateText ? -90 : 0
       text: root.text + root.suffix
       family: Settings.data.ui.fontFixed
-      pointSize: Style.barFontSize
+      pointSize: root.barFontSize
       applyUiScale: false
       horizontalAlignment: Text.AlignHCenter
       verticalAlignment: Text.AlignVCenter
@@ -297,7 +299,7 @@ Item {
     onEntered: {
       hovered = true;
       root.entered();
-      TooltipService.show(root, root.tooltipText, BarService.getTooltipDirection(), (forceOpen || forceClose) ? Style.tooltipDelay : Style.tooltipDelayLong);
+      TooltipService.show(root, root.tooltipText, BarService.getTooltipDirection(root.screen?.name), (forceOpen || forceClose) ? Style.tooltipDelay : Style.tooltipDelayLong);
       if (forceClose) {
         return;
       }

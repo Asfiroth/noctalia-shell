@@ -11,22 +11,21 @@ Singleton {
   id: root
 
   // Program availability properties
-  property bool matugenAvailable: false
-  property string matugenVersion: ""
   property bool nmcliAvailable: false
   property bool wlsunsetAvailable: false
   property bool app2unitAvailable: false
   property bool gnomeCalendarAvailable: false
+  property bool pythonAvailable: false
   property bool wtypeAvailable: false
 
   // Programs to check - maps property names to commands
   readonly property var programsToCheck: ({
-                                            "matugenAvailable": ["sh", "-c", "command -v matugen"],
                                             "nmcliAvailable": ["sh", "-c", "command -v nmcli"],
                                             "wlsunsetAvailable": ["sh", "-c", "command -v wlsunset"],
                                             "app2unitAvailable": ["sh", "-c", "command -v app2unit"],
                                             "gnomeCalendarAvailable": ["sh", "-c", "command -v gnome-calendar"],
-                                            "wtypeAvailable": ["sh", "-c", "command -v wtype"]
+                                            "wtypeAvailable": ["sh", "-c", "command -v wtype"],
+                                            "pythonAvailable": ["sh", "-c", "command -v python3"]
                                           })
 
   // Discord client auto-detection
@@ -37,6 +36,28 @@ Singleton {
 
   // Signal emitted when all checks are complete
   signal checksCompleted
+
+  // disable app2unit in settings if it is not available
+  onChecksCompleted: {
+    if (!app2unitAvailable && Settings.data.appLauncher.useApp2Unit) {
+      Settings.data.appLauncher.useApp2Unit = false;
+    }
+    if (!wlsunsetAvailable && Settings.data.nightLight.enabled) {
+      Settings.data.nightLight.enabled = false;
+    }
+  }
+
+  onApp2unitAvailableChanged: {
+    if (!app2unitAvailable && Settings.data.appLauncher.useApp2Unit) {
+      Settings.data.appLauncher.useApp2Unit = false;
+    }
+  }
+
+  onWlsunsetAvailableChanged: {
+    if (!wlsunsetAvailable && Settings.data.nightLight.enabled) {
+      Settings.data.nightLight.enabled = false;
+    }
+  }
 
   // Function to detect Discord client by checking config directories
   function detectDiscordClient() {
@@ -51,12 +72,7 @@ Singleton {
       // Use the actual config path from the client, removing ~ prefix
       var checkPath = configPath.startsWith("~") ? configPath.substring(2) : configPath.substring(1);
 
-      // Check if this client requires themes folder to exist
-      if (client.requiresThemesFolder) {
-        scriptParts.push("if [ -d \"$HOME/" + checkPath + "/themes\" ]; then available_clients=\"$available_clients " + clientName + "\"; fi;");
-      } else {
-        scriptParts.push("if [ -d \"$HOME/" + checkPath + "\" ]; then available_clients=\"$available_clients " + clientName + "\"; fi;");
-      }
+      scriptParts.push("if [ -d \"$HOME/" + checkPath + "\" ]; then available_clients=\"$available_clients " + clientName + "\"; fi;");
     }
 
     scriptParts.push("echo \"$available_clients\"");
@@ -183,11 +199,6 @@ Singleton {
       // Stop the process to free resources
       running = false;
 
-      // If matugen was just found, check its version
-      if (currentProperty === "matugenAvailable" && exitCode === 0) {
-        matugenVersionChecker.running = true;
-      }
-
       // Track completion
       root.completedChecks++;
 
@@ -199,32 +210,6 @@ Singleton {
         root.checksCompleted();
       } else {
         root.checkNextProgram();
-      }
-    }
-
-    stdout: StdioCollector {}
-    stderr: StdioCollector {}
-  }
-
-  // Process to detect matugen version
-  Process {
-    id: matugenVersionChecker
-    command: ["matugen", "--version"]
-    running: false
-
-    onExited: function (exitCode) {
-      if (exitCode === 0) {
-        // Parse version from output (format: "matugen X.Y.Z")
-        var output = stdout.text.trim();
-        var match = output.match(/(\d+\.\d+\.\d+)/);
-        if (match) {
-          root.matugenVersion = match[1];
-          Logger.d("ProgramChecker", "Detected matugen version:", root.matugenVersion);
-        } else {
-          // Fallback: use the whole output if no version pattern found
-          root.matugenVersion = output;
-          Logger.d("ProgramChecker", "Matugen version (raw):", output);
-        }
       }
     }
 

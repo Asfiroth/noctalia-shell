@@ -91,7 +91,8 @@ Singleton {
                                     "deviceNativePath": "",
                                     "showPowerProfiles": false,
                                     "showNoctaliaPerformance": false,
-                                    "hideIfNotDetected": true
+                                    "hideIfNotDetected": true,
+                                    "hideIfIdle": false
                                   },
                                   "Bluetooth": {
                                     "displayMode": "onhover"
@@ -142,7 +143,8 @@ Singleton {
                                       "vertical": 10
                                     },
                                     "enableColorization": false,
-                                    "colorizeSystemIcon": "none"
+                                    "colorizeSystemIcon": "none",
+                                    "ipcIdentifier": ""
                                   },
                                   "KeyboardLayout": {
                                     "displayMode": "onhover",
@@ -154,7 +156,8 @@ Singleton {
                                     "showScrollLock": true,
                                     "capsLockIcon": "letter-c",
                                     "numLockIcon": "letter-n",
-                                    "scrollLockIcon": "letter-s"
+                                    "scrollLockIcon": "letter-s",
+                                    "hideWhenOff": false
                                   },
                                   "Launcher": {
                                     "icon": "rocket",
@@ -183,7 +186,8 @@ Singleton {
                                   },
                                   "NotificationHistory": {
                                     "showUnreadBadge": true,
-                                    "hideWhenZero": false
+                                    "hideWhenZero": false,
+                                    "hideWhenZeroUnread": false
                                   },
                                   "SessionMenu": {
                                     "colorName": "error"
@@ -201,6 +205,7 @@ Singleton {
                                     "showLoadAverage": false,
                                     "showMemoryUsage": true,
                                     "showMemoryAsPercent": false,
+                                    "showSwapUsage": false,
                                     "showNetworkStats": false,
                                     "showDiskUsage": false,
                                     "diskPath": "/"

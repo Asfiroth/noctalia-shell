@@ -41,6 +41,7 @@ A beautiful, minimal desktop shell for Wayland that actually gets out of your wa
 - 🪟 Native support for Niri, Hyprland, Sway, MangoWC and labwc
 - ⚡ Built on Quickshell for performance
 - 🎯 Minimalist design philosophy
+- 🔌 Plugin support ([explore plugins](https://noctalia.dev/plugins/))
 - 🔧 Easily customizable to match your style
 - 🎨 Many color schemes available
 ---
@@ -122,7 +123,7 @@ A heartfelt thank you to our incredible community of [**contributors**](https://
 
 While all donations are greatly appreciated, they are completely voluntary.
 
-<a href="https://ko-fi.com/lysec">
+<a href="https://ko-fi.com/">
   <img src="https://img.shields.io/badge/donate-ko--fi-A8AEFF?style=for-the-badge&logo=kofi&logoColor=FFFFFF&labelColor=0C0D11" alt="Ko-Fi" />
 </a>
 
@@ -141,6 +142,8 @@ While all donations are greatly appreciated, they are completely voluntary.
 * llego
 * Grune
 * Maitreya (Max)
+* sheast
+* Radu
 
 ---
 

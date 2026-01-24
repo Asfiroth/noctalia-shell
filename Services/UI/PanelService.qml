@@ -3,6 +3,7 @@ pragma Singleton
 import QtQuick
 import Quickshell
 import qs.Commons
+import qs.Services.Compositor
 
 Singleton {
   id: root
@@ -91,6 +92,24 @@ Singleton {
     return name in registeredPanels;
   }
 
+  // Check if panels can be shown on a given screen (has bar enabled or allowPanelsOnScreenWithoutBar)
+  function canShowPanelsOnScreen(screen) {
+    const name = screen?.name || "";
+    const monitors = Settings.data.bar.monitors || [];
+    const allowPanelsOnScreenWithoutBar = Settings.data.general.allowPanelsOnScreenWithoutBar;
+    return allowPanelsOnScreenWithoutBar || monitors.length === 0 || monitors.includes(name);
+  }
+
+  // Find a screen that can show panels
+  function findScreenForPanels() {
+    for (let i = 0; i < Quickshell.screens.length; i++) {
+      if (canShowPanelsOnScreen(Quickshell.screens[i])) {
+        return Quickshell.screens[i];
+      }
+    }
+    return null;
+  }
+
   // Timer to switch from Exclusive to OnDemand keyboard focus on Hyprland
   Timer {
     id: keyboardInitTimer
@@ -141,5 +160,17 @@ Singleton {
 
     // emit signal
     didClose();
+  }
+
+  // Close panels when compositor overview opens (if setting is enabled)
+  Connections {
+    target: CompositorService
+    enabled: Settings.data.bar.hideOnOverview
+
+    function onOverviewActiveChanged() {
+      if (CompositorService.overviewActive && root.openedPanel) {
+        root.openedPanel.close();
+      }
+    }
   }
 }

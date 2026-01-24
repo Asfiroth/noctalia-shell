@@ -24,7 +24,7 @@ NIconButton {
   property var widgetMetadata: BarWidgetRegistry.widgetMetadata[widgetId]
   property var widgetSettings: {
     if (section && sectionWidgetIndex >= 0) {
-      var widgets = Settings.data.bar.widgets[section];
+      var widgets = Settings.getBarWidgetsForScreen(screen?.name)[section];
       if (widgets && sectionWidgetIndex < widgets.length) {
         return widgets[sectionWidgetIndex];
       }
@@ -82,8 +82,8 @@ NIconButton {
   // If using distro logo, don't use theme icon.
   icon: (customIconPath === "" && !useDistroLogo) ? customIcon : ""
   tooltipText: I18n.tr("tooltips.open-control-center")
-  tooltipDirection: BarService.getTooltipDirection()
-  baseSize: Style.capsuleHeight
+  tooltipDirection: BarService.getTooltipDirection(screen?.name)
+  baseSize: Style.getCapsuleHeightForScreen(screen?.name)
   applyUiScale: false
   customRadius: Style.radiusL
   colorBg: Style.capsuleColor

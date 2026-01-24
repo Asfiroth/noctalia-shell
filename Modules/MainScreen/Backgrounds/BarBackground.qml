@@ -32,8 +32,8 @@ ShapePath {
 
   // Check if bar should be visible on this screen
   readonly property bool shouldShow: {
-    // Check global bar visibility
-    if (!BarService.isVisible)
+    // Check global bar visibility (includes overview state)
+    if (!BarService.effectivelyVisible)
       return false;
 
     // Check screen-specific configuration
@@ -94,13 +94,6 @@ ShapePath {
   // Use mapped coordinates relative to the Shape container
   startX: barMappedPos.x + tlRadius * tlMultX
   startY: barMappedPos.y
-
-  // Smooth color animation
-  Behavior on fillColor {
-    ColorAnimation {
-      duration: Style.animationFast
-    }
-  }
 
   // ========== PATH DEFINITION ==========
   // Draws a rectangle with potentially inverted corners

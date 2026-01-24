@@ -2,6 +2,7 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 import qs.Commons
+import qs.Services.Compositor
 import qs.Widgets
 
 ColumnLayout {
@@ -107,23 +108,18 @@ ColumnLayout {
     onToggled: checked => Settings.data.bar.showCapsule = checked
   }
 
-  ColumnLayout {
+  NValueSlider {
     Layout.fillWidth: true
-    spacing: Style.marginXXS
     visible: Settings.data.bar.showCapsule
-
-    NValueSlider {
-      Layout.fillWidth: true
-      label: I18n.tr("panels.bar.appearance-capsule-opacity-label")
-      description: I18n.tr("panels.bar.appearance-capsule-opacity-description")
-      from: 0
-      to: 1
-      stepSize: 0.01
-      value: Settings.data.bar.capsuleOpacity
-      defaultValue: Settings.getDefaultValue("bar.capsuleOpacity")
-      onMoved: value => Settings.data.bar.capsuleOpacity = value
-      text: Math.floor(Settings.data.bar.capsuleOpacity * 100) + "%"
-    }
+    label: I18n.tr("panels.bar.appearance-capsule-opacity-label")
+    description: I18n.tr("panels.bar.appearance-capsule-opacity-description")
+    from: 0
+    to: 1
+    stepSize: 0.01
+    value: Settings.data.bar.capsuleOpacity
+    defaultValue: Settings.getDefaultValue("bar.capsuleOpacity")
+    onMoved: value => Settings.data.bar.capsuleOpacity = value
+    text: Math.floor(Settings.data.bar.capsuleOpacity * 100) + "%"
   }
 
   NToggle {
@@ -161,37 +157,39 @@ ColumnLayout {
       Layout.fillWidth: true
       spacing: Style.marginL
 
-      ColumnLayout {
-        spacing: Style.marginXXS
-
-        NValueSlider {
-          Layout.fillWidth: true
-          label: I18n.tr("panels.bar.appearance-margins-vertical")
-          from: 0
-          to: 18
-          stepSize: 1
-          value: Settings.data.bar.marginVertical
-          defaultValue: Settings.getDefaultValue("bar.marginVertical")
-          onMoved: value => Settings.data.bar.marginVertical = value
-          text: Settings.data.bar.marginVertical + "px"
-        }
+      NValueSlider {
+        Layout.fillWidth: true
+        label: I18n.tr("panels.bar.appearance-margins-vertical")
+        from: 0
+        to: 18
+        stepSize: 1
+        value: Settings.data.bar.marginVertical
+        defaultValue: Settings.getDefaultValue("bar.marginVertical")
+        onMoved: value => Settings.data.bar.marginVertical = value
+        text: Settings.data.bar.marginVertical + "px"
       }
 
-      ColumnLayout {
-        spacing: Style.marginXXS
-
-        NValueSlider {
-          Layout.fillWidth: true
-          label: I18n.tr("panels.bar.appearance-margins-horizontal")
-          from: 0
-          to: 18
-          stepSize: 1
-          value: Settings.data.bar.marginHorizontal
-          defaultValue: Settings.getDefaultValue("bar.marginHorizontal")
-          onMoved: value => Settings.data.bar.marginHorizontal = value
-          text: Settings.data.bar.marginHorizontal + "px"
-        }
+      NValueSlider {
+        Layout.fillWidth: true
+        label: I18n.tr("panels.bar.appearance-margins-horizontal")
+        from: 0
+        to: 18
+        stepSize: 1
+        value: Settings.data.bar.marginHorizontal
+        defaultValue: Settings.getDefaultValue("bar.marginHorizontal")
+        onMoved: value => Settings.data.bar.marginHorizontal = value
+        text: Settings.data.bar.marginHorizontal + "px"
       }
     }
+  }
+
+  NToggle {
+    Layout.fillWidth: true
+    visible: CompositorService.isNiri
+    label: I18n.tr("panels.bar.appearance-hide-on-overview-label")
+    description: I18n.tr("panels.bar.appearance-hide-on-overview-description")
+    checked: Settings.data.bar.hideOnOverview
+    defaultValue: Settings.getDefaultValue("bar.hideOnOverview")
+    onToggled: checked => Settings.data.bar.hideOnOverview = checked
   }
 }

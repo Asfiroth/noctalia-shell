@@ -3,11 +3,24 @@ pragma Singleton
 import QtQuick
 import Quickshell
 import qs.Commons
+import qs.Services.Compositor
 
 Singleton {
   id: root
 
   property bool isVisible: true
+
+  // Computed visibility that factors in compositor overview state
+  readonly property bool effectivelyVisible: {
+    if (!isVisible) {
+      return false;
+    }
+    if (Settings.data.bar.hideOnOverview && CompositorService.overviewActive) {
+      return false;
+    }
+    return true;
+  }
+
   property var readyBars: ({})
 
   // Registry to store actual widget instances
@@ -243,8 +256,9 @@ Singleton {
     return false;
   }
 
-  function getTooltipDirection() {
-    switch (Settings.data.bar.position) {
+  function getTooltipDirection(screenName) {
+    const position = Settings.getBarPositionForScreen(screenName);
+    switch (position) {
     case "right":
       return "left";
     case "left":
@@ -279,16 +293,26 @@ Singleton {
                                             "widgetIndex": index,
                                             "widgetData": widgetData,
                                             "widgetId": widgetId,
-                                            "sectionId": section
+                                            "sectionId": section,
+                                            "screen": screen
                                           });
 
       if (dialog) {
         dialog.updateWidgetSettings.connect((sec, idx, settings) => {
-                                              var widgets = Settings.data.bar.widgets[sec];
-                                              if (widgets && idx < widgets.length) {
-                                                widgets[idx] = Object.assign({}, widgets[idx], settings);
-                                                Settings.data.bar.widgets[sec] = widgets;
-                                                Settings.saveImmediate();
+                                              var screenName = screen?.name || "";
+                                              if (Settings.hasScreenOverride(screenName, "widgets")) {
+                                                var overrideWidgets = Settings.getBarWidgetsForScreen(screenName);
+                                                if (overrideWidgets && overrideWidgets[sec] && idx < overrideWidgets[sec].length) {
+                                                  overrideWidgets[sec][idx] = Object.assign({}, overrideWidgets[sec][idx], settings);
+                                                  Settings.setScreenOverride(screenName, "widgets", overrideWidgets);
+                                                }
+                                              } else {
+                                                var widgets = Settings.data.bar.widgets[sec];
+                                                if (widgets && idx < widgets.length) {
+                                                  widgets[idx] = Object.assign({}, widgets[idx], settings);
+                                                  Settings.data.bar.widgets[sec] = widgets;
+                                                  Settings.saveImmediate();
+                                                }
                                               }
                                             });
         // Enable keyboard focus for the popup menu window when dialog is open
@@ -343,7 +367,8 @@ Singleton {
 
     function instantiateAndOpen() {
       var dialog = component.createObject(popupMenuWindow.dialogParent, {
-                                            "showToastOnSave": true
+                                            "showToastOnSave": true,
+                                            "screen": screen
                                           });
 
       if (dialog) {

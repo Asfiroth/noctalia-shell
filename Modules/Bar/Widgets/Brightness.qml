@@ -22,7 +22,7 @@ Item {
   property var widgetMetadata: BarWidgetRegistry.widgetMetadata[widgetId]
   property var widgetSettings: {
     if (section && sectionWidgetIndex >= 0) {
-      var widgets = Settings.data.bar.widgets[section];
+      var widgets = Settings.getBarWidgetsForScreen(screen?.name)[section];
       if (widgets && sectionWidgetIndex < widgets.length) {
         return widgets[sectionWidgetIndex];
       }
@@ -30,7 +30,8 @@ Item {
     return {};
   }
 
-  readonly property bool isBarVertical: Settings.data.bar.position === "left" || Settings.data.bar.position === "right"
+  readonly property string barPosition: Settings.getBarPositionForScreen(screen?.name)
+  readonly property bool isBarVertical: barPosition === "left" || barPosition === "right"
   readonly property string displayMode: (widgetSettings.displayMode !== undefined) ? widgetSettings.displayMode : widgetMetadata.displayMode
 
   // Used to avoid opening the pill on Quickshell startup

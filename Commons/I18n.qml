@@ -318,15 +318,12 @@ Singleton {
           value = value[keys[i]];
         } else {
           // Indicate this key does not even exists in the english fallback
-          return `## ${key} ##`;
+          return `!!${key}!!`;
         }
       }
-
-      // Make untranslated string easy to spot
-      value = `<i>${value}</i>`;
     } else if (notFound) {
       // No fallback available
-      return `## ${key} ##`;
+      return `!!${key}!!`;
     }
 
     if (typeof value !== "string") {
@@ -346,18 +343,15 @@ Singleton {
 
   // -------------------------------------------
   // Plural translation function
-  function trp(key, count, defaultSingular, defaultPlural, interpolations) {
-    if (typeof defaultSingular === "undefined")
-      defaultSingular = "";
-    if (typeof defaultPlural === "undefined")
-      defaultPlural = "";
-    if (typeof interpolations === "undefined")
+  function trp(key, count, interpolations) {
+    if (typeof interpolations === "undefined") {
       interpolations = {};
+    }
 
-    const pluralKey = count === 1 ? key : `${key}-plural`;
-    const defaultValue = count === 1 ? defaultSingular : defaultPlural;
+    // Use key for singular, key-plural for plural
+    const realKey = count === 1 ? key : `${key}-plural`;
 
-    // Merge interpolations with count (QML doesn't support spread operator)
+    // Merge interpolations with count
     var finalInterpolations = {
       "count": count
     };
@@ -365,6 +359,6 @@ Singleton {
       finalInterpolations[prop] = interpolations[prop];
     }
 
-    return tr(pluralKey, finalInterpolations);
+    return tr(realKey, finalInterpolations);
   }
 }
