@@ -179,9 +179,8 @@ SmartPanel {
   readonly property int gridContentWidth: listPanelWidth - (2 * Style.marginXS)
   readonly property int gridCellSize: Math.floor((gridContentWidth - ((targetGridColumns - 1) * Style.marginS)) / targetGridColumns)
 
-  // Actual columns that fit in the GridView
-  // This gets updated dynamically by the GridView when its actual width is known
-  property int gridColumns: 5
+  // Actual columns in the GridView - tracks targetGridColumns
+  readonly property int gridColumns: targetGridColumns
 
   // Listen for plugin provider registry changes
   Connections {
@@ -755,6 +754,22 @@ SmartPanel {
     }
   }
 
+  SessionProvider {
+    id: sessionProvider
+    Component.onCompleted: {
+      registerProvider(this);
+      Logger.d("Launcher", "Registered: SessionProvider");
+    }
+  }
+
+  WindowsProvider {
+    id: windowsProvider
+    Component.onCompleted: {
+      registerProvider(this);
+      Logger.d("Launcher", "Registered: WindowsProvider");
+    }
+  }
+
   // ---------------------------------------------------
   panelContent: Rectangle {
     id: ui
@@ -767,7 +782,7 @@ SmartPanel {
       visible: root.previewActive
       width: root.previewPanelWidth
       height: Math.round(400 * Style.uiScaleRatio)
-      x: ui.width + Style.marginM
+      x: root.panelAnchorRight ? -(root.previewPanelWidth + Style.marginM) : ui.width + Style.marginM
       y: {
         if (!resultsViewLoader.item)
           return Style.marginL;
@@ -877,8 +892,8 @@ SmartPanel {
 
     RowLayout {
       anchors.fill: parent
-      anchors.margins: Style.marginL // Apply overall margins here
-      spacing: Style.marginM // Apply spacing between elements here
+      anchors.margins: Style.marginL
+      spacing: Style.marginM
 
       // Left Pane
       ColumnLayout {
@@ -992,6 +1007,8 @@ SmartPanel {
           }
         }
 
+        // --------------------------
+        // LIST VIEW
         Component {
           id: listViewComponent
           NListView {
@@ -999,6 +1016,9 @@ SmartPanel {
 
             horizontalPolicy: ScrollBar.AlwaysOff
             verticalPolicy: ScrollBar.AlwaysOff
+            reserveScrollbarSpace: false
+            gradientColor: Color.mSurface
+            wheelScrollMultiplier: 4.0
 
             width: parent.width
             height: parent.height
@@ -1031,7 +1051,7 @@ SmartPanel {
                 }
               }
 
-              width: resultsList.width
+              width: resultsList.availableWidth
               implicitHeight: entryHeight
               clip: true
               color: entry.isSelected ? Color.mHover : Color.mSurface
@@ -1271,6 +1291,8 @@ SmartPanel {
           }
         }
 
+        // --------------------------
+        // SINGLE ITEM VIEW, ex: kaggi
         Component {
           id: singleViewComponent
 
@@ -1300,17 +1322,17 @@ SmartPanel {
                   }
                 }
 
-                ScrollView {
+                NScrollView {
+                  id: descriptionScrollView
                   Layout.alignment: Qt.AlignTop | Qt.AlignLeft
                   Layout.topMargin: Style.fontSizeL + Style.marginXL
                   Layout.fillWidth: true
                   Layout.fillHeight: true
-                  clip: true
-                  ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
-                  contentWidth: availableWidth
+                  horizontalPolicy: ScrollBar.AlwaysOff
+                  reserveScrollbarSpace: false
 
                   NText {
-                    width: parent.width
+                    width: descriptionScrollView.availableWidth
                     text: root.results.length > 0 ? root.results[0].description : ""
                     pointSize: Style.fontSizeM
                     font.weight: Font.Bold
@@ -1326,6 +1348,8 @@ SmartPanel {
           }
         }
 
+        // --------------------------
+        // GRID VIEW
         Component {
           id: gridViewComponent
           NGridView {
@@ -1333,6 +1357,10 @@ SmartPanel {
 
             horizontalPolicy: ScrollBar.AlwaysOff
             verticalPolicy: ScrollBar.AlwaysOff
+            reserveScrollbarSpace: false
+            gradientColor: Color.mSurface
+            wheelScrollMultiplier: 4.0
+            trackedSelectionIndex: root.selectedIndex
 
             width: parent.width
             height: parent.height
@@ -1354,20 +1382,6 @@ SmartPanel {
             keyNavigationEnabled: false
             focus: false
             interactive: !Settings.data.appLauncher.ignoreMouseInput
-
-            Component.onCompleted: {
-              // Initialize gridColumns when grid view is created
-              updateGridColumns();
-            }
-
-            function updateGridColumns() {
-              // Since cellWidth = width / targetGridColumns, the number of columns is always targetGridColumns
-              root.gridColumns = root.targetGridColumns;
-            }
-
-            onWidthChanged: {
-              updateGridColumns();
-            }
 
             // Completely disable GridView key handling
             Keys.enabled: false

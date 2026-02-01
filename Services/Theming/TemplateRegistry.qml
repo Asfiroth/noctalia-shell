@@ -66,7 +66,7 @@ Singleton {
           "path": "~/.config/gtk-4.0/noctalia.css"
         }
       ],
-      "postProcess": mode => `gsettings set org.gnome.desktop.interface color-scheme prefer-${mode} && python3 ${gtkRefreshScript}`
+      "postProcess": mode => `python3 ${gtkRefreshScript} ${mode}`
     },
     {
       "id": "qt",
@@ -147,7 +147,7 @@ Singleton {
       "id": "discord",
       "name": "Discord",
       "category": "misc",
-      "input": "discord.css",
+      "input": ["discord-midnight.css", "discord-material.css"],
       "clients": [
         {
           "name": "vesktop",
@@ -294,16 +294,7 @@ Singleton {
       "id": "emacs",
       "name": "Emacs",
       "category": "editor",
-      "input": "emacs.el",
-      "outputs": [
-        {
-          "path": "~/.config/doom/themes/noctalia-theme.el"
-        },
-        {
-          "path": "~/.emacs.d/themes/noctalia-theme.el"
-        }
-      ],
-      "checkDoomFirst": true
+      "input": "emacs.el"
     },
     {
       "id": "niri",
@@ -316,6 +307,18 @@ Singleton {
         }
       ],
       "postProcess": () => `${templateApplyScript} niri`
+    },
+    {
+      "id": "sway",
+      "name": "Sway",
+      "category": "compositor",
+      "input": "sway",
+      "outputs": [
+        {
+          "path": "~/.config/sway/noctalia"
+        }
+      ],
+      "postProcess": () => `${templateApplyScript} sway`
     },
     {
       "id": "hyprland",
@@ -469,6 +472,22 @@ Singleton {
 
     Logger.d("TemplateRegistry", "User templates config written to:", userConfigPath);
   }
+
+  // Extract Emacs clients for ProgramCheckerService compatibility
+  readonly property var emacsClients: [
+    {
+      "name": "doom",
+      "path": "~/.config/doom"
+    },
+    {
+      "name": "modern",
+      "path": "~/.config/emacs"
+    },
+    {
+      "name": "traditional",
+      "path": "~/.emacs.d"
+    }
+  ]
 
   // Process for checking if user templates file exists
   Process {

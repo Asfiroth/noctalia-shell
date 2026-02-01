@@ -57,6 +57,8 @@ Item {
   property real _lastMouseY: 0
   property bool _mouseInitialized: false
 
+  readonly property bool panelVeryTransparent: Settings.data.ui.panelBackgroundOpacity <= 0.75
+
   onSearchResultsChanged: {
     searchSelectedIndex = 0;
     ignoreMouseHover = true;
@@ -170,6 +172,35 @@ Item {
 
     // Clear highlight after a delay
     highlightClearTimer.restart();
+  }
+
+  // Navigate to a tab and optionally a subtab (simpler than navigateToResult, no highlighting)
+  function navigateToTab(tabId, subTabIndex) {
+    // Find the tab index by tab ID
+    let tabIndex = -1;
+    for (let i = 0; i < tabsModel.length; i++) {
+      if (tabsModel[i].id === tabId) {
+        tabIndex = i;
+        break;
+      }
+    }
+
+    if (tabIndex < 0)
+      return;
+
+    const hasSubTab = subTabIndex !== null && subTabIndex !== undefined && subTabIndex >= 0;
+    _pendingSubTab = hasSubTab ? subTabIndex : -1;
+
+    // Check if we're already on this tab
+    const alreadyOnTab = (currentTabIndex === tabIndex);
+
+    currentTabIndex = tabIndex;
+
+    if (alreadyOnTab && activeTabContent && hasSubTab) {
+      // Tab is already loaded, apply subtab directly
+      setSubTabIndex(subTabIndex);
+      _pendingSubTab = -1;
+    }
   }
 
   function searchSelectNext() {
@@ -525,7 +556,9 @@ Item {
     ProgramCheckerService.checkAllPrograms();
     updateTabsModel();
     selectTabById(requestedTab);
-    if (sidebarExpanded) {
+    // Skip auto-focus on Nvidia GPUs - cursor blink causes UI choppiness
+    const isNvidia = SystemStatService.gpuType === "nvidia";
+    if (sidebarExpanded && !isNvidia) {
       Qt.callLater(() => {
                      if (searchInput.inputItem)
                      searchInput.inputItem.forceActiveFocus();
@@ -623,16 +656,14 @@ Item {
       NBox {
         id: sidebar
 
-        readonly property bool panelVeryTransparent: Settings.data.ui.panelBackgroundOpacity <= 0.75
-
         clip: true
-        Layout.preferredWidth: Math.round(root.sidebarExpanded ? 200 * Style.uiScaleRatio : sidebarToggle.width + (panelVeryTransparent ? Style.marginXL : 0) + (sidebarList.verticalScrollBarActive ? Style.marginM : 0))
+        Layout.preferredWidth: Math.round(root.sidebarExpanded ? 200 * Style.uiScaleRatio : sidebarToggle.width + (root.panelVeryTransparent ? Style.marginXL : 0) + (sidebarList.verticalScrollBarActive ? Style.marginM : 0))
         Layout.fillHeight: true
         Layout.alignment: Qt.AlignTop
 
-        radius: sidebar.panelVeryTransparent ? Style.radiusM : 0
-        color: sidebar.panelVeryTransparent ? Color.mSurfaceVariant : "transparent"
-        border.color: sidebar.panelVeryTransparent ? Style.boxBorderColor : "transparent"
+        radius: root.panelVeryTransparent ? Style.radiusM : 0
+        color: root.panelVeryTransparent ? Color.mSurfaceVariant : "transparent"
+        border.color: root.panelVeryTransparent ? Style.boxBorderColor : "transparent"
 
         Behavior on Layout.preferredWidth {
           NumberAnimation {
@@ -645,7 +676,7 @@ Item {
         ColumnLayout {
           anchors.fill: parent
           spacing: Style.marginS
-          anchors.margins: sidebar.panelVeryTransparent ? Style.marginM : 0
+          anchors.margins: root.panelVeryTransparent ? Style.marginM : 0
 
           // Sidebar toggle button
           Item {
@@ -708,7 +739,7 @@ Item {
             Layout.fillWidth: true
             placeholderText: I18n.tr("common.search")
             inputIconName: "search"
-            visible: root.sidebarExpanded
+            visible: opacity > 0
             opacity: root.sidebarExpanded ? 1.0 : 0.0
 
             Behavior on opacity {
@@ -730,7 +761,7 @@ Item {
             id: searchCollapsedContainer
             Layout.fillWidth: true
             Layout.preferredHeight: Math.round(searchCollapsedRow.implicitHeight + Style.marginS * 2)
-            visible: !root.sidebarExpanded
+            visible: opacity > 0
             opacity: !root.sidebarExpanded ? 1.0 : 0.0
 
             Behavior on opacity {
@@ -803,6 +834,8 @@ Item {
               spacing: Style.marginXS
               visible: root.searchText.trim() !== ""
               verticalPolicy: ScrollBar.AsNeeded
+              gradientColor: "transparent"
+              reserveScrollbarSpace: false
 
               HoverHandler {
                 onPointChanged: {
@@ -901,6 +934,8 @@ Item {
               spacing: Style.marginXS
               currentIndex: root.currentTabIndex
               verticalPolicy: ScrollBar.AsNeeded
+              gradientColor: "transparent"
+              reserveScrollbarSpace: false
 
               delegate: Rectangle {
                 id: tabItem
@@ -1014,38 +1049,6 @@ Item {
             }
           }
         }
-
-        // Overlay gradient for sidebar scrolling
-        Rectangle {
-          anchors.fill: parent
-          anchors.margins: Style.borderS
-          radius: Style.radiusM
-          color: "transparent"
-          visible: sidebarList.verticalScrollBarActive
-          opacity: (sidebarList.contentY + sidebarList.height >= sidebarList.contentHeight - 10) ? 0 : 1
-
-          Behavior on opacity {
-            NumberAnimation {
-              duration: Style.animationFast
-              easing.type: Easing.InOutQuad
-            }
-          }
-
-          gradient: Gradient {
-            GradientStop {
-              position: 0.0
-              color: "transparent"
-            }
-            GradientStop {
-              position: 0.95
-              color: "transparent"
-            }
-            GradientStop {
-              position: 1.0
-              color: Color.mSurfaceVariant
-            }
-          }
-        }
       }
 
       // Content pane
@@ -1128,77 +1131,41 @@ Item {
                   }
                 }
 
-                sourceComponent: Flickable {
-                  id: flickable
+                sourceComponent: NScrollView {
+                  id: scrollView
                   anchors.fill: parent
-                  pressDelay: 200
+                  horizontalPolicy: ScrollBar.AlwaysOff
+                  verticalPolicy: ScrollBar.AsNeeded
+                  leftPadding: Style.marginL
+                  topPadding: Style.marginL
+                  bottomPadding: Style.marginL
+                  userRightPadding: Style.marginL
+                  reserveScrollbarSpace: false
 
-                  NScrollView {
-                    id: scrollView
-                    anchors.fill: parent
-                    horizontalPolicy: ScrollBar.AlwaysOff
-                    verticalPolicy: ScrollBar.AsNeeded
-                    padding: Style.marginL
-                    Component.onCompleted: {
-                      root.activeScrollView = scrollView;
-                    }
+                  Component.onCompleted: {
+                    root.activeScrollView = scrollView;
+                  }
 
-                    Loader {
-                      active: true
-                      sourceComponent: root.tabsModel[index]?.source
-                      width: scrollView.availableWidth
-                      onLoaded: {
-                        if (item && item.hasOwnProperty("screen")) {
-                          item.screen = root.screen;
+                  Loader {
+                    active: true
+                    sourceComponent: root.tabsModel[index]?.source
+                    width: scrollView.availableWidth
+                    onLoaded: {
+                      if (item && item.hasOwnProperty("screen")) {
+                        item.screen = root.screen;
+                      }
+                      root.activeTabContent = item;
+                      // Handle pending subtab + highlight from search navigation
+                      if (root.highlightLabelKey) {
+                        if (root._pendingSubTab >= 0) {
+                          root.setSubTabIndex(root._pendingSubTab);
+                          root._pendingSubTab = -1;
                         }
-                        root.activeTabContent = item;
-                        // Handle pending subtab + highlight from search navigation
-                        if (root.highlightLabelKey) {
-                          if (root._pendingSubTab >= 0) {
-                            root.setSubTabIndex(root._pendingSubTab);
-                            root._pendingSubTab = -1;
-                          }
-                          highlightScrollTimer.targetKey = root.highlightLabelKey;
-                          highlightScrollTimer.restart();
-                        }
+                        highlightScrollTimer.targetKey = root.highlightLabelKey;
+                        highlightScrollTimer.restart();
                       }
                     }
                   }
-                }
-              }
-            }
-
-            // Overlay gradient for content scrolling
-            Rectangle {
-              anchors.fill: parent
-              color: "transparent"
-              visible: root.activeScrollView && root.activeScrollView.ScrollBar.vertical && root.activeScrollView.ScrollBar.vertical.size < 1.0
-              opacity: {
-                if (!root.activeScrollView)
-                  return 1;
-                const scrollBar = root.activeScrollView.ScrollBar.vertical;
-                return (scrollBar.position + scrollBar.size >= 0.99) ? 0 : 1;
-              }
-
-              Behavior on opacity {
-                NumberAnimation {
-                  duration: Style.animationFast
-                  easing.type: Easing.InOutQuad
-                }
-              }
-
-              gradient: Gradient {
-                GradientStop {
-                  position: 0.0
-                  color: "transparent"
-                }
-                GradientStop {
-                  position: 0.95
-                  color: "transparent"
-                }
-                GradientStop {
-                  position: 1.0
-                  color: Qt.alpha(Color.mSurfaceVariant, 0.95)
                 }
               }
             }
