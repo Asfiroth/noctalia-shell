@@ -48,6 +48,11 @@
       "device-default": "Varsayılan (Bileşik aygıt)",
       "device-description": "Görüntülenecek pil cihazını seçin.",
       "device-label": "Pil cihazı",
+      "display-mode-description": "Pilin çubukta nasıl görüntüleneceğini seçin.",
+      "display-mode-graphic": "Grafik Pil",
+      "display-mode-icon-always": "Simge - Her zaman % göster",
+      "display-mode-icon-hover": "Simge - Üzerine gelindiğinde göster",
+      "display-mode-icon-only": "Yalnızca simge",
       "hide-if-idle-description": "Pil şarj olmuyor veya deşarj olmuyorken aracı gizle.",
       "hide-if-idle-label": "Boşta kalınca gizle",
       "hide-if-not-detected-description": "Sistemde pil algılanmadığında araç çubuğunu gizle.",
@@ -69,14 +74,13 @@
       "horizontal-bar-description": "İpucu: Bir satır sonu oluşturmak için \\n kullanın.",
       "horizontal-bar-label": "Yatay çubuk",
       "preview": "Önizleme",
+      "select-color-description": "Vurgu için tema renklerini uygula.",
       "tooltip-format-description": "Saat üzerine geldiğinizde gösterilen ipucu için format dizesi. Varsayılan ipucunu kullanmak için boş bırakın.",
       "tooltip-format-label": "İpucu formatı",
       "use-custom-font-description": "Saat için varsayılan yazı tipi seçimini özel bir yazı tipiyle geçersiz kılın.",
       "use-custom-font-label": "Özel yazı tipi kullan",
       "use-monospaced-font-description": "Etkinleştirildiğinde, saat tek aralıklı yazı tipini kullanır.",
       "use-monospaced-font-label": "Tek aralıklı yazı tipi kullan",
-      "use-primary-color-description": "Etkinleştirildiğinde, bu vurgu için birincil rengi uygular.",
-      "use-primary-color-label": "Birincil rengi kullan",
       "vertical-bar-description": "Her parçayı yeni bir satıra ayırmak için boşluk kullanın.",
       "vertical-bar-label": "Dikey çubuk"
     },
@@ -94,7 +98,6 @@
       "collapse-condition-description": "Çıktı metni bu değerle eşleşirse düğme daralacak.",
       "collapse-condition-label": "Daralma durumu",
       "color-selection-description": "Tema renklerini simgeye ve metne uygula.",
-      "color-selection-label": "Renk seç",
       "display-command-output-description": "Düzenli aralıklarla çalıştırılacak bir komut girin. Çıktısının ilk satırı metin olarak gösterilecektir.",
       "display-command-output-label": "Komut çıktısını göster",
       "display-command-output-stream-description": "Sürekli çalıştırılacak bir komut girin.",
@@ -254,8 +257,7 @@
       "hide-passive-label": "Pasif öğeleri gizle"
     },
     "volume": {
-      "display-mode-description": "Bu değerin nasıl görünmesini istediğinizi seçin.",
-      "display-mode-label": "Görüntüleme modu"
+      "display-mode-description": "Bu değerin nasıl görünmesini istediğinizi seçin."
     },
     "workspace": {
       "character-count-description": "Çalışma alanı adlarından gösterilecek karakter sayısı (1-10).",
@@ -345,13 +347,6 @@
       "version-new-user": "Yeni kurulum"
     }
   },
-  "colors": {
-    "error": "Hata",
-    "on-surface": "Yüzeyde",
-    "primary": "Birincil",
-    "secondary": "İkincil",
-    "tertiary": "Üçüncül"
-  },
   "common": {
     "actions": "Eylemler",
     "add": "Ekle",
@@ -391,11 +386,13 @@
     "disconnect": "Bağlantıyı kes",
     "disconnected": "Bağlantı kesildi",
     "disconnecting": "Bağlantı kesiliyor...",
+    "display-mode": "Görüntü Modu",
     "download": "İndir",
     "duration": "Süre",
     "dysfunctional": "İşlevsiz",
     "edit": "Düzenle",
     "enabled": "Etkinleştirildi",
+    "error": "Hata",
     "events": "Etkinlikler",
     "execute": "Yürüt",
     "faithful": "Sadık",
@@ -464,6 +461,7 @@
     "secondary": "İkincil",
     "security": "Güvenlik",
     "select": "Seç",
+    "select-color": "Renk Seç",
     "shortcuts": "Kısayollar",
     "shutdown": "Kapat",
     "signal": "Sinyal",
@@ -519,6 +517,7 @@
     "auto-hide": "Otomatik gizleme",
     "hidden": "Boş olduğunda gizle",
     "idle": "Boşta kalınca gizle",
+    "non-exclusive": "Münhasır olmayan",
     "transparent": "Boşken şeffaf",
     "visible": "Her zaman görünür"
   },
@@ -742,7 +741,6 @@
       "appearance-density-label": "Araç Çubuğu yoğunluğu",
       "appearance-desc": "Araç çubuğunun görünümünü ve konumunu özelleştirin.",
       "appearance-display-mode-description": "Çubuğun ne zaman görünür olacağını seçin.",
-      "appearance-display-mode-label": "Görüntü modu",
       "appearance-floating-description": "Araç çubuğunu yüzen bir 'kapsül' olarak görüntüler. Not: Bu, ekran köşelerini kenarlara taşıyacaktır.",
       "appearance-floating-label": "Yüzen araç çubuğu",
       "appearance-frame-radius": "İç Yarıçap",
@@ -1228,6 +1226,8 @@
       "sounds-unavailable-label": "Bildirim sesleri kullanılamıyor",
       "sounds-volume-description": "Bildirim sesleri için ses seviyesini ayarlayın.",
       "sounds-volume-label": "Ses seviyesi",
+      "toast-battery-description": "Pil seviyesi bu yüzdenin altına düştüğünde bir uyarı göster.",
+      "toast-battery-label": "Pil uyarısı",
       "toast-desc": "Bildirim penceresi görünümünü ve davranışını yapılandırın.",
       "toast-keyboard-description": "Klavye düzeni değiştiğinde bir bildirim göster.",
       "toast-keyboard-label": "Klavye düzeni",
@@ -1516,7 +1516,7 @@
     },
     "skip-setup": "Kurulumu Atla",
     "telemetry-wizard-done": "Anlaşıldı!",
-    "telemetry-wizard-note": "Kontrol sizde — istediğiniz zaman Ayarlar'dan etkinleştirebilir veya devre dışı bırakabilirsiniz",
+    "telemetry-wizard-note": "Kontrol sizde — istediğiniz zaman ayarlar'dan etkinleştirebilir veya devre dışı bırakabilirsiniz",
     "telemetry-wizard-subtitle": "Noctalia'yı geliştirmeye yardımcı olmak için anonim analizler ekledik",
     "telemetry-wizard-title": "Gizlilik Güncellemesi",
     "wallpaper": {
@@ -1566,8 +1566,10 @@
       "title": "Uçak modu"
     },
     "battery": {
+      "critical": "Kritik pil seviyesi",
+      "critical-desc": "Pil {percent}% — lütfen şarj cihazını hemen bağlayın",
       "low": "Düşük batarya",
-      "low-desc": "Batarya % {percent}. Lütfen şarj bağlantısını yapın"
+      "low-desc": "Pil {percent}% seviyesinde — lütfen şarj cihazını bağlayın"
     },
     "bluetooth": {
       "address-copied": "Adres panoya kopyalandı",

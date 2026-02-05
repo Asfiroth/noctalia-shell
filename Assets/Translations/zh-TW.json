@@ -48,6 +48,11 @@
       "device-default": "預設 (顯示裝置)",
       "device-description": "選取要顯示哪個裝置的電池",
       "device-label": "電池裝置",
+      "display-mode-description": "選擇電池在工具列中的顯示方式。",
+      "display-mode-graphic": "圖形化電池",
+      "display-mode-icon-always": "圖示 - 始終顯示 %",
+      "display-mode-icon-hover": "圖示 - 懸停時顯示",
+      "display-mode-icon-only": "僅圖示",
       "hide-if-idle-description": "當電池狀態為閒置時隱藏小工具",
       "hide-if-idle-label": "閒置時隱藏",
       "hide-if-not-detected-description": "如果系統沒有偵測到電池就隱藏小工具",
@@ -69,14 +74,13 @@
       "horizontal-bar-description": "提示: 可以利用 \\n 換行",
       "horizontal-bar-label": "水平列顯示",
       "preview": "預覽",
+      "select-color-description": "套用主題顏色以示強調。",
       "tooltip-format-description": "在游標移過時提示框所顯示的格式, 如果留空則使用預設值",
       "tooltip-format-label": "提示框格式",
       "use-custom-font-description": "為時鐘強制套用自訂的字型",
       "use-custom-font-label": "使用自訂字型",
       "use-monospaced-font-description": "當啟用時, 時鐘會使用等寬字型顯示",
       "use-monospaced-font-label": "使用等寬字型",
-      "use-primary-color-description": "當啟用時, 會以主題的主色強調",
-      "use-primary-color-label": "使用主要顏色",
       "vertical-bar-description": "使用空格把各個部件拆到下一行",
       "vertical-bar-label": "垂直列顯示"
     },
@@ -94,7 +98,6 @@
       "collapse-condition-description": "若輸出文字符合此值，按鈕將會摺疊。",
       "collapse-condition-label": "摺疊條件",
       "color-selection-description": "將主題用色套用至圖示及文字上",
-      "color-selection-label": "選取顏色",
       "display-command-output-description": "輸入一個想要定時重複執行的指令, 指令的第一行輸出將會作為顯示的文字",
       "display-command-output-label": "顯示指令的輸出",
       "display-command-output-stream-description": "輸入一個要持續執行的指令",
@@ -254,8 +257,7 @@
       "hide-passive-label": "隱藏被動項目"
     },
     "volume": {
-      "display-mode-description": "選擇你想如何顯示這項數值",
-      "display-mode-label": "顯示模式"
+      "display-mode-description": "選擇你想如何顯示這項數值"
     },
     "workspace": {
       "character-count-description": "限制工作區所設定的名字要顯示幾個字元 (1-10)",
@@ -345,13 +347,6 @@
       "version-new-user": "全新安裝"
     }
   },
-  "colors": {
-    "error": "錯誤",
-    "on-surface": "工具列表面",
-    "primary": "主要色",
-    "secondary": "輔助色",
-    "tertiary": "三級色"
-  },
   "common": {
     "actions": "操作",
     "add": "新增",
@@ -391,11 +386,13 @@
     "disconnect": "斷線",
     "disconnected": "已斷線",
     "disconnecting": "正在斷線...",
+    "display-mode": "顯示模式",
     "download": "下載",
     "duration": "持續時間",
     "dysfunctional": "功能失調",
     "edit": "編輯",
     "enabled": "已啟用",
+    "error": "錯誤",
     "events": "事件",
     "execute": "執行",
     "faithful": "忠實",
@@ -464,6 +461,7 @@
     "secondary": "輔助",
     "security": "安全",
     "select": "選取",
+    "select-color": "選擇顏色",
     "shortcuts": "快捷鍵",
     "shutdown": "關機",
     "signal": "訊號",
@@ -519,6 +517,7 @@
     "auto-hide": "自動隱藏",
     "hidden": "空白時隱藏",
     "idle": "閒置時隱藏",
+    "non-exclusive": "非獨佔",
     "transparent": "空白時變透明",
     "visible": "始終可見"
   },
@@ -742,7 +741,6 @@
       "appearance-density-label": "工具列密度",
       "appearance-desc": "自訂工具列的外觀及位置",
       "appearance-display-mode-description": "選擇列何時可見",
-      "appearance-display-mode-label": "顯示模式",
       "appearance-floating-description": "將工具列以懸浮的圓弧長條狀顯示",
       "appearance-floating-label": "懸浮工具列",
       "appearance-frame-radius": "內圓角",
@@ -1228,6 +1226,8 @@
       "sounds-unavailable-label": "通知音效無法使用",
       "sounds-volume-description": "調整通知音效的音量大小",
       "sounds-volume-label": "音效音量",
+      "toast-battery-description": "當電池電量低於此百分比時顯示警告。",
+      "toast-battery-label": "低電量提醒",
       "toast-desc": "設定氣泡訊息的外觀及行為",
       "toast-keyboard-description": "當鍵盤佈局改變時顯示氣泡訊息",
       "toast-keyboard-label": "鍵盤佈局",
@@ -1566,8 +1566,10 @@
       "title": "飛航模式"
     },
     "battery": {
+      "critical": "電量嚴重不足",
+      "critical-desc": "電量剩餘 {percent}% — 請立即連接充電器",
       "low": "電量過低",
-      "low-desc": "電池剩餘 {percent}% 電量, 請接上充電器"
+      "low-desc": "電量剩餘 {percent}% — 請連接充電器"
     },
     "bluetooth": {
       "address-copied": "已複製位址至剪貼簿",

@@ -75,8 +75,6 @@
       "use-custom-font-label": "Cûrenivîsa kesane bi kar bîne",
       "use-monospaced-font-description": "Dema ku çalak be, demjimêr wê cûrenivîsa monospace bi kar bîne.",
       "use-monospaced-font-label": "Cûrenivîsa monospace bi kar bîne",
-      "use-primary-color-description": "Dema ku çalak be, ev rengê sereke ji bo pejirandinê tê sepandin.",
-      "use-primary-color-label": "Rengê sereke bi kar bîne",
       "vertical-bar-description": "Bi kar tînin valahiyekê ji hev veqetînin her beşek li ser rêzeke nû.",
       "vertical-bar-label": "Darê vertical"
     },
@@ -94,7 +92,6 @@
       "collapse-condition-description": "Ger nivîsa derketî bi vê nirxê re têkildar be, dê bişkok hilweşe.",
       "collapse-condition-label": "Rewşa hilweşînê",
       "color-selection-description": "Rengên mûqeyê li îkon û nivîsê bi kar bîne.",
-      "color-selection-label": "Reng hilbijêre",
       "display-command-output-description": "Fermanekê binivîse ku di navberên rêkûpêk de bixebite. Rêza yekem a derketina wê dê wekî nivîs were xuyang kirin.",
       "display-command-output-label": "Nîşandana derketina fermanê",
       "display-command-output-stream-description": "Fermanekê binivîse ku bi berdewamî bixebite.",
@@ -250,8 +247,7 @@
       "hide-passive-label": "Veşartina tiştên pasîf"
     },
     "volume": {
-      "display-mode-description": "Tu dixwazî ev nirx çawa xuya bike hilbijêre.",
-      "display-mode-label": "Awayî nîşandanê"
+      "display-mode-description": "Tu dixwazî ev nirx çawa xuya bike hilbijêre."
     },
     "workspace": {
       "character-count-description": "Hejmara tîpên ku ji navên qada xebatê bên nîşandan (1-10).",
@@ -338,13 +334,6 @@
       "version": "Goherto {version}",
       "version-new-user": "Sazkirina nû"
     }
-  },
-  "colors": {
-    "error": "Çewtî",
-    "on-surface": "Li ser rûyê",
-    "primary": "Sereke",
-    "secondary": "Duyemîn",
-    "tertiary": "Sêyemîn"
   },
   "common": {
     "actions": "Çalakî",
@@ -735,7 +724,6 @@
       "appearance-density-label": "Çalyî bar",
       "appearance-desc": "Xuyakirina xuyabûn û pozîsyona bar.",
       "appearance-display-mode-description": "Hilbijêre ka kengî bila darik were xuyakirin.",
-      "appearance-display-mode-label": "Awaya nîşandanê",
       "appearance-floating-description": "Bariş wekî 'heb'eke herikbar nîşan bide.",
       "appearance-floating-label": "Barê avjen",
       "appearance-frame-radius": "Nîvçapa Hundirîn",
@@ -1506,7 +1494,7 @@
     },
     "skip-setup": "Sazkirinê Derbas Bike",
     "telemetry-wizard-done": "Gihîşt!",
-    "telemetry-wizard-note": "Hûn di kontrolê de ne - hûn dikarin vê yekê di Mîhengan de her dem çalak an neçalak bikin",
+    "telemetry-wizard-note": "Hûn di kontrolê de ne - hûn dikarin vê yekê di mîhengan de her dem çalak an neçalak bikin",
     "telemetry-wizard-subtitle": "Me analîtîkên anonîm zêde kirin da ku alîkariya başkirina Noctalia bikin",
     "telemetry-wizard-title": "Nûkirina Nepenîtiyê",
     "wallpaper": {

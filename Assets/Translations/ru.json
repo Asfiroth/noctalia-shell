@@ -48,6 +48,11 @@
       "device-default": "Устройство отображения по умолчанию",
       "device-description": "Выберите устройство для отображения состояния батареи.",
       "device-label": "Устройство с батареей",
+      "display-mode-description": "Выберите, как отображается батарея на панели.",
+      "display-mode-graphic": "Графическая Батарея",
+      "display-mode-icon-always": "Значок - Всегда показывать %",
+      "display-mode-icon-hover": "Иконка - Показать при наведении",
+      "display-mode-icon-only": "Только значок",
       "hide-if-idle-description": "Скрыть виджет, когда батарея не заряжается и не разряжается.",
       "hide-if-idle-label": "Скрывать в режиме простоя",
       "hide-if-not-detected-description": "Скрыть виджет, если в системе не обнаружена батарея.",
@@ -69,14 +74,13 @@
       "horizontal-bar-description": "Совет: используйте \\n для создания разрыва строки.",
       "horizontal-bar-label": "Горизонтальная панель",
       "preview": "Предварительный просмотр",
+      "select-color-description": "Применить цвета темы для выделения.",
       "tooltip-format-description": "Строка формата для подсказки, отображаемой при наведении на часы. Оставьте пустым, чтобы использовать подсказку по умолчанию.",
       "tooltip-format-label": "Формат подсказки",
       "use-custom-font-description": "Переопределить выбор шрифта по умолчанию пользовательским шрифтом для часов.",
       "use-custom-font-label": "Использовать пользовательский шрифт",
       "use-monospaced-font-description": "Если включено, часы будут использовать моноширинный шрифт.",
       "use-monospaced-font-label": "Использовать моноширинный шрифт",
-      "use-primary-color-description": "Если включено, будет использован основной цвет для отображения часов.",
-      "use-primary-color-label": "Использовать основной цвет",
       "vertical-bar-description": "Используйте пробел, чтобы разделить каждую часть на новую строку.",
       "vertical-bar-label": "Вертикальная панель"
     },
@@ -94,7 +98,6 @@
       "collapse-condition-description": "Если выходной текст соответствует этому значению, кнопка будет скрыта.",
       "collapse-condition-label": "Условие скрытия",
       "color-selection-description": "Применить цвета темы к значку и тексту.",
-      "color-selection-label": "Выбрать цвет",
       "display-command-output-description": "Введите команду для регулярного выполнения. Первая строка её вывода будет отображаться как текст.",
       "display-command-output-label": "Вывод команды",
       "display-command-output-stream-description": "Введите команду для непрерывного выполнения.",
@@ -254,8 +257,7 @@
       "hide-passive-label": "Скрыть пассивные предметы"
     },
     "volume": {
-      "display-mode-description": "Выберите, как это значение должно отображаться.",
-      "display-mode-label": "Режим отображения"
+      "display-mode-description": "Выберите, как это значение должно отображаться."
     },
     "workspace": {
       "character-count-description": "Количество символов для отображения из имён рабочих пространств (1-10).",
@@ -345,13 +347,6 @@
       "version-new-user": "Новая установка"
     }
   },
-  "colors": {
-    "error": "Ошибка",
-    "on-surface": "На поверхности",
-    "primary": "Первичный",
-    "secondary": "Вторичный",
-    "tertiary": "Третичный"
-  },
   "common": {
     "actions": "Действия",
     "add": "Добавить",
@@ -391,11 +386,13 @@
     "disconnect": "Отключить",
     "disconnected": "Отключено",
     "disconnecting": "Отключение...",
+    "display-mode": "Режим Отображения",
     "download": "Скачать",
     "duration": "Продолжительность",
     "dysfunctional": "Дисфункциональный",
     "edit": "Редактировать",
     "enabled": "Включено",
+    "error": "Ошибка",
     "events": "События",
     "execute": "Выполнить",
     "faithful": "Верный",
@@ -464,6 +461,7 @@
     "secondary": "Вторичный",
     "security": "Безопасность",
     "select": "Выбрать",
+    "select-color": "Выбрать цвет",
     "shortcuts": "Ярлыки",
     "shutdown": "Выключить",
     "signal": "Сигнал",
@@ -519,6 +517,7 @@
     "auto-hide": "Автоматическое скрытие",
     "hidden": "Скрывать, когда пусто",
     "idle": "Скрывать в режиме простоя",
+    "non-exclusive": "Неисключительный",
     "transparent": "Прозрачный, когда пустой",
     "visible": "Всегда виден"
   },
@@ -742,7 +741,6 @@
       "appearance-density-label": "Плотность панели",
       "appearance-desc": "Настройка внешнего вида и положения панели.",
       "appearance-display-mode-description": "Выберите, когда панель видна.",
-      "appearance-display-mode-label": "Режим oтображение",
       "appearance-floating-description": "Отображает панель как плавающую 'таблетку'.",
       "appearance-floating-label": "Плавающая панель",
       "appearance-frame-radius": "Внутренний радиус",
@@ -1228,6 +1226,8 @@
       "sounds-unavailable-label": "Звуки уведомлений недоступны",
       "sounds-volume-description": "Настроить уровень громкости для звуков уведомлений.",
       "sounds-volume-label": "Громкость звука",
+      "toast-battery-description": "Показывать предупреждение, когда уровень заряда батареи опускается ниже этого процента.",
+      "toast-battery-label": "Предупреждение о батарее",
       "toast-desc": "Настроить внешний вид и поведение всплывающих уведомлений.",
       "toast-keyboard-description": "Показывать всплывающее уведомление при смене раскладки клавиатуры.",
       "toast-keyboard-label": "Раскладка клавиатуры",
@@ -1566,8 +1566,10 @@
       "title": "Режим полёта"
     },
     "battery": {
+      "critical": "Критический заряд батареи",
+      "critical-desc": "Батарея заряжена на {percent}% — немедленно подключите зарядное устройство",
       "low": "Низкий заряд батареи",
-      "low-desc": "Заряд батареи {percent}%. Пожалуйста, подключите зарядное устройство"
+      "low-desc": "Батарея заряжена на {percent}% — пожалуйста, подключите зарядное устройство"
     },
     "bluetooth": {
       "address-copied": "Адрес скопирован в буфер обмена",

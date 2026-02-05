@@ -84,8 +84,7 @@ Singleton {
                                     "hideWhenIdle": false
                                   },
                                   "Battery": {
-                                    "displayMode": "onhover",
-                                    "warningThreshold": 30,
+                                    "displayMode": "graphic",
                                     "deviceNativePath": "__default__",
                                     "showPowerProfiles": false,
                                     "showNoctaliaPerformance": false,
@@ -99,7 +98,7 @@ Singleton {
                                     "displayMode": "onhover"
                                   },
                                   "Clock": {
-                                    "usePrimaryColor": false,
+                                    "clockColor": "none",
                                     "useCustomFont": false,
                                     "customFont": "",
                                     "formatHorizontal": "HH:mm ddd, MMM dd",

@@ -48,6 +48,11 @@
       "device-default": "デフォルト（表示デバイス）",
       "device-description": "表示するバッテリーデバイスを選択します。",
       "device-label": "バッテリーデバイス",
+      "display-mode-description": "バッテリーをバーにどのように表示するかを選択します。",
+      "display-mode-graphic": "グラフィックバッテリー",
+      "display-mode-icon-always": "アイコン - 常に%を表示",
+      "display-mode-icon-hover": "アイコン - ホバー時に表示",
+      "display-mode-icon-only": "アイコンのみ",
       "hide-if-idle-description": "バッテリーが充電または放電していないときは、ウィジェットを非表示にします。",
       "hide-if-idle-label": "アイドル時に隠す",
       "hide-if-not-detected-description": "システムでバッテリーが検出されない場合は、ウィジェットを非表示にします。",
@@ -69,14 +74,13 @@
       "horizontal-bar-description": "ヒント：\\n を使用すると改行できます。",
       "horizontal-bar-label": "水平バー",
       "preview": "プレビュー",
+      "select-color-description": "強調のためにテーマの色を適用します。",
       "tooltip-format-description": "時計にマウスを合わせたときに表示されるツールチップのフォーマット文字列。デフォルトのツールチップを使用するには空のままにします。",
       "tooltip-format-label": "ツールチップ形式",
       "use-custom-font-description": "デフォルトのフォント設定を上書きし、時計にカスタムフォントを使用します。",
       "use-custom-font-label": "カスタムフォントを使用",
       "use-monospaced-font-description": "有効にすると、時計に等幅フォントを使用します。",
       "use-monospaced-font-label": "等幅フォントを使用",
-      "use-primary-color-description": "有効にすると、強調のためにプライマリカラーが適用されます。",
-      "use-primary-color-label": "プライマリカラーを使用",
       "vertical-bar-description": "各パーツを新しい行に分けるにはスペースを使用してください。",
       "vertical-bar-label": "垂直バー"
     },
@@ -94,7 +98,6 @@
       "collapse-condition-description": "出力テキストがこの値と一致する場合、ボタンを折りたたみます。",
       "collapse-condition-label": "折りたたみ条件",
       "color-selection-description": "テーマカラーをアイコンとテキストに適用します。",
-      "color-selection-label": "色を選択",
       "display-command-output-description": "定期的に実行するコマンドを入力します。出力の最初の行がテキストとして表示されます。",
       "display-command-output-label": "コマンド出力を表示",
       "display-command-output-stream-description": "継続的に実行するコマンドを入力します。",
@@ -254,8 +257,7 @@
       "hide-passive-label": "パッシブ項目を非表示"
     },
     "volume": {
-      "display-mode-description": "値の表示方法を選択します。",
-      "display-mode-label": "表示モード"
+      "display-mode-description": "値の表示方法を選択します。"
     },
     "workspace": {
       "character-count-description": "ワークスペース名から表示する文字数 (1-10)。",
@@ -345,13 +347,6 @@
       "version-new-user": "新規インストール"
     }
   },
-  "colors": {
-    "error": "エラー",
-    "on-surface": "表面上",
-    "primary": "主要",
-    "secondary": "二次的",
-    "tertiary": "第三紀"
-  },
   "common": {
     "actions": "アクション",
     "add": "追加",
@@ -391,11 +386,13 @@
     "disconnect": "切断",
     "disconnected": "切断済み",
     "disconnecting": "切断中...",
+    "display-mode": "表示モード",
     "download": "ダウンロード",
     "duration": "期間",
     "dysfunctional": "機能不全",
     "edit": "編集",
     "enabled": "有効",
+    "error": "エラー",
     "events": "イベント",
     "execute": "実行",
     "faithful": "忠実",
@@ -464,6 +461,7 @@
     "secondary": "セカンダリー",
     "security": "セキュリティ",
     "select": "選択",
+    "select-color": "色を選択",
     "shortcuts": "ショートカット",
     "shutdown": "シャットダウン",
     "signal": "信号",
@@ -519,6 +517,7 @@
     "auto-hide": "自動非表示",
     "hidden": "空の場合に非表示",
     "idle": "アイドル時に非表示",
+    "non-exclusive": "非独占",
     "transparent": "空の時は透明",
     "visible": "常に表示"
   },
@@ -742,7 +741,6 @@
       "appearance-density-label": "バーの密度",
       "appearance-desc": "バーの外観や位置をカスタマイズします。",
       "appearance-display-mode-description": "バーの表示タイミングを選択してください。",
-      "appearance-display-mode-label": "表示モード",
       "appearance-floating-description": "バーを浮かせて、カプセル型で表示します。",
       "appearance-floating-label": "フローティングバー",
       "appearance-frame-radius": "内側の半径",
@@ -1228,6 +1226,8 @@
       "sounds-unavailable-label": "通知音を利用できません",
       "sounds-volume-description": "通知音の音量レベルを調整します。",
       "sounds-volume-label": "通知音量",
+      "toast-battery-description": "バッテリー残量がこの割合を下回った場合に警告を表示します。",
+      "toast-battery-label": "バッテリー警告",
       "toast-desc": "トースト通知の外観と挙動を設定します。",
       "toast-keyboard-description": "キーボードレイアウトの変更時にトーストを表示します。",
       "toast-keyboard-label": "キーボードレイアウト",
@@ -1566,8 +1566,10 @@
       "title": "機内モード"
     },
     "battery": {
+      "critical": "バッテリー残量低下",
+      "critical-desc": "バッテリー残量 {percent}% — すぐに充電器を接続してください",
       "low": "バッテリー残量低下",
-      "low-desc": "バッテリー残量が {percent}% です。充電器を接続してください"
+      "low-desc": "バッテリー残量 {percent}% — 充電器を接続してください"
     },
     "bluetooth": {
       "address-copied": "アドレスをクリップボードにコピーしました",

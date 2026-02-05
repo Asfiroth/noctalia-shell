@@ -42,7 +42,7 @@ ColumnLayout {
     Layout.fillWidth: true
     label: I18n.tr("bar.battery.device-label")
     description: I18n.tr("bar.battery.device-description")
-    minimumWidth: 200
+    minimumWidth: 240
     model: BatteryService.deviceModel
     currentKey: root.valueDeviceNativePath
     onSelected: key => {
@@ -53,21 +53,25 @@ ColumnLayout {
 
   NComboBox {
     Layout.fillWidth: true
-    label: I18n.tr("bar.volume.display-mode-label")
-    description: I18n.tr("bar.volume.display-mode-description")
-    minimumWidth: 200
+    label: I18n.tr("common.display-mode")
+    description: I18n.tr("bar.battery.display-mode-description")
+    minimumWidth: 240
     model: [
       {
-        "key": "onhover",
-        "name": I18n.tr("display-modes.on-hover")
+        "key": "graphic",
+        "name": I18n.tr("bar.battery.display-mode-graphic")
       },
       {
-        "key": "alwaysShow",
-        "name": I18n.tr("display-modes.always-show")
+        "key": "icon-hover",
+        "name": I18n.tr("bar.battery.display-mode-icon-hover")
       },
       {
-        "key": "alwaysHide",
-        "name": I18n.tr("display-modes.always-hide")
+        "key": "icon-always",
+        "name": I18n.tr("bar.battery.display-mode-icon-always")
+      },
+      {
+        "key": "icon-only",
+        "name": I18n.tr("bar.battery.display-mode-icon-only")
       }
     ]
     currentKey: root.valueDisplayMode

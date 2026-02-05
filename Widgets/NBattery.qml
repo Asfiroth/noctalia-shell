@@ -12,17 +12,16 @@ Item {
   required property bool charging
   required property bool pluggedIn
   required property bool ready
+  required property bool low
 
   // Sizing - baseSize controls overall scaleFactor for bar/panel usage
   property real baseSize: Style.fontSizeM
 
   // Styling - no hardcoded colors, only theme colors
-  readonly property color baseColor: Color.mOnSurface
-  readonly property color lowColor: Color.mError
-  readonly property color chargingColor: Color.mPrimary
-
-  property bool isLow: false
-  property bool isCharging: false
+  property color baseColor: Color.mOnSurface
+  property color lowColor: Color.mError
+  property color chargingColor: Color.mPrimary
+  property color textColor: Color.mSurface
 
   // Display options
   property bool showPercentageText: true
@@ -32,7 +31,8 @@ Item {
   property bool showStateIcon: false
 
   onHasStateIconChanged: {
-    if (!hasStateIcon) showStateIcon = false
+    if (!hasStateIcon)
+      showStateIcon = false;
   }
 
   // Internal sizing calculations based on baseSize
@@ -52,23 +52,27 @@ Item {
     if (!ready) {
       return Qt.alpha(baseColor, Style.opacityMedium);
     }
-    if (isCharging) {
+    if (charging) {
       return chargingColor;
     }
-    if (isLowBattery) {
+    if (low) {
       return lowColor;
     }
     return baseColor;
   }
 
   // Background color for empty portion (semi-transparent)
-  readonly property color emptyColor: Qt.alpha(Color.mOnSurface, 0.6)
+  readonly property color emptyColor: Qt.alpha(baseColor, 0.7)
 
   // State icon logic
-  readonly property bool hasStateIcon: charging || pluggedIn
+  readonly property bool hasStateIcon: (!ready || charging || pluggedIn)
   readonly property string stateIcon: {
-    if (charging) return "bolt-filled";
-    if (pluggedIn) return "plug-filled"
+    if (!ready)
+      return "x";
+    if (charging)
+      return "bolt-filled";
+    if (pluggedIn)
+      return "plug-filled";
     return "";
   }
 
@@ -80,30 +84,6 @@ Item {
     NumberAnimation {
       duration: Style.animationNormal
       easing.type: Easing.OutCubic
-    }
-  }
-
-  // Repaint when animated percentage changes (throttled)
-  onAnimatedPercentageChanged: {
-    if (!repaintTimer.running) {
-      repaintTimer.start();
-    }
-  }
-  onActiveColorChanged: batteryCanvas.requestPaint()
-  onEmptyColorChanged: batteryCanvas.requestPaint()
-  onVerticalChanged: batteryCanvas.requestPaint()
-
-  // Throttle timer to limit repaint frequency (~30 FPS)
-  Timer {
-    id: repaintTimer
-    interval: 33
-    repeat: true
-    onTriggered: {
-      batteryCanvas.requestPaint();
-      // Stop once animation settles
-      if (Math.abs(root.animatedPercentage - root.percentage) < 0.5) {
-        stop();
-      }
     }
   }
 
@@ -121,8 +101,9 @@ Item {
   Layout.maximumWidth: implicitWidth
   Layout.maximumHeight: implicitHeight
 
-  Canvas {
-    id: batteryCanvas
+  // Battery body container
+  Item {
+    id: batteryBody
     width: root.vertical ? root.bodyHeight : root.bodyWidth + root.terminalWidth
     height: root.vertical ? root.bodyWidth + root.terminalWidth : root.bodyHeight
     anchors.left: root.vertical ? undefined : parent.left
@@ -130,127 +111,82 @@ Item {
     anchors.horizontalCenter: root.vertical ? parent.horizontalCenter : undefined
     anchors.verticalCenter: root.vertical ? undefined : parent.verticalCenter
 
-    // Optimized Canvas settings for better GPU performance
-    renderStrategy: Canvas.Cooperative
-    renderTarget: Canvas.FramebufferObject
-
-    // Enable layer caching
-    layer.enabled: true
-    layer.smooth: true
-
-    Component.onCompleted: {
-      requestPaint();
+    // Battery body background
+    Rectangle {
+      id: bodyBackground
+      y: root.vertical ? root.terminalWidth : 0
+      width: root.vertical ? root.bodyHeight : root.bodyWidth
+      height: root.vertical ? root.bodyWidth : root.bodyHeight
+      radius: root.cornerRadius
+      color: root.emptyColor
     }
 
-    onPaint: {
-      const ctx = getContext("2d");
-
-      ctx.reset();
-
-      const bodyW = root.bodyWidth;
-      const bodyH = root.bodyHeight;
-      const termW = root.terminalWidth;
-      const termH = root.terminalHeight;
-      const radius = root.cornerRadius;
-      const isVertical = root.vertical;
-
-      if (isVertical) {
-        // Vertical: body is rotated (width becomes height)
-        // Terminal at top, fill from bottom to top
-        const vBodyW = bodyH;  // swapped
-        const vBodyH = bodyW;  // swapped
-
-        // Draw battery body background
-        ctx.fillStyle = root.emptyColor;
-        ctx.beginPath();
-        roundedRect(ctx, 0, termW, vBodyW, vBodyH, radius);
-        ctx.fill();
-
-        // Draw terminal cap at the top (centered)
-        const termX = (vBodyW - termH) / 2;
-        ctx.beginPath();
-        roundedRect(ctx, termX, 0, termH, termW, radius / 2);
-        ctx.fill();
-
-        // Draw fill based on percentage (bottom to top)
-        const pct = Math.max(0, Math.min(100, root.animatedPercentage));
-        if (pct > 0 && root.ready) {
-          const fillH = vBodyH * (pct / 100);
-          const fillY = termW + vBodyH - fillH;
-
-          ctx.fillStyle = root.activeColor;
-          ctx.beginPath();
-          roundedRect(ctx, 0, fillY, vBodyW, fillH, radius);
-          ctx.fill();
-        }
-      } else {
-        // Horizontal: original drawing logic
-        // Draw battery body background (semi-transparent empty portion)
-        ctx.fillStyle = root.emptyColor;
-        ctx.beginPath();
-        roundedRect(ctx, 0, 0, bodyW, bodyH, radius);
-        ctx.fill();
-
-        // Draw terminal cap on the right (semi-transparent)
-        const termX = bodyW;
-        const termY = (bodyH - termH) / 2;
-        ctx.beginPath();
-        roundedRect(ctx, termX, termY, termW, termH, radius / 2);
-        ctx.fill();
-
-        // Draw fill based on percentage (left to right, no padding)
-        const pct = Math.max(0, Math.min(100, root.animatedPercentage));
-        if (pct > 0 && root.ready) {
-          const fillW = bodyW * (pct / 100);
-
-          ctx.fillStyle = root.activeColor;
-          ctx.beginPath();
-          roundedRect(ctx, 0, 0, fillW, bodyH, radius);
-          ctx.fill();
-        }
-      }
+    // Terminal cap
+    Rectangle {
+      x: root.vertical ? (root.bodyHeight - root.terminalHeight) / 2 : root.bodyWidth
+      y: root.vertical ? 0 : (root.bodyHeight - root.terminalHeight) / 2
+      width: root.vertical ? root.terminalHeight : root.terminalWidth
+      height: root.vertical ? root.terminalWidth : root.terminalHeight
+      radius: root.cornerRadius / 2
+      color: root.emptyColor
     }
 
-    // Helper function to draw rounded rectangle
-    function roundedRect(ctx, x, y, w, h, r) {
-      if (w < 2 * r) r = w / 2;
-      if (h < 2 * r) r = h / 2;
-      ctx.moveTo(x + r, y);
-      ctx.lineTo(x + w - r, y);
-      ctx.arcTo(x + w, y, x + w, y + r, r);
-      ctx.lineTo(x + w, y + h - r);
-      ctx.arcTo(x + w, y + h, x + w - r, y + h, r);
-      ctx.lineTo(x + r, y + h);
-      ctx.arcTo(x, y + h, x, y + h - r, r);
-      ctx.lineTo(x, y + r);
-      ctx.arcTo(x, y, x + r, y, r);
-      ctx.closePath();
+    // Fill level
+    Rectangle {
+      id: fillRect
+      visible: root.ready && root.animatedPercentage > 0
+      x: 0
+      y: root.vertical ? root.terminalWidth + root.bodyWidth * (1 - root.animatedPercentage / 100) : 0
+      width: root.vertical ? root.bodyHeight : root.bodyWidth * (root.animatedPercentage / 100)
+      height: root.vertical ? root.bodyWidth * (root.animatedPercentage / 100) : root.bodyHeight
+      radius: root.cornerRadius
+      color: root.activeColor
     }
   }
 
   // Percentage text overlaid on battery center
   NText {
     id: percentageText
-    visible: root.showPercentageText && root.ready && !root.showStateIcon
-    x: batteryCanvas.x + Style.pixelAlignCenter(batteryCanvas.width, width)
-    y: batteryCanvas.y + Style.pixelAlignCenter(batteryCanvas.height, height)
+    visible: opacity > 0
+    opacity: root.showPercentageText && root.ready && !root.showStateIcon ? 1 : 0
+    x: batteryBody.x + Style.pixelAlignCenter(bodyBackground.width, width)
+    y: batteryBody.y + bodyBackground.y + Style.pixelAlignCenter(bodyBackground.height, height)
     font.family: Settings.data.ui.fontFixed
     font.weight: Style.fontWeightBold
-    text: Math.round(root.animatedPercentage)
-    pointSize: Style.toOdd(root.baseSize * 0.83)
-    color: Qt.alpha(Color.mSurface, 0.75)
+    text: root.vertical ? String(Math.round(root.animatedPercentage)).split('').join('\n') : Math.round(root.animatedPercentage)
+    pointSize: root.baseSize * (root.vertical ? 0.82 : 0.82)
+    color: Qt.alpha(root.textColor, 0.75)
     horizontalAlignment: Text.AlignHCenter
     verticalAlignment: Text.AlignVCenter
+    lineHeight: root.vertical ? 0.7 : 1.0
+    lineHeightMode: Text.ProportionalHeight
+
+    Behavior on opacity {
+      enabled: !Settings.data.general.animationDisabled
+      NumberAnimation {
+        duration: Style.animationFast
+        easing.type: Easing.InOutQuad
+      }
+    }
   }
 
   // State icon centered inside battery body (shown when alternating)
   NIcon {
     id: stateIconOverlay
-    visible: root.hasStateIcon && root.showStateIcon
-    x: batteryCanvas.x + Style.pixelAlignCenter(batteryCanvas.width, width)
-    y: batteryCanvas.y + Style.pixelAlignCenter(batteryCanvas.height, height)
+    visible: opacity > 0
+    opacity: !root.ready || (root.hasStateIcon && root.showStateIcon) ? 1 : 0
+    x: batteryBody.x + Style.pixelAlignCenter(bodyBackground.width, width)
+    y: batteryBody.y + bodyBackground.y + Style.pixelAlignCenter(bodyBackground.height, height)
     icon: root.stateIcon
     pointSize: Style.toOdd(root.baseSize)
-    color: Qt.alpha(Color.mSurface, 0.75)
+    color: Qt.alpha(root.textColor, 0.75)
+
+    Behavior on opacity {
+      enabled: !Settings.data.general.animationDisabled
+      NumberAnimation {
+        duration: Style.animationFast
+        easing.type: Easing.InOutQuad
+      }
+    }
   }
 }

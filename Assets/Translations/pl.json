@@ -48,6 +48,11 @@
       "device-default": "Domyślne (urządzenie wyświetlające)",
       "device-description": "Wybierz, które urządzenie baterii ma być wyświetlane.",
       "device-label": "Urządzenie baterii",
+      "display-mode-description": "Wybierz, jak bateria jest wyświetlana na pasku.",
+      "display-mode-graphic": "Graficzna Bateria",
+      "display-mode-icon-always": "Ikona - Zawsze pokazuj %",
+      "display-mode-icon-hover": "Ikona - Pokaż po najechaniu",
+      "display-mode-icon-only": "Tylko ikona",
       "hide-if-idle-description": "Ukryj widżet, gdy bateria nie jest ładowana ani rozładowywana.",
       "hide-if-idle-label": "Ukryj, gdy bezczynny",
       "hide-if-not-detected-description": "Ukryj widżet, gdy w systemie nie zostanie wykryta bateria.",
@@ -69,14 +74,13 @@
       "horizontal-bar-description": "Wskazówka: Użyj \\n, aby utworzyć podział linii.",
       "horizontal-bar-label": "Pasek poziomy",
       "preview": "Podgląd",
+      "select-color-description": "Zastosuj kolory motywu dla podkreślenia.",
       "tooltip-format-description": "Ciąg formatujący dla etykietki wyświetlanej po najechaniu na zegar. Pozostaw puste, aby użyć domyślnej etykietki.",
       "tooltip-format-label": "Format etykietki",
       "use-custom-font-description": "Zastąp domyślną czcionkę zegara czcionką niestandardową.",
       "use-custom-font-label": "Użyj niestandardowej czcionki",
       "use-monospaced-font-description": "Gdy włączone, zegar będzie używał czcionki o stałej szerokości.",
       "use-monospaced-font-label": "Użyj czcionki monospaced",
-      "use-primary-color-description": "Gdy włączone, stosuje kolor podstawowy dla podkreślenia.",
-      "use-primary-color-label": "Użyj koloru podstawowego",
       "vertical-bar-description": "Użyj spacji, aby oddzielić każdą część w nowej linii.",
       "vertical-bar-label": "Pasek pionowy"
     },
@@ -94,7 +98,6 @@
       "collapse-condition-description": "Jeśli tekst wyjściowy pasuje do tej wartości, przycisk zostanie zwinięty.",
       "collapse-condition-label": "Warunek zwinięcia",
       "color-selection-description": "Zastosuj kolory motywu do ikony i tekstu.",
-      "color-selection-label": "Wybierz kolor",
       "display-command-output-description": "Wpisz polecenie do uruchamiania w regularnych odstępach czasu. Pierwsza linia wyniku zostanie wyświetlona jako tekst.",
       "display-command-output-label": "Wyświetl wynik polecenia",
       "display-command-output-stream-description": "Wpisz polecenie do uruchamiania w trybie ciągłym.",
@@ -254,8 +257,7 @@
       "hide-passive-label": "Ukryj pasywne elementy"
     },
     "volume": {
-      "display-mode-description": "Wybierz sposób wyświetlania tej wartości.",
-      "display-mode-label": "Tryb wyświetlania"
+      "display-mode-description": "Wybierz sposób wyświetlania tej wartości."
     },
     "workspace": {
       "character-count-description": "Liczba znaków do wyświetlenia z nazw obszarów roboczych (1-10).",
@@ -345,13 +347,6 @@
       "version-new-user": "Nowa instalacja"
     }
   },
-  "colors": {
-    "error": "Błąd",
-    "on-surface": "Na powierzchni",
-    "primary": "Podstawowy",
-    "secondary": "Wtórny",
-    "tertiary": "Trzeciorzędowy"
-  },
   "common": {
     "actions": "Akcje",
     "add": "Dodaj",
@@ -391,11 +386,13 @@
     "disconnect": "Rozłącz",
     "disconnected": "Rozłączone",
     "disconnecting": "Rozłączanie...",
+    "display-mode": "Tryb Wyświetlania",
     "download": "Pobierz",
     "duration": "Czas trwania",
     "dysfunctional": "Dysfunkcyjny",
     "edit": "Edytuj",
     "enabled": "Włączone",
+    "error": "Błąd",
     "events": "Wydarzenia",
     "execute": "Wykonaj",
     "faithful": "Wierny",
@@ -464,6 +461,7 @@
     "secondary": "Dodatkowy",
     "security": "Bezpieczeństwo",
     "select": "Wybierz",
+    "select-color": "Wybierz kolor",
     "shortcuts": "Skróty",
     "shutdown": "Wyłącz",
     "signal": "Sygnał",
@@ -519,6 +517,7 @@
     "auto-hide": "Automatyczne ukrywanie",
     "hidden": "Ukryj, gdy puste",
     "idle": "Ukryj, gdy bezczynny",
+    "non-exclusive": "Niewyłączny",
     "transparent": "Przezroczysty, gdy pusty",
     "visible": "Zawsze widoczny"
   },
@@ -742,7 +741,6 @@
       "appearance-density-label": "Zagęszczenie paska",
       "appearance-desc": "Dostosuj wygląd i pozycję paska.",
       "appearance-display-mode-description": "Wybierz, kiedy pasek jest widoczny.",
-      "appearance-display-mode-label": "Tryb wyświetlania",
       "appearance-floating-description": "Wyświetl pasek jako pływającą 'pigułkę'.",
       "appearance-floating-label": "Pływający pasek",
       "appearance-frame-radius": "Promień wewnętrzny",
@@ -1228,6 +1226,8 @@
       "sounds-unavailable-label": "Dźwięki powiadomień niedostępne",
       "sounds-volume-description": "Dostosuj poziom głośności dźwięków powiadomień.",
       "sounds-volume-label": "Głośność dźwięku",
+      "toast-battery-description": "Wyświetl ostrzeżenie, gdy poziom baterii spadnie poniżej tego procentu.",
+      "toast-battery-label": "Ostrzeżenie o baterii",
       "toast-desc": "Konfiguruj wygląd i zachowanie dymków powiadomień.",
       "toast-keyboard-description": "Pokaż dymek (toast), gdy zmieni się układ klawiatury.",
       "toast-keyboard-label": "Układ klawiatury",
@@ -1516,7 +1516,7 @@
     },
     "skip-setup": "Pomiń konfigurację",
     "telemetry-wizard-done": "Rozumiem!",
-    "telemetry-wizard-note": "Masz kontrolę – możesz to włączyć lub wyłączyć w dowolnym momencie w Ustawieniach",
+    "telemetry-wizard-note": "Masz kontrolę — możesz to włączyć lub wyłączyć w dowolnym momencie w ustawieniach",
     "telemetry-wizard-subtitle": "Dodaliśmy anonimowe analizy, aby pomóc w ulepszaniu Noctalia",
     "telemetry-wizard-title": "Aktualizacja prywatności",
     "wallpaper": {
@@ -1566,8 +1566,10 @@
       "title": "Tryb samolotowy"
     },
     "battery": {
+      "critical": "Krytyczny poziom baterii",
+      "critical-desc": "Bateria naładowana w {percent}% — proszę natychmiast podłączyć ładowarkę",
       "low": "Słaba bateria",
-      "low-desc": "Poziom baterii wynosi {percent}%. Podłącz ładowarkę"
+      "low-desc": "Bateria naładowana w {percent}% — proszę podłączyć ładowarkę"
     },
     "bluetooth": {
       "address-copied": "Adres skopiowany do schowka",

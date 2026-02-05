@@ -48,6 +48,11 @@
       "device-default": "Пристрій відображення за замовчуванням",
       "device-description": "Виберіть пристрій з акумулятором для відображення.",
       "device-label": "Пристрій живлення від батареї",
+      "display-mode-description": "Виберіть, як відображається батарея на панелі.",
+      "display-mode-graphic": "Графічна Батарея",
+      "display-mode-icon-always": "Іконка - Завжди показувати %",
+      "display-mode-icon-hover": "Іконка - Показувати при наведенні",
+      "display-mode-icon-only": "Лише значок",
       "hide-if-idle-description": "Приховати віджет, коли акумулятор не заряджається та не розряджається.",
       "hide-if-idle-label": "Приховати, коли неактивний",
       "hide-if-not-detected-description": "Приховати віджет, коли в системі не виявлено акумулятор.",
@@ -69,14 +74,13 @@
       "horizontal-bar-description": "Порада: Використовуйте \\n для створення розриву рядка.",
       "horizontal-bar-label": "Горизонтальна панель",
       "preview": "Попередній перегляд",
+      "select-color-description": "Застосувати кольори теми для виділення.",
       "tooltip-format-description": "Рядок формату для підказки, що відображається при наведенні на годинник. Залиште порожнім, щоб використовувати стандартну підказку.",
       "tooltip-format-label": "Формат підказки",
       "use-custom-font-description": "Замінити стандартний вибір шрифту власним шрифтом для годинника.",
       "use-custom-font-label": "Використовувати власний шрифт",
       "use-monospaced-font-description": "Коли увімкнено, годинник використовуватиме моноширинний шрифт.",
       "use-monospaced-font-label": "Використовувати моноширинний шрифт",
-      "use-primary-color-description": "Коли увімкнено, застосовується основний колір для акценту.",
-      "use-primary-color-label": "Використовувати основний колір",
       "vertical-bar-description": "Використовуйте пробіл для розділення кожної частини на новий рядок.",
       "vertical-bar-label": "Вертикальна панель"
     },
@@ -94,7 +98,6 @@
       "collapse-condition-description": "Якщо вихідний текст збігається з цим значенням, кнопка згорнеться.",
       "collapse-condition-label": "Умова згортання",
       "color-selection-description": "Застосувати кольори теми до значка та тексту.",
-      "color-selection-label": "Вибрати колір",
       "display-command-output-description": "Введіть команду для запуску з регулярним інтервалом. Перший рядок її виведення відображатиметься як текст.",
       "display-command-output-label": "Відображати виведення команди",
       "display-command-output-stream-description": "Введіть команду для безперервного запуску.",
@@ -254,8 +257,7 @@
       "hide-passive-label": "Приховати пасивні предмети"
     },
     "volume": {
-      "display-mode-description": "Виберіть, як ви хочете, щоб це значення відображалося.",
-      "display-mode-label": "Режим відображення"
+      "display-mode-description": "Виберіть, як ви хочете, щоб це значення відображалося."
     },
     "workspace": {
       "character-count-description": "Кількість символів для відображення з назв робочих просторів (1-10).",
@@ -345,13 +347,6 @@
       "version-new-user": "Нове встановлення"
     }
   },
-  "colors": {
-    "error": "Помилка",
-    "on-surface": "На поверхні",
-    "primary": "Первинний",
-    "secondary": "Вторинний",
-    "tertiary": "Третинний"
-  },
   "common": {
     "actions": "Дії",
     "add": "Додати",
@@ -391,11 +386,13 @@
     "disconnect": "Від'єднати",
     "disconnected": "Від'єднано",
     "disconnecting": "Від'єднання...",
+    "display-mode": "Режим Відображення",
     "download": "Завантажити",
     "duration": "Тривалість",
     "dysfunctional": "Дисфункціональний",
     "edit": "Редагувати",
     "enabled": "Увімкнено",
+    "error": "Помилка",
     "events": "Події",
     "execute": "Виконати",
     "faithful": "Вірний",
@@ -464,6 +461,7 @@
     "secondary": "Вторинний",
     "security": "Безпека",
     "select": "Вибрати",
+    "select-color": "Вибрати колір",
     "shortcuts": "Ярлики",
     "shutdown": "Вимкнути",
     "signal": "Сигнал",
@@ -519,6 +517,7 @@
     "auto-hide": "Автоматичне приховування",
     "hidden": "Приховувати, коли порожньо",
     "idle": "Приховувати, коли неактивний",
+    "non-exclusive": "Неексклюзивний",
     "transparent": "Прозорий, коли порожній",
     "visible": "Завжди видимий"
   },
@@ -742,7 +741,6 @@
       "appearance-density-label": "Щільність панелі",
       "appearance-desc": "Налаштуйте зовнішній вигляд та положення панелі.",
       "appearance-display-mode-description": "Виберіть, коли панель видима.",
-      "appearance-display-mode-label": "Режим відображення",
       "appearance-floating-description": "Відображати панель як плаваючу 'капсулу'. Примітка: Це перемістить кути екрана до країв.",
       "appearance-floating-label": "Плаваюча панель (Острівець)",
       "appearance-frame-radius": "Внутрішній радіус",
@@ -1228,6 +1226,8 @@
       "sounds-unavailable-label": "Звуки сповіщень недоступні",
       "sounds-volume-description": "Налаштуйте рівень гучності для звуків сповіщень.",
       "sounds-volume-label": "Гучність звуку",
+      "toast-battery-description": "Показувати попередження, коли рівень заряду батареї падає нижче цього відсотка.",
+      "toast-battery-label": "Попередження про батарею",
       "toast-desc": "Налаштуйте зовнішній вигляд і поведінку спливаючих повідомлень.",
       "toast-keyboard-description": "Показувати сповіщення при зміні розкладки клавіатури.",
       "toast-keyboard-label": "Розкладка клавіатури",
@@ -1566,8 +1566,10 @@
       "title": "Режим польоту"
     },
     "battery": {
+      "critical": "Критичний рівень заряду батареї",
+      "critical-desc": "Батарея заряджена на {percent}% — негайно підключіть зарядний пристрій",
       "low": "Низький заряд батареї",
-      "low-desc": "Рівень заряду: {percent}%. Будь ласка, підключіть зарядний пристрій"
+      "low-desc": "Батарея заряджена на {percent}% — будь ласка, підключіть зарядний пристрій"
     },
     "bluetooth": {
       "address-copied": "Адресу скопійовано до буфера обміну",

@@ -48,6 +48,11 @@
       "device-default": "Standard (Anzeigegerät)",
       "device-description": "Wählen Sie das anzuzeigende Akkugerät aus.",
       "device-label": "Akkugerät",
+      "display-mode-description": "Wählen Sie, wie der Akku in der Leiste angezeigt wird.",
+      "display-mode-graphic": "Grafischer Akku",
+      "display-mode-icon-always": "Symbol - Immer % anzeigen",
+      "display-mode-icon-hover": "Symbol - Beim Hover anzeigen",
+      "display-mode-icon-only": "Nur Symbol",
       "hide-if-idle-description": "Das Widget ausblenden, wenn der Akku nicht geladen oder entladen wird.",
       "hide-if-idle-label": "Ausblenden, wenn im Leerlauf",
       "hide-if-not-detected-description": "Widget ausblenden, wenn kein Akku im System erkannt wird.",
@@ -69,14 +74,13 @@
       "horizontal-bar-description": "Tipp: Verwenden Sie \\n, um einen Zeilenumbruch zu erstellen.",
       "horizontal-bar-label": "Horizontale Leiste",
       "preview": "Vorschau",
-      "tooltip-format-description": "Formatzeichenfolge für den Tooltip, der beim Überfahren der Uhr angezeigt wird. Leer lassen, um den Standard-Tooltip zu verwenden.",
+      "select-color-description": "Wendet Themenfarben zur Hervorhebung an.",
+      "tooltip-format-description": "Formatzeichenfolge für den Tooltip, der beim Bewegen des Mauszeigers über die Uhr angezeigt wird. Leer lassen, um den Standard-Tooltip zu verwenden.",
       "tooltip-format-label": "Tooltip-Format",
       "use-custom-font-description": "Überschreibt die Standard-Schriftart mit einer benutzerdefinierten Schriftart für die Uhr.",
       "use-custom-font-label": "Benutzerdefinierte Schriftart verwenden",
       "use-monospaced-font-description": "Wenn aktiviert, verwendet die Uhr die Monospace-Schriftart.",
       "use-monospaced-font-label": "Monospace-Schriftart verwenden",
-      "use-primary-color-description": "Wenn aktiviert, wird die Primärfarbe zur Hervorhebung angewendet.",
-      "use-primary-color-label": "Primärfarbe verwenden",
       "vertical-bar-description": "Verwenden Sie ein Leerzeichen, um jeden Teil in eine neue Zeile zu trennen.",
       "vertical-bar-label": "Vertikale Leiste"
     },
@@ -93,8 +97,7 @@
     "custom-button": {
       "collapse-condition-description": "Wenn der Ausgabetext diesem Wert entspricht, wird die Schaltfläche eingeklappt.",
       "collapse-condition-label": "Einklappbedingung",
-      "color-selection-description": "Designfarben auf Symbol und Text anwenden.",
-      "color-selection-label": "Farbe auswählen",
+      "color-selection-description": "Themenfarben auf Symbol und Text anwenden.",
       "display-command-output-description": "Befehl eingeben, der in regelmäßigen Abständen ausgeführt wird. Die erste Zeile seiner Ausgabe wird als Text angezeigt.",
       "display-command-output-label": "Befehlsausgabe anzeigen",
       "display-command-output-stream-description": "Geben Sie einen Befehl ein, der kontinuierlich ausgeführt werden soll.",
@@ -254,8 +257,7 @@
       "hide-passive-label": "Passive Elemente ausblenden"
     },
     "volume": {
-      "display-mode-description": "Wählen Sie, wie dieser Wert angezeigt werden soll.",
-      "display-mode-label": "Anzeigemodus"
+      "display-mode-description": "Wählen Sie, wie dieser Wert angezeigt werden soll."
     },
     "workspace": {
       "character-count-description": "Anzahl der Zeichen, die von Arbeitsflächennamen angezeigt werden (1-10).",
@@ -345,13 +347,6 @@
       "version-new-user": "Neuinstallation"
     }
   },
-  "colors": {
-    "error": "Fehler",
-    "on-surface": "Auf der Oberfläche",
-    "primary": "Primär",
-    "secondary": "Sekundär",
-    "tertiary": "Tertiär"
-  },
   "common": {
     "actions": "Aktionen",
     "add": "Hinzufügen",
@@ -391,11 +386,13 @@
     "disconnect": "Trennen",
     "disconnected": "Getrennt",
     "disconnecting": "Verbindung wird getrennt...",
+    "display-mode": "Anzeigemodus",
     "download": "Herunterladen",
     "duration": "Dauer",
     "dysfunctional": "Dysfunktional",
     "edit": "Bearbeiten",
     "enabled": "Aktiviert",
+    "error": "Fehler",
     "events": "Ereignisse",
     "execute": "Ausführen",
     "faithful": "Originalgetreu",
@@ -464,6 +461,7 @@
     "secondary": "Sekundär",
     "security": "Sicherheit",
     "select": "Auswählen",
+    "select-color": "Farbe auswählen",
     "shortcuts": "Kurzbefehle",
     "shutdown": "Herunterfahren",
     "signal": "Signal",
@@ -519,6 +517,7 @@
     "auto-hide": "Automatisch ausblenden",
     "hidden": "Ausblenden, wenn leer",
     "idle": "Ausblenden, wenn inaktiv",
+    "non-exclusive": "Nicht-exklusiv",
     "transparent": "Transparent, wenn leer",
     "visible": "Immer sichtbar"
   },
@@ -742,7 +741,6 @@
       "appearance-density-label": "Leistendichte",
       "appearance-desc": "Erscheinungsbild und Position der Leiste anpassen.",
       "appearance-display-mode-description": "Wählen Sie, wann die Leiste sichtbar ist.",
-      "appearance-display-mode-label": "Anzeigemodus",
       "appearance-floating-description": "Leiste als schwebende 'Pille' anzeigen.",
       "appearance-floating-label": "Schwebende Leiste",
       "appearance-frame-radius": "Innenradius",
@@ -861,7 +859,7 @@
       "shortcuts-custom-button-state-checks-command": "Befehl, der für diese Zustandsprüfung ausgeführt werden soll",
       "shortcuts-custom-button-state-checks-label": "Zustandsprüfungen",
       "shortcuts-custom-button-state-checks-remove": "Entfernen",
-      "shortcuts-custom-button-tooltip-description": "Der Tooltip, der angezeigt wird, wenn Sie mit der Maus über die Schaltfläche fahren.",
+      "shortcuts-custom-button-tooltip-description": "Der Tooltip, der beim Bewegen des Mauszeigers über die Schaltfläche angezeigt wird.",
       "shortcuts-custom-button-tooltip-label": "Tooltip",
       "shortcuts-title": "Widgets für Kurzbefehle",
       "system-monitor-disk-path-description": "Wählen Sie, welchen Festplatten-Mountpunkt die Systemmonitor-Karte im Kontrollzentrum überwachen soll.",
@@ -1228,6 +1226,8 @@
       "sounds-unavailable-label": "Benachrichtigungstöne nicht verfügbar",
       "sounds-volume-description": "Lautstärke für Benachrichtigungstöne anpassen.",
       "sounds-volume-label": "Sound-Lautstärke",
+      "toast-battery-description": "Zeige eine Warnung an, wenn der Akkustand unter diesen Prozentsatz fällt.",
+      "toast-battery-label": "Akkuwarnung",
       "toast-desc": "Konfigurieren Sie das Aussehen und Verhalten von Toast-Benachrichtigungen.",
       "toast-keyboard-description": "Zeige eine Toast-Benachrichtigung an, wenn sich das Tastaturlayout ändert.",
       "toast-keyboard-label": "Tastaturlayout",
@@ -1518,7 +1518,7 @@
     },
     "skip-setup": "Einrichtung überspringen",
     "telemetry-wizard-done": "Verstanden!",
-    "telemetry-wizard-note": "Sie haben die Kontrolle – aktivieren oder deaktivieren Sie dies jederzeit in den Einstellungen",
+    "telemetry-wizard-note": "Sie haben die Kontrolle — aktivieren oder deaktivieren Sie dies jederzeit in den Einstellungen",
     "telemetry-wizard-subtitle": "Wir haben anonyme Analysen hinzugefügt, um Noctalia zu verbessern",
     "telemetry-wizard-title": "Datenschutz-Update",
     "wallpaper": {
@@ -1535,7 +1535,7 @@
       "select-prompt": "Wählen Sie unten ein Hintergrundbild",
       "subheader": "Bestimmen Sie die Stimmung mit einem schönen Hintergrund."
     },
-    "welcome-note": "Nur ein paar Grundeinstellungen – alle Optionen befinden sich in den Einstellungen",
+    "welcome-note": "Nur ein paar Grundeinstellungen — alle Optionen befinden sich in den Einstellungen",
     "welcome-subtitle": "Gestalten wir Ihren Desktop einzigartig",
     "welcome-title": "Willkommen bei Noctalia!"
   },
@@ -1568,8 +1568,10 @@
       "title": "Flugmodus"
     },
     "battery": {
+      "critical": "Kritischer Akkustand",
+      "critical-desc": "Akku ist bei {percent}% — bitte sofort das Ladegerät anschließen",
       "low": "Niedriger Akkustand",
-      "low-desc": "Akku ist bei {percent}%. Bitte schließen Sie das Ladegerät an"
+      "low-desc": "Akku ist bei {percent}% — bitte das Ladegerät anschließen"
     },
     "bluetooth": {
       "address-copied": "Adresse in die Zwischenablage kopiert",
