@@ -49,7 +49,8 @@
       "device-description": "Seleccione qué dispositivo de batería mostrar.",
       "device-label": "Dispositivo de batería",
       "display-mode-description": "Elige cómo se muestra la batería en la barra.",
-      "display-mode-graphic": "Batería Gráfica",
+      "display-mode-graphic": "Batería gráfica",
+      "display-mode-graphic-clean": "Batería gráfica (sin %)",
       "display-mode-icon-always": "Icono - Siempre mostrar %",
       "display-mode-icon-hover": "Icono - Mostrar al pasar",
       "display-mode-icon-only": "Solo icono",
@@ -74,7 +75,6 @@
       "horizontal-bar-description": "Consejo: Usa \\n para crear un salto de línea.",
       "horizontal-bar-label": "Barra horizontal",
       "preview": "Vista previa",
-      "select-color-description": "Aplicar colores del tema para enfatizar.",
       "tooltip-format-description": "Formato de la información mostrada al pasar el cursor sobre el reloj. Déjalo vacío para usar el formato por defecto.",
       "tooltip-format-label": "Formato del emergente",
       "use-custom-font-description": "Anular la fuente predeterminada del sistema con una fuente específica para el reloj.",
@@ -199,6 +199,8 @@
     "system-monitor": {
       "compact-mode-description": "Mostrar las estadísticas como mini gráficos de barras en lugar de valores de texto. Evita el desplazamiento del diseño.",
       "compact-mode-label": "Modo compacto",
+      "cpu-frequency-description": "Mostrar la velocidad de reloj actual de la CPU en GHz.",
+      "cpu-frequency-label": "Mostrar frecuencia de la CPU",
       "cpu-temperature-description": "Mostrar las lecturas de temperatura de CPU si están disponibles.",
       "cpu-temperature-label": "Temperatura de la CPU",
       "cpu-usage-description": "Mostrar el porcentaje actual de uso de CPU.",
@@ -249,6 +251,8 @@
       "title-width-reset-tooltip": "Restablecer ancho del título"
     },
     "tray": {
+      "chevron-color-description": "Aplicar los colores del tema al icono de flecha del cajón.",
+      "chevron-color-label": "Color de la flecha",
       "colorize-icons-description": "Aplicar colores del tema a los iconos de la bandeja del sistema.",
       "colorize-icons-label": "Colorear iconos",
       "drawer-enabled-description": "Cuando está habilitado, los elementos de la bandeja no anclados se muestran en un panel cajón.<br>Cuando está deshabilitado, todos los elementos de la bandeja se muestran en línea.",
@@ -386,7 +390,7 @@
     "disconnect": "Desconectar",
     "disconnected": "Desconectado",
     "disconnecting": "Desconectando...",
-    "display-mode": "Modo de Pantalla",
+    "display-mode": "Modo de pantalla",
     "download": "Descargar",
     "duration": "Duración",
     "dysfunctional": "Disfuncional",
@@ -411,6 +415,7 @@
     "installed": "Instalado",
     "interface": "Interfaz",
     "internet": "Internet",
+    "keybind": "Atajo de teclado",
     "language": "Idioma",
     "loading": "Cargando...",
     "local": "Local",
@@ -448,6 +453,7 @@
     "primary": "Primario",
     "random": "Aleatorio",
     "reboot": "Reiniciar",
+    "record": "Iniciar grabación",
     "refresh": "Refrescar",
     "required": "(obligatorio)",
     "reset": "Restablecer",
@@ -462,6 +468,8 @@
     "security": "Seguridad",
     "select": "Seleccionar",
     "select-color": "Seleccionar color",
+    "select-color-description": "Aplicar colores del tema para enfatizar.",
+    "select-icon-color": "Seleccionar color de icono",
     "shortcuts": "Atajos",
     "shutdown": "Apagar",
     "signal": "Señal",
@@ -469,6 +477,7 @@
     "sources": "Fuentes",
     "start": "Comienzo",
     "stop": "Parar",
+    "supporters": "Apoyadores",
     "suspend": "Suspender",
     "templates": "Plantillas",
     "tertiary": "Terciario",
@@ -646,6 +655,7 @@
   },
   "panels": {
     "about": {
+      "become-supporter": "Hazte patrocinador",
       "changelog": "Ver registro de cambios",
       "contributors-desc": "¡Un saludo a nuestro <b>increíble</b> colaborador número {count}!",
       "contributors-description-plural": "¡Un saludo a nuestros {count} <b>increíbles</b> colaboradores!",
@@ -658,6 +668,10 @@
       "noctalia-title": "Shell Noctalia",
       "privacy-policy": "Política de privacidad",
       "support": "Apóyanos",
+      "supporter-badge": "Colaborador",
+      "supporters-desc-plural": "¡Muchísimas gracias a nuestros <b>{count} increíbles</b> seguidores!",
+      "supporters-desc-singular": "¡Un enorme agradecimiento a nuestro increíble colaborador!",
+      "supporters-loading": "Cargando patrocinadores...",
       "system-cpu": "CPU:",
       "system-disk": "Disco:",
       "system-gpu": "GPU:",
@@ -735,6 +749,8 @@
       "appearance-auto-show-delay-label": "Demora de Despliegue",
       "appearance-background-opacity-description": "Establece la opacidad del fondo específicamente para la barra.",
       "appearance-background-opacity-label": "Opacidad del fondo de la barra",
+      "appearance-capsule-color-description": "Elige un color para las cápsulas de la barra, o no uses ninguno para el color de superficie predeterminado.",
+      "appearance-capsule-color-label": "Color de la cápsula",
       "appearance-capsule-opacity-description": "Establecer el nivel de opacidad para los fondos de los widgets cuando se muestra la cápsula.",
       "appearance-capsule-opacity-label": "Opacidad de la cápsula",
       "appearance-density-description": "Ajusta el relleno de la barra para un aspecto compacto o espacioso.",
@@ -812,7 +828,7 @@
       "download-title": "Descargar Esquemas de Color",
       "method-description": {
         "content": "Esquema de Material Design con extracción de color de alta fidelidad que coincide estrechamente con los colores reales del contenido de origen.",
-        "dysfunctional": "Como Faithful, pero elige la segunda familia de colores más dominante como primaria.",
+        "dysfunctional": "Como Fiel, pero elige la segunda familia de colores más dominante como primaria.",
         "faithful": "Intenta mantenerse cerca del color original mientras genera una paleta armoniosa.",
         "fruit-salad": "Esquema de Material Design que produce una paleta alegre y vibrante con matices diversos y variados.",
         "monochrome": "Esquema de Material Design que utiliza una escala de grises de un solo tono con un contenido cromático mínimo.",
@@ -864,7 +880,7 @@
       "shortcuts-title": "Widgets de accesos directos",
       "system-monitor-disk-path-description": "Selecciona qué punto de montaje de disco debe monitorear la tarjeta del monitor del sistema en el centro de control.",
       "system-monitor-disk-path-label": "Ruta del disco del monitor del sistema",
-      "title": "Centro de control"
+      "title": "Centro de Control"
     },
     "desktop-widgets": {
       "clock-enabled-description": "Mostrar un widget de reloj en el escritorio.",
@@ -1125,7 +1141,7 @@
       "date-time-show-events-description": "Mostrar eventos en el panel del calendario.",
       "date-time-show-events-label": "Mostrar eventos del calendario",
       "date-time-title": "Fecha y hora",
-      "date-time-use-analog-description": "Mostrar un reloj de estilo analógico en la ventana del calendario y en la pantalla de bloqueo.",
+      "date-time-use-analog-description": "Mostrar un reloj de estilo analógico en la ventana del calendario.",
       "date-time-use-analog-label": "Usar reloj de estilo analógico",
       "date-time-week-numbers-description": "Muestra la semana del año (p. ej. Semana 38) en el calendario.",
       "date-time-week-numbers-label": "Mostrar números de semana",
@@ -1153,6 +1169,13 @@
       "allow-password-with-fprintd-label": "Permitir inicio de sesión con contraseña usando fprintd",
       "auto-start-auth-description": "Inicia automáticamente la autenticación de huellas dactilares sin requerir una pulsación de tecla o un clic de botón.",
       "auto-start-auth-label": "Autentificación de inicio automática",
+      "clock-format-description": "Personaliza el formato del reloj usando tokens de sintaxis de fecha/hora.",
+      "clock-format-label": "Formato del reloj",
+      "clock-style-analog": "Analógico",
+      "clock-style-custom": "Personalizado",
+      "clock-style-description": "Elige el estilo visual del reloj en la Pantalla de Bloqueo.",
+      "clock-style-digital": "Digital",
+      "clock-style-label": "Estilo de Reloj",
       "compact-lockscreen-description": "Mostrar solo el campo de inicio de sesión y los controles del sistema, ocultando los widgets del clima y multimedia.",
       "compact-lockscreen-label": "Pantalla de bloqueo compacta",
       "lock-on-suspend-description": "Bloquear la pantalla automáticamente al suspender el sistema.",
@@ -1267,6 +1290,8 @@
       "types-volume-label": "Volumen de salida"
     },
     "plugins": {
+      "auto-update": "Actualizar plugins automáticamente",
+      "auto-update-description": "Actualizar automáticamente todos los plugins cuando se inicie la shell.",
       "available-description": "Navegar e instalar plugins desde fuentes configuradas.",
       "available-label": "Plugins disponibles",
       "available-no-plugins-description": "Comprueba las fuentes de tu plugin o actualiza la lista.",
@@ -1342,6 +1367,9 @@
       "entry-settings-default-command-logout": "Cierre de sesión interno (sin comando)",
       "entry-settings-default-info-description": "Si no se especifica un comando personalizado, se utilizará el comando predeterminado del sistema.",
       "entry-settings-default-info-label": "Comando predeterminado",
+      "entry-settings-keybind-description": "Asigna una combinación de teclas para activar esta acción cuando el menú de sesión esté abierto.",
+      "entry-settings-keybind-placeholder": "Pulsa Grabar para asignar una tecla...",
+      "entry-settings-keybind-recording": "Grabando... Pulsa cualquier combinación de teclas",
       "entry-settings-title": "Configurar {entry}",
       "entry-settings-tooltip": "Configurar comando",
       "general-desc": "Configurar el comportamiento y la apariencia del panel del menú de sesión.",
@@ -1490,7 +1518,7 @@
     "bottom-center": "Inferior central",
     "bottom-left": "Inferior izquierda",
     "bottom-right": "Inferior derecha",
-    "center": "Centrar",
+    "center": "Centro",
     "center-left": "Izquierda centrado",
     "center-right": "Derecha centrado",
     "close-to-bar": "Cerca del botón de la barra",
@@ -1510,7 +1538,7 @@
   "setup": {
     "all-done": "¡Listo!",
     "appearance": {
-      "subheader": "Elige el Modo Oscuro y las fuentes de color (Wallpaper o predefinidas)."
+      "subheader": "Elige el modo oscuro y las fuentes de color (Fondo de pantalla o predefinidas)."
     },
     "customize": {
       "header": "Personaliza tu experiencia",
@@ -1759,6 +1787,8 @@
     "transitions": {
       "disc": "Disco",
       "fade": "Desvanecer",
+      "honeycomb": "Panal",
+      "pixelate": "Pixelar",
       "stripes": "Rayas",
       "wipe": "Barrido"
     },

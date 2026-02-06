@@ -198,6 +198,15 @@
     "subTabLabel": "common.appearance"
   },
   {
+    "labelKey": "panels.bar.appearance-capsule-color-label",
+    "descriptionKey": "panels.bar.appearance-capsule-color-description",
+    "widget": "NComboBox",
+    "tab": 4,
+    "tabLabel": "panels.bar.title",
+    "subTab": 0,
+    "subTabLabel": "common.appearance"
+  },
+  {
     "labelKey": "panels.bar.appearance-capsule-opacity-label",
     "descriptionKey": "panels.bar.appearance-capsule-opacity-description",
     "widget": "NValueSlider",
@@ -876,6 +885,22 @@
     "subTabLabel": "common.general"
   },
   {
+    "labelKey": "panels.lock-screen.clock-style-label",
+    "descriptionKey": "panels.lock-screen.clock-style-description",
+    "widget": "NComboBox",
+    "tab": 11,
+    "tabLabel": "panels.lock-screen.title",
+    "subTab": null
+  },
+  {
+    "labelKey": "panels.lock-screen.clock-format-label",
+    "descriptionKey": "panels.lock-screen.clock-format-description",
+    "widget": "NTextInput",
+    "tab": 11,
+    "tabLabel": "panels.lock-screen.title",
+    "subTab": null
+  },
+  {
     "labelKey": "panels.lock-screen.lock-on-suspend-label",
     "descriptionKey": "panels.lock-screen.lock-on-suspend-description",
     "widget": "NToggle",
@@ -1155,7 +1180,7 @@
   {
     "labelKey": "panels.notifications.toast-battery-label",
     "descriptionKey": "panels.notifications.toast-battery-description",
-    "widget": "NLabel",
+    "widget": "NCheckbox",
     "tab": 9,
     "tabLabel": "common.notifications",
     "subTab": 4,
@@ -1371,6 +1396,14 @@
     "labelKey": "panels.session-menu.entry-settings-default-info-label",
     "descriptionKey": "panels.session-menu.entry-settings-default-info-description",
     "widget": "NLabel",
+    "tab": 12,
+    "tabLabel": "session-menu.title",
+    "subTab": null
+  },
+  {
+    "labelKey": "common.keybind",
+    "descriptionKey": "panels.session-menu.entry-settings-keybind-description",
+    "widget": "NTextInput",
     "tab": 12,
     "tabLabel": "session-menu.title",
     "subTab": null

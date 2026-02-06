@@ -43,6 +43,9 @@ Singleton {
   property var pluginErrors: ({})
   signal pluginLoadError(string pluginId, string entryPoint, string error)
 
+  // Track currently installing plugins: { pluginId: true }
+  property var installingPlugins: ({})
+
   // Hot reload: file watchers for plugin directories
   property var pluginFileWatchers: ({}) // { pluginId: FileView }
   property bool hotReloadEnabled: Settings.isDebug
@@ -190,6 +193,7 @@ Singleton {
       root.pluginsFullyLoaded = true;
       Logger.i("PluginService", "No plugins to load");
       root.allPluginsLoaded();
+      root._isStartupCheck = true;
       refreshAvailablePlugins();
       return;
     }
@@ -215,6 +219,7 @@ Singleton {
       root.allPluginsLoaded();
 
       // Fetch available plugins from all sources
+      root._isStartupCheck = true;
       refreshAvailablePlugins();
     }
   }
@@ -411,9 +416,19 @@ Singleton {
     var downloadCmd = "temp_dir=$(mktemp -d) && GIT_TERMINAL_PROMPT=0 git clone --filter=blob:none --sparse --depth=1 --quiet '" + repoUrl + "' \"$temp_dir\" 2>/dev/null && cd \"$temp_dir\" && git sparse-checkout set '" + pluginId + "' 2>/dev/null && mkdir -p '" + pluginDir + "' && cp -r \"$temp_dir/" + pluginId + "/.\" '" + pluginDir
         + "/'; exit_code=$?; rm -rf \"$temp_dir\"; exit $exit_code";
 
+    // Mark as installing
+    var newInstalling = Object.assign({}, root.installingPlugins);
+    newInstalling[pluginId] = true;
+    root.installingPlugins = newInstalling;
+
     var downloadProcess = Qt.createQmlObject('import QtQuick; import Quickshell.Io; Process { command: ["sh", "-c", "' + downloadCmd.replace(/"/g, '\\"') + '"] }', root, "DownloadPlugin_" + pluginId);
 
     downloadProcess.exited.connect(function (exitCode) {
+      // Mark as finished (remove from installing)
+      var currentInstalling = Object.assign({}, root.installingPlugins);
+      delete currentInstalling[pluginId];
+      root.installingPlugins = currentInstalling;
+
       if (exitCode === 0) {
         Logger.i("PluginService", "Downloaded plugin:", compositeKey);
 
@@ -1199,6 +1214,9 @@ Singleton {
   // Internal flag to track if we should check for updates after registry fetch
   property bool shouldCheckUpdatesAfterFetch: false
 
+  // Flag to track if this is the initial startup update check (for auto-update)
+  property bool _isStartupCheck: false
+
   // Check for plugin updates (call this after availablePlugins are loaded)
   function checkForUpdates() {
     Logger.i("PluginService", "Checking for plugin updates");
@@ -1304,7 +1322,41 @@ Singleton {
       Logger.i("PluginService", "All installed plugins are up to date");
     }
 
+    // Auto-update on startup if enabled
+    if (root._isStartupCheck && Settings.data.plugins.autoUpdate && updateCount > 0) {
+      Logger.i("PluginService", "Auto-updating", updateCount, "plugin(s)");
+      updateAllPlugins();
+    }
+
+    root._isStartupCheck = false;
     shouldCheckUpdatesAfterFetch = false;
+  }
+
+  // Update all plugins sequentially
+  function updateAllPlugins(callback) {
+    var pluginIds = Object.keys(root.pluginUpdates);
+    var currentIndex = 0;
+
+    function updateNext() {
+      if (currentIndex >= pluginIds.length) {
+        ToastService.showNotice(I18n.tr("panels.plugins.title"), I18n.tr("panels.plugins.update-all-success"));
+        if (callback)
+          callback();
+        return;
+      }
+
+      var pluginId = pluginIds[currentIndex];
+      currentIndex++;
+
+      root.updatePlugin(pluginId, function (success, error) {
+        if (!success) {
+          Logger.w("PluginService", "Failed to auto-update", pluginId + ":", error);
+        }
+        Qt.callLater(updateNext);
+      });
+    }
+
+    updateNext();
   }
 
   // Simple version comparison (semantic versioning x.y.z)
