@@ -319,6 +319,7 @@ Singleton {
         property list<string> keyRemove: ["Del"]
       }
       property bool reverseScroll: false
+      property bool smoothScrollEnabled: true
     }
 
     // ui
@@ -710,6 +711,7 @@ Singleton {
       property string manualSunset: "18:30"
       property string generationMethod: "tonal-spot"
       property string monitorForColors: ""
+      property bool syncGsettings: true
     }
 
     // templates toggles

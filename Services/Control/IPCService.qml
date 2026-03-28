@@ -55,6 +55,9 @@ Singleton {
     function showBar() {
       BarService.show();
     }
+    function peek() {
+      BarService.peek();
+    }
     function setDisplayMode(mode: string, screen: string) {
       if (mode === "always_visible" || mode === "non_exclusive" || mode === "auto_hide") {
         if (!screen || screen === "all") {
@@ -253,6 +256,38 @@ Singleton {
       if (!notif)
         return "[]";
       return notif.actionsJson || "[]";
+    }
+  }
+
+  IpcHandler {
+    target: "toast"
+
+    function send(json: string) {
+      try {
+        var data = JSON.parse(json);
+        var title = data.title || "";
+        var body = data.body || "";
+        var icon = data.icon || "";
+        var type = data.type || "notice";
+        var duration = data.duration;
+
+        switch (type) {
+        case "warning":
+          ToastService.showWarning(title, body, duration ?? 4000);
+          break;
+        case "error":
+          ToastService.showError(title, body, duration ?? 6000);
+          break;
+        default:
+          ToastService.showNotice(title, body, icon, duration ?? 3000);
+        }
+      } catch (error) {
+        Logger.e("IPC", "Failed to parse toast JSON: " + error);
+      }
+    }
+
+    function dismiss() {
+      ToastService.dismissToast();
     }
   }
 
@@ -672,6 +707,19 @@ Singleton {
   }
 
   IpcHandler {
+    target: "airplaneMode"
+    function toggle() {
+      BluetoothService.setAirplaneMode(!Settings.data.network.airplaneModeEnabled);
+    }
+    function enable() {
+      BluetoothService.setAirplaneMode(true);
+    }
+    function disable() {
+      BluetoothService.setAirplaneMode(false);
+    }
+  }
+
+  IpcHandler {
     target: "battery"
     function togglePanel() {
       root.screenDetector.withCurrentScreen(screen => {
@@ -715,34 +763,6 @@ Singleton {
 
     function disableNoctaliaPerformance() {
       PowerProfileService.setNoctaliaPerformance(false);
-    }
-  }
-
-  IpcHandler {
-    target: "toast"
-
-    function send(json: string) {
-      try {
-        var data = JSON.parse(json);
-        var title = data.title || "";
-        var body = data.body || "";
-        var icon = data.icon || "";
-        var type = data.type || "notice";
-        var duration = data.duration;
-
-        switch (type) {
-        case "warning":
-          ToastService.showWarning(title, body, duration ?? 4000);
-          break;
-        case "error":
-          ToastService.showError(title, body, duration ?? 6000);
-          break;
-        default:
-          ToastService.showNotice(title, body, icon, duration ?? 3000);
-        }
-      } catch (error) {
-        Logger.e("IPC", "Failed to parse toast JSON: " + error);
-      }
     }
   }
 

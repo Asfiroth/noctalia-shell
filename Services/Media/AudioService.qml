@@ -189,6 +189,9 @@ Singleton {
     node: root.sink
   }
 
+  // Track all streams globally to prevent binding loops for filtered out streams
+  readonly property var streamNodes: Pipewire.ready ? Pipewire.nodes.values.filter(n => n && n.isStream) : []
+
   // Find application streams that are connected to the default sink
   readonly property var appStreams: {
     if (!Pipewire.ready || !root.sink) {
@@ -240,8 +243,10 @@ Singleton {
         continue;
       }
 
-      // If it's a stream node, add it directly
-      if (sourceNode.isStream && sourceNode.audio) {
+      // Filter out filter (intermediate) streams
+      const isVirtual = (sourceNode.properties && sourceNode.properties["node.virtual"]) || "";
+      // If it's an application stream node, add it directly
+      if (sourceNode.isStream && sourceNode.audio && !isVirtual) {
         if (!connectedStreamIds[sourceNode.id]) {
           connectedStreamIds[sourceNode.id] = true;
           connectedStreams.push(sourceNode);
@@ -272,6 +277,12 @@ Singleton {
             continue;
           }
 
+          // Filter out filter streams
+          const nodeIsVirtual = (node.properties && node.properties["node.virtual"]) || "";
+          if (nodeIsVirtual) {
+            continue;
+          }
+
           var streamId = node.id;
           if (connectedStreamIds[streamId]) {
             continue;
@@ -296,13 +307,52 @@ Singleton {
     objects: [...root.sinks, ...root.sources]
   }
 
-  // Per-app volume persistence (survives stream recreation on track change/seek)
+  // Per-stream volume overrides (app + media identity) so concurrent browser streams do not share one entry.
   property var appVolumeOverrides: ({})
   property var _knownAppStreamIds: ({})
   property bool _isApplyingAppOverride: false
 
   PwObjectTracker {
-    objects: root.appStreams
+    objects: root.streamNodes
+  }
+
+  // Keep appVolumeOverrides aligned with PipeWire when apps change volume/mute.
+  Item {
+    width: 0
+    height: 0
+    visible: false
+
+    Repeater {
+      model: root.appStreams
+
+      delegate: Item {
+        required property var modelData
+
+        Connections {
+          target: modelData?.audio ?? null
+
+          function onVolumeChanged() {
+            if (root._isApplyingAppOverride || !modelData?.audio) {
+              return;
+            }
+            var key = root.getAppKey(modelData);
+            if (key) {
+              root.setAppStreamVolume(key, modelData.audio.volume);
+            }
+          }
+
+          function onMutedChanged() {
+            if (root._isApplyingAppOverride || !modelData?.audio) {
+              return;
+            }
+            var key = root.getAppKey(modelData);
+            if (key) {
+              root.setAppStreamMuted(key, modelData.audio.muted);
+            }
+          }
+        }
+      }
+    }
   }
 
   function getAppKey(node): string {
@@ -310,21 +360,41 @@ Singleton {
       return "";
     }
     var props = node.properties;
+    var base = "";
     var binary = props["application.process.binary"] || "";
     if (binary) {
       var parts = binary.split("/");
-      return parts[parts.length - 1].toLowerCase();
+      base = parts[parts.length - 1].toLowerCase();
     }
-    var appName = props["application.name"] || "";
-    if (appName) {
-      return appName.toLowerCase();
+    if (!base) {
+      var appName = props["application.name"] || "";
+      if (appName) {
+        base = appName.toLowerCase();
+      }
     }
-    var appId = props["application.id"] || "";
-    if (appId) {
-      return appId.toLowerCase();
+    if (!base) {
+      var appId = props["application.id"] || "";
+      if (appId) {
+        base = appId.toLowerCase();
+      }
+    }
+    if (!base) {
+      return "";
     }
 
-    return "";
+    var mediaName = (props["media.name"] || "").trim().toLowerCase();
+    var mediaRole = (props["media.role"] || "").trim().toLowerCase();
+    var tagParts = [];
+    if (mediaName) {
+      tagParts.push(mediaName);
+    }
+    if (mediaRole) {
+      tagParts.push(mediaRole);
+    }
+    if (tagParts.length > 0) {
+      return base + "\u001f" + tagParts.join("\u001e");
+    }
+    return base + "\u001f" + String(node.id);
   }
 
   function setAppStreamVolume(appKey: string, volume: real): void {
@@ -362,6 +432,7 @@ Singleton {
       return;
     }
 
+    var prevKnown = root._knownAppStreamIds;
     var currentIds = {};
     _isApplyingAppOverride = true;
     for (var i = 0; i < streams.length; i++) {
@@ -373,6 +444,20 @@ Singleton {
       currentIds[s.id] = true;
       var key = getAppKey(s);
       var ov = key ? appVolumeOverrides[key] : null;
+
+      // New stream node (reload, app restart, etc.): adopt PipeWire state into
+      // overrides so we do not force an outdated Noctalia-only value.
+      if (key && s.audio && !prevKnown[s.id]) {
+        var seeded = appVolumeOverrides;
+        if (!seeded[key]) {
+          seeded[key] = {};
+        }
+        seeded[key].volume = s.audio.volume;
+        seeded[key].muted = s.audio.muted;
+        appVolumeOverrides = seeded;
+        ov = seeded[key];
+      }
+
       if (!ov || !s.audio) {
         continue;
       }
