@@ -382,6 +382,7 @@ Singleton {
       property bool showHiddenFiles: false
       property string viewMode: "single" // "single" | "recursive" | "browse"
       property bool setWallpaperOnAllMonitors: true
+      property bool linkLightAndDarkWallpapers: true
       property string fillMode: "crop"
       property color fillColor: "#000000"
       property bool useSolidColor: false
@@ -413,7 +414,8 @@ Singleton {
       property string wallhavenResolutionHeight: ""
       property string sortOrder: "name" // "name", "name_desc", "date", "date_desc", "random"
       property list<var> favorites: []
-      // Format: [{ "path": "/path/to/wallpaper.jpg", "colorScheme": "...", "darkMode": true, "useWallpaperColors": true, "generationMethod": "tonal-spot" }]
+      // Format: [{ "path": "...", "appearance": "light"|"dark", "colorScheme": "...", "darkMode": bool, "useWallpaperColors": bool, "generationMethod": "...", "paletteColors": [...] }]
+      // Legacy entries omit "appearance" and use darkMode to infer light vs dark slot.
     }
 
     // applauncher
@@ -577,7 +579,6 @@ Singleton {
 
     // network
     property JsonObject network: JsonObject {
-      property bool airplaneModeEnabled: false
       property bool bluetoothRssiPollingEnabled: false  // Opt-in Bluetooth RSSI polling (uses bluetoothctl)
       property int bluetoothRssiPollIntervalMs: 60000 // Polling interval in milliseconds for RSSI queries
       property string networkPanelView: "wifi"

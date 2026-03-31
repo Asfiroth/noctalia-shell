@@ -320,6 +320,7 @@ Item {
           Layout.fillWidth: true
           Layout.alignment: Qt.AlignVCenter
           Layout.preferredHeight: capsuleHeight
+          fadeRoundLeftCorners: !(showAlbumArt || showProgressRing)
 
           text: title
 
@@ -333,9 +334,8 @@ Item {
           cursorShape: hasPlayer ? Qt.PointingHandCursor : Qt.ArrowCursor
           maxWidth: root.maxWidth - root.mainContentWidth
           forcedHover: mainMouseArea.containsMouse
-          gradientColor: Style.capsuleColor
-          gradientWidth: Math.round(8 * Style.uiScaleRatio)
-          cornerRadius: Style.radiusM
+          fadeExtent: 0.1
+          fadeCornerRadius: Style.radiusM
 
           NText {
             color: hasPlayer ? root.textColor : Color.mOnSurfaceVariant
@@ -408,8 +408,15 @@ Item {
                }
 
     onEntered: {
-      if (screen && (isVertical || scrollingMode === "never") && !PanelService.getPanel("mediaPlayerPanel", screen)?.isPanelOpen) {
-        TooltipService.show(root, title, BarService.getTooltipDirection(root.screen?.name));
+      if (!root || !screen) {
+        return;
+      }
+      var scrollMode = scrollingMode;
+      if ((isVertical || scrollMode === "never")) {
+        var panel = PanelService.getPanel("mediaPlayerPanel", screen);
+        if (panel && !panel.isPanelOpen) {
+          TooltipService.show(root, title, BarService.getTooltipDirection(root.screen?.name));
+        }
       }
     }
     onExited: TooltipService.hide()
