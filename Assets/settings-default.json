@@ -159,7 +159,7 @@
     "settingsPanelSideBarCardStyle": false
   },
   "location": {
-    "name": "Tokyo",
+    "name": "",
     "weatherEnabled": true,
     "weatherShowEffects": true,
     "useFahrenheit": false,
@@ -170,7 +170,8 @@
     "analogClockInCalendar": false,
     "firstDayOfWeek": -1,
     "hideWeatherTimezone": false,
-    "hideWeatherCityName": false
+    "hideWeatherCityName": false,
+    "autoLocate": true
   },
   "calendar": {
     "cards": [
